@@ -10,6 +10,7 @@ if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
 from utils.common import initialize
+from analytics import category_performance
 
 
 context = initialize("Strategic Recommendations")
@@ -25,23 +26,18 @@ st.caption(
 if f.empty:
     st.warning("No records match the current data selection. Widen the date range or filters to compare formats.")
 else:
-    grouped = (
+    grouped = category_performance(f, "post_type")
+    action_totals = (
         f.groupby("post_type", dropna=False)
         .agg(
-            records=("post_type", "size"),
-            reach=("reach", "sum"),
-            engagements=("total_engagements", "sum"),
-            mean_record_rate=("engagement_rate", "mean"),
-            saves=("saves", "sum"),
-            shares=("shares", "sum"),
-            visits=("profile_visits", "sum"),
-            follows=("follows", "sum"),
+            saves=("saves", lambda values: values.sum(min_count=1)),
+            shares=("shares", lambda values: values.sum(min_count=1)),
+            visits=("profile_visits", lambda values: values.sum(min_count=1)),
+            follows=("follows", lambda values: values.sum(min_count=1)),
         )
         .reset_index()
     )
-    grouped["weighted_engagement_rate"] = (
-        grouped["engagements"] / grouped["reach"].where(grouped["reach"] > 0)
-    )
+    grouped = grouped.merge(action_totals, on="post_type", how="left", validate="one_to_one")
     grouped["save_rate_proxy"] = grouped["saves"] / grouped["reach"].where(grouped["reach"] > 0)
     grouped["share_rate_proxy"] = grouped["shares"] / grouped["reach"].where(grouped["reach"] > 0)
     grouped["follow_per_visit_proxy"] = grouped["follows"] / grouped["visits"].where(grouped["visits"] > 0)
@@ -53,6 +49,8 @@ else:
             "engagements": "Engagements",
             "mean_record_rate": "Mean record engagement rate",
             "weighted_engagement_rate": "Weighted engagement rate",
+            "selected_scope_baseline": "Selected-scope baseline",
+            "difference_from_baseline_pp": "Difference vs baseline (pp)",
             "save_rate_proxy": "Saves / reach proxy",
             "share_rate_proxy": "Shares / reach proxy",
             "follow_per_visit_proxy": "Follows / visits proxy",
@@ -66,6 +64,8 @@ else:
                 "Summed reach",
                 "Mean record engagement rate",
                 "Weighted engagement rate",
+                "Selected-scope baseline",
+                "Difference vs baseline (pp)",
                 "Saves / reach proxy",
                 "Shares / reach proxy",
                 "Follows / visits proxy",
@@ -75,6 +75,8 @@ else:
                 "Summed reach": "{:,.0f}",
                 "Mean record engagement rate": "{:.2%}",
                 "Weighted engagement rate": "{:.2%}",
+                "Selected-scope baseline": "{:.2%}",
+                "Difference vs baseline (pp)": "{:+.2f}",
                 "Saves / reach proxy": "{:.2%}",
                 "Shares / reach proxy": "{:.2%}",
                 "Follows / visits proxy": "{:.2%}",
@@ -115,6 +117,5 @@ st.warning(
     "aggregate proxies, not person-level conversion measures."
 )
 st.caption(
-    "Format comparisons use the current supplied file and filters. Hashtag categories overlap; "
-    "summed reach is not unique reach."
+    "The selected-scope baseline is the weighted rate across all currently filtered records; it is a descriptive reference, not an independent benchmark. Format comparisons use the current supplied file and filters. Hashtag categories overlap; summed reach is not unique reach."
 )

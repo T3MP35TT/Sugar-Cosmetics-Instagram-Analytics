@@ -52,6 +52,7 @@ PAGE_SUBTITLES = {
     "Data Quality & Methodology": "Review data validation, metric definitions, and analytical limitations.",
     "Data Quality Methodology": "Review data validation, metric definitions, and analytical limitations.",
     "Strategic Recommendations": "Translate descriptive findings into measurable experiments.",
+    "Predictive Model Validation": "Evaluate a leakage-aware engagement-rate model on later dates and inspect its errors.",
 }
 
 

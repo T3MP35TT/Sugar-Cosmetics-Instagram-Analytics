@@ -407,9 +407,9 @@ elif active_section == "🛡️ Data Quality & Methodology":
         st.markdown("#### Important caveats")
         st.markdown(
             """
-            - The file is likely from the public upstream analytics project (see DATA_PROVENANCE.md); the workbook does not document collection method, account identity, or official brand-account authenticity.
+            - Data source, collection method, account identity, row grain, and sampling strategy could not be verified from the supplied files; official Sugar Cosmetics account performance therefore remains unconfirmed.
             - No post ID, caption, posting time, follower count, demographic attributes, spend, sales or revenue fields are provided.
-            - The near-even distribution across post types and campaign types, plus 136.612 records per calendar day, requires row-grain and sampling confirmation before generalizing.
+            - The near-even distribution across post types and campaign types, plus 136.612 records per calendar day, requires row-grain and sampling confirmation before generalizing. Demographic fairness and business ROI also cannot be assessed because the required fields are absent.
             - Higher engagement or correlation does not establish causation.
             - Grouped hashtag results overlap when a record contains multiple hashtags.
             """

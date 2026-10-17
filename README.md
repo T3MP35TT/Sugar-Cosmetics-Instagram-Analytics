@@ -27,7 +27,7 @@ If activation is blocked, call the environment directly:
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-## Reproduce the data audit
+## Reproduce the data audit and model evaluation
 
 Open `notebooks/01_data_validation_and_eda.ipynb` from the project root and run every cell in order. It prefers the Excel workbook and falls back to the project CSV. It standardizes column names and types, checks data quality, explores distributions and outliers, calculates documented metrics, and writes:
 
@@ -37,6 +37,14 @@ Open `notebooks/01_data_validation_and_eda.ipynb` from the project root and run 
 - `reports/outlier_screening.csv`
 
 The cleaning policy is non-destructive: rows are not automatically dropped, and IQR outliers are flagged for review rather than removed. The report describes the input and checks; it is not a certification of source authenticity or metric correctness.
+
+Run the optional offline predictive evaluation from the project root:
+
+```powershell
+python src/run_model_evaluation.py
+```
+
+This predicts recorded engagement rate using only format, campaign, hashtag count, and calendar features. Engagement outcomes, reach, impressions, visits, follows, and potentially post-outcome labels are excluded from model inputs. The workflow reserves the latest 20% of unique dates as an untouched future holdout, tunes Ridge and histogram gradient boosting against a median baseline with expanding-window date-grouped cross-validation, and writes `reports/model_evaluation.json` plus `reports/model_holdout_predictions.csv`. The report includes MAE/RMSE/R², tuning results, a train/validation gap, date-block bootstrap interval, monthly errors, and post-type/campaign subgroup errors. The holdout report is intended for assessment; it does not authorize deployment. If the selected model does not beat the baseline on the holdout, do not use it operationally.
 
 Fingerprint the exact source and execution environment with:
 
@@ -55,6 +63,7 @@ This writes `reports/reproducibility_manifest.json`. The default input is the wo
 - Posting Strategy: monthly volume and weekday summaries
 - Deep Dive & Data Quality: filtered record inspection, export, validation, and outlier review
 - Strategic Recommendations: experiment design guidance and next-data recommendations
+- Predictive Model Validation: temporal model selection, holdout metrics, and error analysis
 
 ## Metric definitions
 
@@ -85,7 +94,7 @@ Run the existing calculation checks with:
 pytest -q
 ```
 
-The tests cover core feature calculations, missing values, zero denominators, summaries, source-file matching, category balance, and reproducibility metadata. The local project has a committed `main` branch. No remote or pull request is configured; push only after reviewing data licensing and destination settings.
+The tests cover core feature calculations, missing values, zero denominators, summaries, category comparison baselines, temporal split isolation, feature leakage controls, source-file matching, category balance, and reproducibility metadata. Streamlit smoke tests run the home page and all dashboard pages. `.github/workflows/ci.yml` repeats the test suite and compiles the Python modules on pushes and pull requests when the repository is hosted. The local project has a committed `main` branch. No remote or pull request is configured; push only after reviewing data licensing and destination settings.
 
 The latest implementation check is recorded in `reports/implementation_review.md`.
 
@@ -100,4 +109,4 @@ Before operational or external use:
 5. Add paid/organic exposure and attributable conversion, spend, and sales data before estimating ROI.
 6. For a causal content recommendation, run a pre-registered randomized experiment with a primary outcome, comparable exposure windows, guardrails, and an agreed stopping rule.
 
-Demographic fairness analysis, time-of-day recommendations, and revenue impact cannot be evaluated from the current fields. Predictive-model criteria such as train/test splitting, tuning, and retraining are not applicable until a predictive model is proposed.
+Demographic fairness analysis, time-of-day recommendations, and revenue impact cannot be evaluated from the current fields. Predictive-model results remain exploratory until collection details and row grain are verified and performance is reproduced on a later independently collected period. The [model monitoring and retraining plan](MODEL_MONITORING_PLAN.md) defines the gates and response process; no production feed, alert thresholds, or deployed model are configured.

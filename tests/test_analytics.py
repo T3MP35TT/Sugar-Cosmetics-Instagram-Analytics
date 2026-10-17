@@ -12,6 +12,7 @@ from analytics import (
     NUMERIC,
     REQUIRED,
     add_features,
+    category_performance,
     hashtag_table,
     load_data,
     summarize_data,
@@ -136,6 +137,30 @@ def test_summary_returns_nan_weighted_rate_when_no_positive_eligible_reach():
     df["reach"] = 0
     result = summarize_data(df)
     assert np.isnan(result["weighted_engagement_rate"])
+
+
+def test_category_performance_uses_weighted_rates_and_selected_scope_reference():
+    df = add_features(sample_df())
+    result = category_performance(df, "post_type").set_index("post_type")
+    assert np.isclose(result.loc["Reel", "weighted_engagement_rate"], 100 / 800)
+    assert np.isclose(result.loc["Image", "weighted_engagement_rate"], 50 / 400)
+    assert np.isclose(result.loc["Reel", "selected_scope_baseline"], 150 / 1200)
+    assert np.isclose(result.loc["Image", "difference_from_baseline_pp"], 0)
+    assert result["records"].sum() == len(df)
+
+
+def test_category_performance_excludes_ineligible_rows_from_rate_baseline():
+    df = add_features(sample_df())
+    df.loc[0, "reach"] = 0
+    df = add_features(df)
+    result = category_performance(df, "post_type").set_index("post_type")
+    assert np.isclose(result.loc["Image", "selected_scope_baseline"], 50 / 400)
+    assert pd.isna(result.loc["Reel", "weighted_engagement_rate"])
+
+
+def test_category_performance_rejects_unknown_dimension():
+    with pytest.raises(ValueError, match="Unknown category column"):
+        category_performance(add_features(sample_df()), "unknown")
 
 
 # Data validation

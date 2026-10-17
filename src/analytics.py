@@ -206,6 +206,60 @@ def summarize_data(df):
     }
 
 
+def category_performance(df, dimension):
+    """Compare a category with the selected-scope weighted-rate reference.
+
+    Rates use only rows with observed engagements and positive reach. The
+    reference is descriptive and shares records with each category; it is not
+    an independent benchmark or a causal comparison.
+    """
+    if dimension not in df.columns:
+        raise ValueError(f"Unknown category column: {dimension}")
+    if df.empty:
+        return pd.DataFrame(
+            columns=[
+                dimension, "records", "reach", "engagements",
+                "mean_record_rate", "weighted_engagement_rate",
+                "selected_scope_baseline", "difference_from_baseline_pp",
+            ]
+        )
+
+    work = df.copy()
+    if "total_engagements" not in work.columns or "engagement_rate" not in work.columns:
+        work = add_features(work)
+
+    grouped = (
+        work.groupby(dimension, dropna=False, observed=True)
+        .agg(
+            records=(dimension, "size"),
+            reach=("reach", lambda values: values.sum(min_count=1)),
+            engagements=("total_engagements", lambda values: values.sum(min_count=1)),
+            mean_record_rate=("engagement_rate", "mean"),
+        )
+        .reset_index()
+    )
+    grouped["weighted_engagement_rate"] = (
+        grouped["engagements"] / grouped["reach"].where(grouped["reach"] > 0)
+    )
+
+    eligible = (
+        work["total_engagements"].notna()
+        & work["reach"].notna()
+        & work["reach"].gt(0)
+    )
+    eligible_reach = work.loc[eligible, "reach"].sum(min_count=1)
+    baseline = (
+        work.loc[eligible, "total_engagements"].sum(min_count=1) / eligible_reach
+        if pd.notna(eligible_reach) and eligible_reach > 0
+        else np.nan
+    )
+    grouped["selected_scope_baseline"] = baseline
+    grouped["difference_from_baseline_pp"] = (
+        grouped["weighted_engagement_rate"] - baseline
+    ) * 100
+    return grouped
+
+
 def weekday_table(df):
     """Aggregate records and engagement performance by weekday."""
     columns = [

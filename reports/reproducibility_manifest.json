@@ -1,7 +1,7 @@
 {
   "manifest_version": 1,
-  "generated_at_utc": "2026-10-17T08:08:26.010250+00:00",
-  "project_revision": "9e6cae15c703a33b9778cad7fb8d14958aeb8536",
+  "generated_at_utc": "2026-10-17T08:41:17.168764+00:00",
+  "project_revision": "dfc77dc0c48c278e9c78c79c20012e5fc6e2fb46",
   "selected_source": {
     "path": "data\\sugar_cosmetics_instagram_data.xlsx",
     "size_bytes": 4054331,
@@ -57,28 +57,53 @@
     },
     "pages/7_Deep_Dive_and_Data_Quality.py": {
       "path": "pages\\7_Deep_Dive_and_Data_Quality.py",
-      "size_bytes": 29162,
-      "sha256": "d8b3541a177de56f4734d38b2d1324303263887079cfc3cf8ec98361883a0a1d"
+      "size_bytes": 29274,
+      "sha256": "5b6b9b15588ced6d3e216c35ccb098909db23d5973d1381997b21393c50e3cd5"
     },
     "pages/8_Strategic_Recommendations.py": {
       "path": "pages\\8_Strategic_Recommendations.py",
-      "size_bytes": 5192,
-      "sha256": "44908fc397c87208508e94c7140fe3f43502fb011ace43ade9338cea4ffd0831"
+      "size_bytes": 5683,
+      "sha256": "708b7f8d3c70a582ae64dd86e02170dd886bb874abdb2108c7a3cdc5a46244de"
+    },
+    "pages/9_Predictive_Model_Validation.py": {
+      "path": "pages\\9_Predictive_Model_Validation.py",
+      "size_bytes": 8292,
+      "sha256": "3e5ca30c5bf07b5a937d921aaa57da186c79ea732d4227dd968a345888ea76bb"
     },
     "src/analytics.py": {
       "path": "src\\analytics.py",
-      "size_bytes": 10411,
-      "sha256": "4a2d61a75f073f068ff24f1cd162d99d44ced595fa157dfe1707197862402064"
+      "size_bytes": 12357,
+      "sha256": "981bcda9193a22bb91b2d649b20ba8d300b19bb14f3d8da0eaad8690d26eb57b"
+    },
+    "src/modeling.py": {
+      "path": "src\\modeling.py",
+      "size_bytes": 22876,
+      "sha256": "4187058d01478da1ac7f8a43987f9f37b133c2d268d29f79e5304b7a149a3a4a"
     },
     "src/reproducibility_manifest.py": {
       "path": "src\\reproducibility_manifest.py",
-      "size_bytes": 9471,
-      "sha256": "3113e41f33ae2968e8561728a70a4f49b0bdb6cab61900aa1b3259ac21060b49"
+      "size_bytes": 9905,
+      "sha256": "aa6c7545394035fc102ac54c18d4c7a4a5aa43eb1271051a1a111f532b803815"
+    },
+    "src/run_model_evaluation.py": {
+      "path": "src\\run_model_evaluation.py",
+      "size_bytes": 1561,
+      "sha256": "efae7b54864e11b259a8d27af7843a901122856b4aceb46484613c3306761294"
     },
     "tests/test_analytics.py": {
       "path": "tests\\test_analytics.py",
-      "size_bytes": 9600,
-      "sha256": "2501c3f0ab3ac88b12de094a356a43bd3c669c22873cbef4e515557220199aed"
+      "size_bytes": 10770,
+      "sha256": "7dc26f4897abff7df3296018ccc16998e7fc60336934f32e2ffa06f8db30bb55"
+    },
+    "tests/test_app_pages.py": {
+      "path": "tests\\test_app_pages.py",
+      "size_bytes": 508,
+      "sha256": "3bbef601eedd60df2b4edd2d948a1259128e94378340b9ca197fc3571f1381ac"
+    },
+    "tests/test_modeling.py": {
+      "path": "tests\\test_modeling.py",
+      "size_bytes": 3056,
+      "sha256": "2ba23d65ec629e9cde0863c02808f35ffd9035490c8f8f96d5f4d7b2edd205a9"
     },
     "tests/test_reproducibility_manifest.py": {
       "path": "tests\\test_reproducibility_manifest.py",
@@ -92,8 +117,8 @@
     },
     "utils/common.py": {
       "path": "utils\\common.py",
-      "size_bytes": 16347,
-      "sha256": "1e3bbfd9db8157d60688f4ddc8920abe53a549d171dad476736a6ec20430100b"
+      "size_bytes": 16472,
+      "sha256": "82b1c67aeadd5ae0f8080b33320b8ca848bec9588a711e026a29abecaf9b3d56"
     },
     "utils/theme.py": {
       "path": "utils\\theme.py",
@@ -104,8 +129,8 @@
   "project_documentation": {
     "readme": {
       "path": "README.md",
-      "size_bytes": 6679,
-      "sha256": "2d633ea23548bb23b1063f28d5788884416a758b5b84ef7952d880e86e0f54ef"
+      "size_bytes": 8287,
+      "sha256": "c7683e1ee8db8b6ae8038f13fb2012b491bd361e702ed12be10b254a2267bb7f"
     },
     "data_provenance": {
       "path": "DATA_PROVENANCE.md",
@@ -114,25 +139,42 @@
     },
     "review_checklist": {
       "path": "PROJECT_REVIEW_CHECKLIST.md",
-      "size_bytes": 3557,
-      "sha256": "4a3b6383c68b6405e8d15563ee8dce69752ac3976c229c2b198e58dcb59ce649"
+      "size_bytes": 5103,
+      "sha256": "1a4995d2132cb71b1e7509dd21058d08536735cfd4d4e8d5b06a16237b182b7c"
     },
     "implementation_review": {
       "path": "reports\\implementation_review.md",
-      "size_bytes": 2258,
-      "sha256": "92f16d4a0c5684e7a16f0b8ee07478f0318c31476baa1cac10ec6e861e932286"
+      "size_bytes": 4445,
+      "sha256": "b5d38baa67cb20ee7c30bdf7cd440e3759671464788d2fe2b2f457b4dc2e77df"
+    },
+    "model_monitoring_plan": {
+      "path": "MODEL_MONITORING_PLAN.md",
+      "size_bytes": 3477,
+      "sha256": "7767af51519ab423704d7069979ee82115f0a0905f198da0c844952155d57b23"
     }
   },
   "project_environment": {
     "dependency_ranges": {
       "path": "requirements.txt",
-      "size_bytes": 151,
-      "sha256": "1796b71778d2dfa632d7f6f9bd9eadc4a63d5860d43f00def46d3bf91d317e42"
+      "size_bytes": 174,
+      "sha256": "00d07c4846fb3fc1736b6025f8bdfad5fdef75afe688f430cfd987001e6b403e"
     },
     "dependency_lock": {
       "path": "requirements-lock.txt",
-      "size_bytes": 1436,
-      "sha256": "15e3a2754e678ffb29463d9203db527b19aea01ce8e4d09f092c954a42928cbb"
+      "size_bytes": 1524,
+      "sha256": "7d778a300f50660de0c2d957f0d8620d068d0a8d81378fc2f89aa4c1a9af25b8"
+    }
+  },
+  "project_analysis_artifacts": {
+    "model_evaluation": {
+      "path": "reports\\model_evaluation.json",
+      "size_bytes": 15064,
+      "sha256": "a7f48241b730581db058fcaa31de4ba10279a70650a37040d70e885a8bac9129"
+    },
+    "model_holdout_predictions": {
+      "path": "reports\\model_holdout_predictions.csv",
+      "size_bytes": 1306402,
+      "sha256": "76d32daa99283bd22e296ec719fc926335ffeeaacfb99d67338ed2eaedc3e156"
     }
   },
   "input_consistency": {
@@ -196,11 +238,13 @@
       "openpyxl": "3.1.5",
       "pandas": "2.3.3",
       "plotly": "6.9.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
       "streamlit": "1.66.0"
     }
   },
-  "manifest_generator_sha256": "3113e41f33ae2968e8561728a70a4f49b0bdb6cab61900aa1b3259ac21060b49",
+  "manifest_generator_sha256": "aa6c7545394035fc102ac54c18d4c7a4a5aa43eb1271051a1a111f532b803815",
   "audit_notebook_sha256": "7e5073754632e15ab95a52773fc9fa430ca3eaf95798bab264861dc552774485",
-  "dependency_lock_sha256": "15e3a2754e678ffb29463d9203db527b19aea01ce8e4d09f092c954a42928cbb",
+  "dependency_lock_sha256": "7d778a300f50660de0c2d957f0d8620d068d0a8d81378fc2f89aa4c1a9af25b8",
   "provenance_note": "A file hash identifies these exact bytes; it does not establish the data owner, collection method, authenticity, or permission to use the data."
 }

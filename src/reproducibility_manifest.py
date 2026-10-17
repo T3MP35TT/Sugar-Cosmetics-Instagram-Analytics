@@ -16,7 +16,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-TRACKED_PACKAGES = ("numpy", "openpyxl", "pandas", "plotly", "streamlit")
+TRACKED_PACKAGES = ("numpy", "openpyxl", "pandas", "plotly", "scikit-learn", "scipy", "streamlit")
 
 
 def sha256_file(path: Path) -> str:
@@ -192,10 +192,19 @@ def build_manifest(root: Path, source: Path) -> dict:
             "implementation_review": file_record(
                 root / "reports" / "implementation_review.md", root
             ),
+            "model_monitoring_plan": file_record(
+                root / "MODEL_MONITORING_PLAN.md", root
+            ),
         },
         "project_environment": {
             "dependency_ranges": file_record(root / "requirements.txt", root),
             "dependency_lock": file_record(root / "requirements-lock.txt", root),
+        },
+        "project_analysis_artifacts": {
+            "model_evaluation": file_record(root / "reports" / "model_evaluation.json", root),
+            "model_holdout_predictions": file_record(
+                root / "reports" / "model_holdout_predictions.csv", root
+            ),
         },
         "input_consistency": compare_project_inputs(root),
         "record_density": record_density(root),

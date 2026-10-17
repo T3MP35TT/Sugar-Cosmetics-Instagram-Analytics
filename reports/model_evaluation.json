@@ -1,0 +1,417 @@
+{
+  "report_version": 1,
+  "generated_at_utc": "2026-10-17T08:40:29.050999+00:00",
+  "input": {
+    "path": "D:\\sugar_cosmetics_instagram_analytics\\data\\sugar_cosmetics_instagram_data.csv",
+    "sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91",
+    "rows": 50000
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_packages": {
+      "scikit_learn": "1.9.1",
+      "pandas": "2.3.3",
+      "numpy": "2.5.4"
+    }
+  },
+  "code_hashes": {
+    "modeling_sha256": "4187058d01478da1ac7f8a43987f9f37b133c2d268d29f79e5304b7a149a3a4a",
+    "runner_sha256": "efae7b54864e11b259a8d27af7843a901122856b4aceb46484613c3306761294",
+    "dependency_lock_sha256": "7d778a300f50660de0c2d957f0d8620d068d0a8d81378fc2f89aa4c1a9af25b8"
+  },
+  "problem": {
+    "type": "regression",
+    "target": "total engagements / reach, for rows with positive reach",
+    "intended_use": "Offline test of whether pre-publication format, campaign, hashtag-count, and calendar features predict recorded engagement rate in later dates.",
+    "features": [
+      "post_type",
+      "campaign_type",
+      "hashtag_count",
+      "days_since_start",
+      "month_sin",
+      "month_cos",
+      "weekday_sin",
+      "weekday_cos"
+    ],
+    "excluded_fields": [
+      "impressions",
+      "reach",
+      "likes",
+      "comments",
+      "shares",
+      "saves",
+      "profile_visits",
+      "follows",
+      "audience_emotion",
+      "engagement_source"
+    ],
+    "leakage_controls": "All outcome metrics and potentially post-outcome labels are excluded from model inputs. A date-based holdout and expanding-window date-grouped CV keep every calendar date within one split; preprocessing is fitted inside each fold."
+  },
+  "split": {
+    "strategy": "Chronological 80/20 split on unique calendar dates; no date appears in both partitions.",
+    "development_records": 40020,
+    "holdout_records": 9980,
+    "development_end_date": "2025-02-04",
+    "holdout_start_date": "2025-02-05",
+    "cross_validation": {
+      "strategy": "4-fold expanding-window TimeSeriesSplit over unique dates",
+      "gap_days": 7,
+      "folds": 4
+    }
+  },
+  "baseline": {
+    "model": "DummyRegressor predicting development-set median engagement rate",
+    "temporal_cv_mae_mean": 0.06204200316138443,
+    "temporal_cv_mae_std": 0.00047467436063937656,
+    "temporal_cv_train_mae_mean": 0.06213155123111944
+  },
+  "tuning": {
+    "method": "GridSearchCV over Ridge and HistGradientBoostingRegressor candidates, minimizing mean absolute error over temporal folds",
+    "candidate_count": 12,
+    "seed": 20261017,
+    "best_cv_mae": 0.062185077531096936,
+    "one_standard_error_limit_mae": 0.06253578189803337,
+    "selection_policy": "One-standard-error rule: prefer the most regularized Ridge candidate within one CV standard error of the best candidate.",
+    "best_cv_parameters": {
+      "learning_rate": 0.05,
+      "max_iter": 100,
+      "max_leaf_nodes": 7
+    },
+    "best_cv_estimator": "HistGradientBoostingRegressor",
+    "selected_parameters": {
+      "alpha": 100.0
+    },
+    "best_estimator": "Ridge"
+  },
+  "cross_validation_candidates": [
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_iter": 100,
+        "max_leaf_nodes": 7
+      },
+      "cv_mae": 0.062185077531096936,
+      "cv_mae_std": 0.0003507043669364321,
+      "cv_rmse": 0.07228632266757866,
+      "cv_r2": -0.0105109744649301,
+      "train_mae": 0.06173186402158866,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "Ridge",
+      "parameters": {
+        "alpha": 100.0
+      },
+      "cv_mae": 0.06219871312764947,
+      "cv_mae_std": 0.0005143559668303331,
+      "cv_rmse": 0.07217956194754302,
+      "cv_r2": -0.007486700559576176,
+      "train_mae": 0.06207929108156516,
+      "selected_by_one_se_rule": true
+    },
+    {
+      "model": "Ridge",
+      "parameters": {
+        "alpha": 10.0
+      },
+      "cv_mae": 0.062353249679690435,
+      "cv_mae_std": 0.0006360443894375764,
+      "cv_rmse": 0.07242169964133104,
+      "cv_r2": -0.014248530928794523,
+      "train_mae": 0.062078307438537525,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_iter": 100,
+        "max_leaf_nodes": 15
+      },
+      "cv_mae": 0.0623555520188338,
+      "cv_mae_std": 0.00039133954981857423,
+      "cv_rmse": 0.07258950236142139,
+      "cv_r2": -0.01901876646816969,
+      "train_mae": 0.06128267243581072,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "max_leaf_nodes": 7
+      },
+      "cv_mae": 0.062404732872098766,
+      "cv_mae_std": 0.00032329054627967563,
+      "cv_rmse": 0.072700530670154,
+      "cv_r2": -0.022133095263399516,
+      "train_mae": 0.061429028438558755,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_iter": 200,
+        "max_leaf_nodes": 7
+      },
+      "cv_mae": 0.06245281438903312,
+      "cv_mae_std": 0.0004279235705954183,
+      "cv_rmse": 0.0727857350310895,
+      "cv_r2": -0.024510333795182304,
+      "train_mae": 0.06144341509758997,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "Ridge",
+      "parameters": {
+        "alpha": 1.0
+      },
+      "cv_mae": 0.062477918189935,
+      "cv_mae_std": 0.0007336342962038143,
+      "cv_rmse": 0.07262669440788787,
+      "cv_r2": -0.019999011644420528,
+      "train_mae": 0.062078026843260935,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_iter": 200,
+        "max_leaf_nodes": 15
+      },
+      "cv_mae": 0.06261340582955785,
+      "cv_mae_std": 0.000378970481861206,
+      "cv_rmse": 0.07304552627643798,
+      "cv_r2": -0.03187042777983096,
+      "train_mae": 0.06070024628147028,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "Ridge",
+      "parameters": {
+        "alpha": 0.1
+      },
+      "cv_mae": 0.06262885660861245,
+      "cv_mae_std": 0.0007617864152966338,
+      "cv_rmse": 0.0728896617007564,
+      "cv_r2": -0.027432210884709818,
+      "train_mae": 0.062078060022157606,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "max_leaf_nodes": 15
+      },
+      "cv_mae": 0.06266905489801178,
+      "cv_mae_std": 0.0003890661166130715,
+      "cv_rmse": 0.07314848287576833,
+      "cv_r2": -0.03476576129558312,
+      "train_mae": 0.060653053682755156,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_iter": 200,
+        "max_leaf_nodes": 7
+      },
+      "cv_mae": 0.0629771308064958,
+      "cv_mae_std": 0.0005140108381313498,
+      "cv_rmse": 0.073699078747275,
+      "cv_r2": -0.050451855482836094,
+      "train_mae": 0.06099516558227421,
+      "selected_by_one_se_rule": false
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_iter": 200,
+        "max_leaf_nodes": 15
+      },
+      "cv_mae": 0.06317724155499722,
+      "cv_mae_std": 0.0004513464441808648,
+      "cv_rmse": 0.0740160257085178,
+      "cv_r2": -0.05944099423889909,
+      "train_mae": 0.05979417765404542,
+      "selected_by_one_se_rule": false
+    }
+  ],
+  "model_vs_baseline": {
+    "selected_ml_candidate_cv_mae": 0.06219871312764947,
+    "median_baseline_cv_mae": 0.06204200316138443,
+    "cv_mae_difference_model_minus_baseline": 0.00015670996626503814,
+    "ml_candidate_improves_cv_baseline": false,
+    "ml_candidate_improves_future_holdout_baseline": false,
+    "complexity_justified": false,
+    "recommended_approach": "Median baseline; no ML candidate showed consistent out-of-sample improvement"
+  },
+  "overfit_diagnostic": {
+    "best_candidate_train_mae": 0.06207929108156516,
+    "best_candidate_validation_mae": 0.06219871312764947,
+    "validation_minus_train_mae": 0.00011942204608431095,
+    "interpretation": "A large positive gap indicates weaker performance on later folds than on their training periods; use alongside the untouched future holdout."
+  },
+  "fit_diagnosis": "No useful predictive signal is demonstrated: holdout R\u00b2 is non-positive and MAE is no better than the median baseline. The small training-to-validation gap does not indicate severe overfit; the current feature set is insufficient or weak for this target. Do not add model complexity without new prediction-time features and a fresh future evaluation.",
+  "holdout_evaluation": {
+    "record_count": 9980,
+    "start_date": "2025-02-05",
+    "end_date": "2025-04-19",
+    "median_baseline": {
+      "mae": 0.06223522121767206,
+      "rmse": 0.0720618847705445,
+      "r2": -9.485007351428543e-05,
+      "mean_error_prediction_minus_actual": -0.0007017846379999741
+    },
+    "selected_model": {
+      "mae": 0.062264525195863084,
+      "rmse": 0.07208229171441549,
+      "r2": -0.0006613567446736024,
+      "mean_error_prediction_minus_actual": 0.0010257048493154432
+    },
+    "mae_difference_model_minus_baseline": 2.9303978191022595e-05,
+    "relative_mae_improvement_over_baseline": -0.00047085842417961157,
+    "date_block_bootstrap_mae_difference_interval": {
+      "lower_95": -1.4684054720670724e-05,
+      "upper_95": 7.1979964013494e-05,
+      "repetitions": 1000,
+      "interpretation": "Date-block bootstrap interval for MAE difference (model minus median baseline); conditional on dates being valid independent resampling blocks. It does not establish causality or population validity."
+    }
+  },
+  "subgroup_error_analysis": {
+    "post_type": [
+      {
+        "group": "Image",
+        "records": 2489,
+        "mean_actual": 0.18599301132791934,
+        "mean_prediction": 0.18522079667613753,
+        "model_mae": 0.062175996415040145,
+        "median_baseline_mae": 0.06215934775533742,
+        "mae_delta_vs_baseline": 1.6648659702724056e-05
+      },
+      {
+        "group": "Reel",
+        "records": 2461,
+        "mean_actual": 0.1861552667437007,
+        "mean_prediction": 0.18747721673700618,
+        "model_mae": 0.062435177546071356,
+        "median_baseline_mae": 0.06234989992953329,
+        "mae_delta_vs_baseline": 8.527761653806532e-05
+      },
+      {
+        "group": "Story",
+        "records": 2519,
+        "mean_actual": 0.18455176919535723,
+        "mean_prediction": 0.18770055381089487,
+        "model_mae": 0.06120307496179494,
+        "median_baseline_mae": 0.06114244850456499,
+        "mae_delta_vs_baseline": 6.062645722994947e-05
+      },
+      {
+        "group": "Video",
+        "records": 2511,
+        "mean_actual": 0.1858359998181154,
+        "mean_prediction": 0.18622368173145232,
+        "model_mae": 0.06324985607647772,
+        "median_baseline_mae": 0.06329428900029935,
+        "mae_delta_vs_baseline": -4.4432923821627335e-05
+      }
+    ],
+    "campaign_type": [
+      {
+        "group": "Festive Offer",
+        "records": 1931,
+        "mean_actual": 0.18534183307838303,
+        "mean_prediction": 0.18549260105922669,
+        "model_mae": 0.06136377414636984,
+        "median_baseline_mae": 0.06134354189078993,
+        "mae_delta_vs_baseline": 2.0232255579913372e-05
+      },
+      {
+        "group": "Giveaway",
+        "records": 2048,
+        "mean_actual": 0.18604056778365627,
+        "mean_prediction": 0.18691415425585434,
+        "model_mae": 0.06229100110111088,
+        "median_baseline_mae": 0.0622891817151587,
+        "mae_delta_vs_baseline": 1.8193859521800637e-06
+      },
+      {
+        "group": "Influencer Collab",
+        "records": 1976,
+        "mean_actual": 0.185668651025813,
+        "mean_prediction": 0.18738096191140236,
+        "model_mae": 0.06306990658433338,
+        "median_baseline_mae": 0.0630072077266057,
+        "mae_delta_vs_baseline": 6.269885772768047e-05
+      },
+      {
+        "group": "Product Launch",
+        "records": 1947,
+        "mean_actual": 0.186306826045281,
+        "mean_prediction": 0.18597020950038118,
+        "model_mae": 0.06237761231639262,
+        "median_baseline_mae": 0.06236434783667458,
+        "mae_delta_vs_baseline": 1.326447971804201e-05
+      },
+      {
+        "group": "Tutorial",
+        "records": 2078,
+        "mean_actual": 0.1848209872788147,
+        "mean_prediction": 0.18743319249204518,
+        "model_mae": 0.062203655790346035,
+        "median_baseline_mae": 0.06215556135843526,
+        "mae_delta_vs_baseline": 4.80944319107765e-05
+      }
+    ]
+  },
+  "monthly_holdout_error_analysis": [
+    {
+      "month": "2025-02",
+      "records": 3381,
+      "mae": 0.06207719953059757,
+      "mean_residual": -0.0017951840495565848,
+      "actual_mean": 0.18445484530313278,
+      "prediction_mean": 0.18625002935268936
+    },
+    {
+      "month": "2025-03",
+      "records": 4139,
+      "mae": 0.06248837190138354,
+      "mean_residual": -0.0004256805549113735,
+      "actual_mean": 0.18624333163102183,
+      "prediction_mean": 0.1866690121859332
+    },
+    {
+      "month": "2025-04",
+      "records": 2460,
+      "mae": 0.062145357130868585,
+      "mean_residual": -0.000977693214568755,
+      "actual_mean": 0.18621212894599196,
+      "prediction_mean": 0.1871898221605607
+    }
+  ],
+  "complex_model_justified": false,
+  "scalability_observation": {
+    "input_records": 50000,
+    "evaluation_runtime_seconds": 14.628,
+    "interpretation": "Observed on this local environment and 50k-row input only; expected production volume and hardware service limits are not specified."
+  },
+  "limitations": [
+    "The dataset's collection method, official account identity, row grain, and sampling frame are unverified.",
+    "Predictive performance is conditional on this file and time split and must not be generalized as official Sugar Cosmetics performance.",
+    "The date-block bootstrap interval is descriptive and conditional on calendar dates serving as resampling blocks; it is not a causal test.",
+    "Subgroup error review covers content and campaign labels only; demographics and fairness cannot be assessed from the available fields.",
+    "This is a reproducible offline evaluation, not a deployed prediction or retraining service."
+  ],
+  "runtime_seconds": 14.628
+}
