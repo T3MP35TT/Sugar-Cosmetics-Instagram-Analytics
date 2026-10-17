@@ -19,7 +19,7 @@ page_kpis("Strategic Recommendations", f)
 st.subheader("Use these comparisons to plan a test")
 st.caption(
     "The supplied records support descriptive comparisons. They do not identify a causal winner. "
-    "First confirm source provenance and that one row represents one post."
+    "The likely upstream file source is documented in DATA_PROVENANCE.md. Confirm collection method and row grain before treating this as brand performance."
 )
 
 if f.empty:
@@ -81,7 +81,7 @@ else:
             },
             na_rep="—",
         ),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 

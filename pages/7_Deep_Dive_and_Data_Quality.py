@@ -93,8 +93,10 @@ def add_filters(frame, key_prefix):
                 key=f"{key_prefix}_dates",
             )
             if isinstance(chosen, (tuple, list)) and len(chosen) == 2:
-                start, end = pd.Timestamp(chosen[0]), pd.Timestamp(chosen[1]) + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
-                filtered = filtered[filtered["post_date"].between(start, end) | filtered["post_date"].isna()]
+                start = pd.Timestamp(chosen[0])
+                end_exclusive = pd.Timestamp(chosen[1]) + pd.Timedelta(1, unit="d")
+                in_range = filtered["post_date"].ge(start) & filtered["post_date"].lt(end_exclusive)
+                filtered = filtered[in_range | filtered["post_date"].isna()]
     return filtered
 
 active_section = st.segmented_control(
@@ -162,12 +164,12 @@ if active_section == "🔎 Deep Dive Explorer":
                 display_view = view if show_rows == "All" else view.head(int(show_rows))
         else:
             display_view = view if show_rows == "All" else view.head(int(show_rows))
-        st.dataframe(display_view, use_container_width=True, hide_index=True, height=460)
+        st.dataframe(display_view, width="stretch", hide_index=True, height=460)
 
         left, right = st.columns([1, 2])
         if "deep_dive_export_bytes" not in st.session_state:
             st.session_state["deep_dive_export_bytes"] = None
-        if left.button("Prepare filtered CSV", key="prepare_deep_dive_csv", use_container_width=True):
+        if left.button("Prepare filtered CSV", key="prepare_deep_dive_csv", width="stretch"):
             with st.spinner("Preparing CSV export…"):
                 export_view = filtered_records
                 if sort_by and not export_view.empty:
@@ -196,7 +198,7 @@ if active_section == "🔎 Deep Dive Explorer":
                 file_name="sugar_instagram_filtered.csv",
                 mime="text/csv",
                 key="deep_dive_download_csv",
-                use_container_width=True,
+                width="stretch",
             )
         right.caption("Tip: rank by engagement rate to find posts that performed strongly relative to reach, or by total engagements to find posts with the largest interaction volume. Prepare the CSV only when you need an export.")
 
@@ -246,7 +248,7 @@ elif active_section == "📊 Interactive Insights":
                     fig.update_yaxes(title=metric_choice)
                     fig.update_traces(texttemplate="%{y:,.3s}", textposition="outside", cliponaxis=False)
                 fig.update_layout(**PLOT_LAYOUT, showlegend=False, height=390, xaxis_title=dimension.replace("_", " ").title())
-                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
                 best = grouped.iloc[0]
                 if len(grouped) > 1:
                     worst = grouped.iloc[-1]
@@ -255,7 +257,7 @@ elif active_section == "📊 Interactive Insights":
                         st.info(f"**Takeaway:** {best[dimension]} has the highest weighted engagement rate at {best[metric_col]:.2%}, {gap:.2f} percentage points above {worst[dimension]}.")
                     else:
                         st.info(f"**Takeaway:** {best[dimension]} leads on {metric_choice.lower()} ({best[metric_col]:,.0f}). Compare sample counts before treating this as a stable pattern.")
-                st.dataframe(grouped.rename(columns={dimension: "Category", "records": "Posts", "engagements": "Engagements", "reach": "Summed post reach", "weighted_engagement_rate": "Weighted engagement rate", "average_reach": "Average reach per post"}), use_container_width=True, hide_index=True)
+                st.dataframe(grouped.rename(columns={dimension: "Category", "records": "Posts", "engagements": "Engagements", "reach": "Summed post reach", "weighted_engagement_rate": "Weighted engagement rate", "average_reach": "Average reach per post"}), width="stretch", hide_index=True)
 
             st.divider()
             st.markdown("#### Performance over time")
@@ -271,12 +273,12 @@ elif active_section == "📊 Interactive Insights":
                 else: fig.update_yaxes(title=trend_choice, tickformat=",.0f")
                 fig.update_xaxes(tickformat="%b %Y", dtick="M1", tickangle=-35, title="Month")
                 fig.update_layout(**PLOT_LAYOUT, height=370)
-                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
                 with st.expander("View monthly figures"):
                     formatted = monthly_summary.copy()
                     formatted["Month"] = formatted["Month"].dt.strftime("%b %Y")
                     formatted["weighted_engagement_rate"] = formatted["weighted_engagement_rate"].map(lambda x: f"{x:.2%}" if pd.notna(x) else "—")
-                    st.dataframe(formatted, use_container_width=True, hide_index=True)
+                    st.dataframe(formatted, width="stretch", hide_index=True)
 
             st.divider()
             st.markdown("#### Engagement actions and conversion proxies")
@@ -288,13 +290,13 @@ elif active_section == "📊 Interactive Insights":
                     fig = px.pie(mix, names="Action", values="Interactions", hole=0.58, color_discrete_sequence=PALETTE, title="Share of engagement actions")
                     fig.update_traces(textposition="inside", textinfo="percent+label")
                     fig.update_layout(**PLOT_LAYOUT, height=360, legend_title_text="Action")
-                    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
             with right:
                 if pd.notna(total_visits) and total_visits > 0 and pd.notna(total_follows):
                     proxy = total_follows / total_visits
                     fig = go.Figure(go.Indicator(mode="number+gauge", value=proxy * 100, number={"suffix": "%", "valueformat": ".2f"}, title={"text": "Profile Visit-to-Follow Rate<br><sup>Aggregate proxy</sup>"}, gauge={"axis": {"range": [0, max(100, min(100, proxy * 100 * 1.2))]}, "bar": {"color": PALETTE[1]}, "steps": [{"range": [0, 25], "color": "#392535"}, {"range": [25, 50], "color": "#493049"}, {"range": [50, 100], "color": "#2E4650"}]}))
                     fig.update_layout(**PLOT_LAYOUT, height=360)
-                    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
                     st.caption("Follows ÷ profile visits × 100. Aggregate proxy only: the dataset cannot link individual visits to specific follows or establish causation.")
                 else:
                     st.info("Profile visits and follows are not sufficient to calculate the proxy for these filters.")
@@ -319,7 +321,7 @@ elif active_section == "🛡️ Data Quality & Methodology":
         ]
         with st.expander("Validation summary", expanded=False):
             if summary_rows:
-                st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
+                st.dataframe(pd.DataFrame(summary_rows), width="stretch", hide_index=True)
             else:
                 st.info("No summary checks were returned.")
 
@@ -340,7 +342,7 @@ elif active_section == "🛡️ Data Quality & Methodology":
                 mismatch = comparable & ~np.isclose(actual_rate.fillna(0), expected_rate.fillna(0), rtol=1e-7, atol=1e-9)
                 metric_checks.append({"Check": "Engagement rate = total engagements / reach (reach > 0)", "Rows checked": int(comparable.sum()), "Mismatches": int(mismatch.sum()), "Status": "Pass" if not mismatch.any() else "Review"})
         if metric_checks:
-            st.dataframe(pd.DataFrame(metric_checks), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(metric_checks), width="stretch", hide_index=True)
         else:
             st.info("The source data does not contain all columns needed for these checks.")
 
@@ -378,13 +380,13 @@ elif active_section == "🛡️ Data Quality & Methodology":
                 fig.add_vline(x=q1, line_dash="dot", line_color=PALETTE[1], annotation_text="Q1")
                 fig.add_vline(x=q3, line_dash="dot", line_color=PALETTE[4], annotation_text="Q3")
                 fig.update_layout(**PLOT_LAYOUT, height=390, xaxis_title=selected_metric.replace("_", " ").title(), yaxis_title="Number of records", bargap=0.06)
-                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
                 st.caption(f"IQR fences: {lower:,.4f} to {upper:,.4f}. The X-axis shows metric values; the Y-axis shows record counts. For count metrics, a negative lower fence is mathematical only.")
                 if flagged_count:
                     flagged_view = data.loc[flagged_mask]
                     keep = [c for c in ["post_date", "post_type", "campaign_type", "hashtags", selected_metric, "reach", "total_engagements", "engagement_rate"] if c in flagged_view.columns]
                     st.markdown("##### Records flagged for review")
-                    st.dataframe(flagged_view[keep].sort_values(selected_metric, ascending=False), use_container_width=True, hide_index=True, height=300)
+                    st.dataframe(flagged_view[keep].sort_values(selected_metric, ascending=False), width="stretch", hide_index=True, height=300)
                     st.download_button("Download flagged records (CSV)", dataframe_csv(flagged_view), file_name=f"iqr_flagged_{selected_metric}.csv", mime="text/csv", key="download_iqr_flags")
                 else:
                     st.success("No records are outside the standard IQR fences for this metric.")
@@ -405,9 +407,9 @@ elif active_section == "🛡️ Data Quality & Methodology":
         st.markdown("#### Important caveats")
         st.markdown(
             """
-            - Dataset provenance is not documented in the workbook; official brand-account authenticity cannot be verified from these files.
+            - The file is likely from the public upstream analytics project (see DATA_PROVENANCE.md); the workbook does not document collection method, account identity, or official brand-account authenticity.
             - No post ID, caption, posting time, follower count, demographic attributes, spend, sales or revenue fields are provided.
-            - The near-even distribution across post types and campaign types should be investigated; it may reflect sampling or generated data.
+            - The near-even distribution across post types and campaign types, plus 136.612 records per calendar day, requires row-grain and sampling confirmation before generalizing.
             - Higher engagement or correlation does not establish causation.
             - Grouped hashtag results overlap when a record contains multiple hashtags.
             """
@@ -417,7 +419,7 @@ elif active_section == "🛡️ Data Quality & Methodology":
         flags = quality.get("flags", [])
         flags_df = flags.copy() if isinstance(flags, pd.DataFrame) else pd.DataFrame(flags)
         if not flags_df.empty:
-            st.dataframe(flags_df, use_container_width=True, hide_index=True)
+            st.dataframe(flags_df, width="stretch", hide_index=True)
         else:
             st.success("No issues were reported by the current validation rules. This does not prove the data is authentic or free from every possible issue.")
 

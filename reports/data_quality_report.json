@@ -1,6 +1,6 @@
 {
   "dataset_summary": {
-    "source_file": "d:\\sugar_cosmetics_instagram_analytics\\data\\sugar_cosmetics_instagram_data.xlsx",
+    "source_file": "data/sugar_cosmetics_instagram_data.xlsx",
     "rows": 50000,
     "columns_after_feature_engineering": 21,
     "date_min": "2024-04-19 00:00:00",
@@ -21,15 +21,18 @@
       "Product Launch": 9923,
       "Influencer Collab": 9903
     },
-    "provenance": "Not established by supplied workbook",
+    "provenance": "Likely source is the public Neeraj08823/Sugar_cosmetics_Instagram_Analytics project; official account authenticity and collection method are not established",
     "cleaning_policy": "Non-destructive standardization; no rows automatically dropped",
     "notes": [
       "No caption or post ID field is present in the supplied schema.",
       "No publication time, follower count, demographic attributes, spend or revenue fields are present.",
       "Summed post-level reach is not unique account reach.",
       "Engagement differences are descriptive and do not establish causality.",
-      "IQR outliers are flagged for review, not automatically removed."
-    ]
+      "IQR outliers are flagged for review, not automatically removed.",
+      "The local filename, date span, and rounded aggregate metrics match the upstream project description; remote bytes and collection history were not verified."
+    ],
+    "upstream_source": "https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics/tree/main/Data",
+    "source_match_basis": "Local filename, date span, and rounded aggregate metrics match the upstream project description; remote bytes and collection history not verified."
   },
   "quality_checks": [
     {

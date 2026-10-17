@@ -148,7 +148,7 @@ else:
                 xaxis_tickformat=".0%",
                 margin=dict(l=10, r=45, t=15, b=10),
             )
-            st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
+            st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
             leader = filtered.loc[filtered["weighted_engagement_rate"].idxmax()]
             rate = leader["weighted_engagement_rate"]
             if pd.notna(rate):
@@ -195,7 +195,7 @@ else:
                 yaxis_tickformat=".0%",
                 margin=dict(l=10, r=10, t=15, b=10),
             )
-            st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
+            st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
             high_use = filtered.loc[filtered["records"].idxmax()]
             high_rate = filtered.loc[filtered["weighted_engagement_rate"].idxmax()]
             takeaway(
@@ -241,7 +241,7 @@ else:
                     },
                     na_rep="—",
                 ),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
             st.download_button(

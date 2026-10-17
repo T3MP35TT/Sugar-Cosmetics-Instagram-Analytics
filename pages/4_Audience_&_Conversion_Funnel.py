@@ -209,7 +209,7 @@ if not valid_steps.empty:
         xaxis=dict(range=[0, max_rate * 1.3], tickformat=".0%", rangemode="tozero"),
         margin=dict(l=20, r=55, t=60, b=25),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 else:
     st.info("Conversion rates are undefined because the selected denominators are zero.")
 
@@ -219,7 +219,7 @@ with st.expander("View absolute audience journey totals"):
     display_journey["Share of reach"] = display_journey["Share of reach"].map(
         lambda value: f"{value:.2f}%" if pd.notna(value) else "—"
     )
-    st.dataframe(display_journey, use_container_width=True, hide_index=True)
+    st.dataframe(display_journey, width="stretch", hide_index=True)
 
 takeaway(
     f"{rate_label(visit_rate)} of summed reach is associated with profile visits, "
@@ -279,7 +279,7 @@ fig_exposure.update_layout(
     yaxis_rangemode="tozero",
     margin=dict(l=15, r=25, t=65, b=15),
 )
-st.plotly_chart(fig_exposure, use_container_width=True)
+st.plotly_chart(fig_exposure, width="stretch")
 
 st.markdown("### Engagement action volume")
 st.caption("Likes, comments, shares and saves use a separate scale so smaller actions remain visible.")
@@ -306,7 +306,7 @@ fig_actions.update_layout(
     yaxis_rangemode="tozero",
     margin=dict(l=15, r=25, t=65, b=15),
 )
-st.plotly_chart(fig_actions, use_container_width=True)
+st.plotly_chart(fig_actions, width="stretch")
 
 takeaway(
     "Impressions and reach measure exposure; likes, comments, shares and saves measure "
@@ -317,7 +317,7 @@ takeaway(
 # in some dataframe/table render or print-to-PDF paths.
 display_totals = totals2[["Metric", "Volume"]].copy()
 display_totals["Volume"] = display_totals["Volume"].map(lambda value: f"{value:,.0f}")
-st.dataframe(display_totals, use_container_width=True, hide_index=True)
+st.dataframe(display_totals, width="stretch", hide_index=True)
 
 st.divider()
 st.markdown("## Which engagement sources are associated with outcomes?")
@@ -363,7 +363,7 @@ if not valid_src.empty:
         yaxis_tickformat=".1%",
         margin=dict(l=15, r=15, t=60, b=15),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     best = valid_src.iloc[0]
     takeaway(
         f"{best['engagement_source']} has the highest weighted engagement rate "
@@ -410,7 +410,7 @@ if not rates.empty:
         margin=dict(l=15, r=15, t=60, b=15),
         legend_title_text="",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     takeaway(
         "Compare both action rates alongside record counts. Differences are descriptive "
         "associations and may reflect campaign mix or sampling."
@@ -457,7 +457,7 @@ if not valid_emo.empty:
         xaxis_tickformat=".1%",
         margin=dict(l=15, r=45, t=60, b=15),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     best = valid_emo.iloc[-1]
     takeaway(
         f"{best['audience_emotion']} has the highest observed weighted engagement rate "
@@ -516,7 +516,7 @@ if not long.empty:
         margin=dict(l=15, r=15, t=60, b=15),
         legend_title_text="",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     best = fmt.dropna(subset=["visit_rate"]).sort_values("visit_rate", ascending=False)
     if not best.empty:

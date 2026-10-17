@@ -436,7 +436,7 @@ def initialize(page_name):
             legend_title_text="",
         )
 
-        st.plotly_chart(figure, use_container_width=True)
+        st.plotly_chart(figure, width="stretch")
 
     return {
         "pd": pd,

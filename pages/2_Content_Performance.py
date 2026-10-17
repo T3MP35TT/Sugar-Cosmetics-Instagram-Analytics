@@ -73,7 +73,7 @@ def interactive_table(df, key, *, numeric_formats=None, default_sort=None, heigh
                 column_config[col] = st.column_config.NumberColumn(col, format="%,.0f")
             elif fmt == "decimal":
                 column_config[col] = st.column_config.NumberColumn(col, format="%,.1f")
-    st.dataframe(shown, use_container_width=True, hide_index=True, height=height, column_config=column_config)
+    st.dataframe(shown, width="stretch", hide_index=True, height=height, column_config=column_config)
     st.download_button(
         "Download filtered table as CSV", data=view.to_csv(index=False).encode("utf-8-sig"),
         file_name=f"{key}.csv", mime="text/csv", key=f"{key}_download",
@@ -304,7 +304,7 @@ with st.container(border=True):
                 labels={"post_type": "Content format", "average": "Average interactions", "metric": "Interaction"},
             )
             fig.update_layout(template="sugar", legend_title_text="", margin=dict(l=10, r=10, t=20, b=10))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
             if not melt.empty and melt["average"].notna().any():
                 interaction_means = melt.groupby("metric")["average"].mean().dropna()
                 top_interaction = interaction_means.idxmax() if not interaction_means.empty else "Interactions"
@@ -324,7 +324,7 @@ with st.container(border=True):
                 labels={"post_type": "Content format", "weighted_engagement_rate": "Weighted engagement rate"},
             )
             fig.update_layout(template="sugar", coloraxis_showscale=False, xaxis_tickformat=".0%", margin=dict(l=10, r=35, t=15, b=10))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
             if not rate_comp.empty:
                 best = rate_comp.sort_values("weighted_engagement_rate", ascending=False).iloc[0]
                 rate = best["weighted_engagement_rate"]

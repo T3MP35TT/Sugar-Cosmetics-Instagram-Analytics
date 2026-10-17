@@ -1,7 +1,7 @@
 {
   "manifest_version": 1,
-  "generated_at_utc": "2026-10-17T07:56:28.805445+00:00",
-  "project_revision": "35d96bacaa8ca7182616d0aec76e59b401a1768d",
+  "generated_at_utc": "2026-10-17T08:08:00.622768+00:00",
+  "project_revision": "9829573a13d7da797ad0dfd47e6ad41b11f32327",
   "selected_source": {
     "path": "data\\sugar_cosmetics_instagram_data.xlsx",
     "size_bytes": 4054331,
@@ -27,43 +27,43 @@
   "project_code": {
     "app.py": {
       "path": "app.py",
-      "size_bytes": 5579,
-      "sha256": "46b031f1cdd99b9d95f6b6c688242163520c33e99debf1ef55cd65798647b97b"
+      "size_bytes": 5646,
+      "sha256": "ef5f84b25f38ade1204242b938b49e0c4b92d46a8bcd8a8b7b815dfd80770c0a"
     },
     "pages/1_Executive_Overview.py": {
       "path": "pages\\1_Executive_Overview.py",
-      "size_bytes": 22686,
-      "sha256": "3def4a14619ff6e0c13d25dd8c8ae23dcf370a3d820ad1292e87bfceef288ea7"
+      "size_bytes": 23096,
+      "sha256": "a38f84828db8b3f456eb742a8aa2a83745496fbd53838fcd05e11580b6bc02a0"
     },
     "pages/2_Content_Performance.py": {
       "path": "pages\\2_Content_Performance.py",
-      "size_bytes": 20400,
-      "sha256": "df203dcb0df9065e76f313c657dcddfbc9a578ab92302cea0761c53790aba855"
+      "size_bytes": 20749,
+      "sha256": "238e43585e4e6be9253e959024473d56900d59f7fa62ec68407a48dbc6dc7e50"
     },
     "pages/3_Hashtag_Intelligence.py": {
       "path": "pages\\3_Hashtag_Intelligence.py",
-      "size_bytes": 11575,
-      "sha256": "e974e689ececd16da5232444b0102c3d077f35b3cdccc5f13fa25f1bdb9950d6"
+      "size_bytes": 11548,
+      "sha256": "4d0d8d63dfce43badce8331dd6fc6c710642910f4f4adc3fc02bee8549105624"
     },
     "pages/4_Audience_&_Conversion_Funnel.py": {
       "path": "pages\\4_Audience_&_Conversion_Funnel.py",
-      "size_bytes": 19473,
-      "sha256": "8e53db85d6292c310dfc3a7e22eaf5fee912d3285842f7017933700024668153"
+      "size_bytes": 19931,
+      "sha256": "4cc9f897eb08a1a21ea8bf669be23c316587f1f70a7e7ca0950c367f87810fa5"
     },
     "pages/5_Posting_Strategy.py": {
       "path": "pages\\5_Posting_Strategy.py",
-      "size_bytes": 7333,
-      "sha256": "5c2cc865c24d0614d1af79eef50a3048d2d46d4533fb48feafa45e1ed38e9a4b"
+      "size_bytes": 7512,
+      "sha256": "05060cc28e752767d507809257c88376248b572256738410931c4923cce01687"
     },
     "pages/7_Deep_Dive_and_Data_Quality.py": {
       "path": "pages\\7_Deep_Dive_and_Data_Quality.py",
-      "size_bytes": 28685,
-      "sha256": "9e5049aec83e3a30c91406a5190f05389393eb582fc4f87d5f5686b7f8adc3b5"
+      "size_bytes": 29162,
+      "sha256": "d8b3541a177de56f4734d38b2d1324303263887079cfc3cf8ec98361883a0a1d"
     },
     "pages/8_Strategic_Recommendations.py": {
       "path": "pages\\8_Strategic_Recommendations.py",
-      "size_bytes": 4999,
-      "sha256": "dcb203ea4e714e2ec08640c5627abc068afb42385f14ccc516bba4d1f5a0a9c5"
+      "size_bytes": 5192,
+      "sha256": "44908fc397c87208508e94c7140fe3f43502fb011ace43ade9338cea4ffd0831"
     },
     "src/analytics.py": {
       "path": "src\\analytics.py",
@@ -72,8 +72,8 @@
     },
     "src/reproducibility_manifest.py": {
       "path": "src\\reproducibility_manifest.py",
-      "size_bytes": 9187,
-      "sha256": "2afa365e45f1923ed43f669b88af4fa691383629bdb2abfc8b64c24f13e3a07a"
+      "size_bytes": 9471,
+      "sha256": "3113e41f33ae2968e8561728a70a4f49b0bdb6cab61900aa1b3259ac21060b49"
     },
     "tests/test_analytics.py": {
       "path": "tests\\test_analytics.py",
@@ -92,8 +92,8 @@
     },
     "utils/common.py": {
       "path": "utils\\common.py",
-      "size_bytes": 15886,
-      "sha256": "5e681e9c7eba08fa57e43dfb852f09fde7f4587d7a0977bce094bf2ec6d8073f"
+      "size_bytes": 16347,
+      "sha256": "1e3bbfd9db8157d60688f4ddc8920abe53a549d171dad476736a6ec20430100b"
     },
     "utils/theme.py": {
       "path": "utils\\theme.py",
@@ -104,18 +104,35 @@
   "project_documentation": {
     "readme": {
       "path": "README.md",
-      "size_bytes": 6255,
-      "sha256": "490f0870ed972830f4ce78a9693838b9a3228b105289fa822b23ae5ff70139e4"
+      "size_bytes": 6679,
+      "sha256": "2d633ea23548bb23b1063f28d5788884416a758b5b84ef7952d880e86e0f54ef"
+    },
+    "data_provenance": {
+      "path": "DATA_PROVENANCE.md",
+      "size_bytes": 2457,
+      "sha256": "dab84f8224634ac3f9096cad6e2f04b19084ac61bf81a96e4ec44d399098da39"
     },
     "review_checklist": {
       "path": "PROJECT_REVIEW_CHECKLIST.md",
-      "size_bytes": 3378,
-      "sha256": "8108878d77056f49d8ff7ffcf7c7837c886434bf8802241b38eb279143854fdf"
+      "size_bytes": 3557,
+      "sha256": "4a3b6383c68b6405e8d15563ee8dce69752ac3976c229c2b198e58dcb59ce649"
     },
     "implementation_review": {
       "path": "reports\\implementation_review.md",
-      "size_bytes": 1998,
-      "sha256": "5443d32167b30ae65aae9cc7ee9080ee7e4cecd97401049a7757240e3062c08e"
+      "size_bytes": 2258,
+      "sha256": "92f16d4a0c5684e7a16f0b8ee07478f0318c31476baa1cac10ec6e861e932286"
+    }
+  },
+  "project_environment": {
+    "dependency_ranges": {
+      "path": "requirements.txt",
+      "size_bytes": 151,
+      "sha256": "1796b71778d2dfa632d7f6f9bd9eadc4a63d5860d43f00def46d3bf91d317e42"
+    },
+    "dependency_lock": {
+      "path": "requirements-lock.txt",
+      "size_bytes": 1436,
+      "sha256": "15e3a2754e678ffb29463d9203db527b19aea01ce8e4d09f092c954a42928cbb"
     }
   },
   "input_consistency": {
@@ -182,8 +199,8 @@
       "streamlit": "1.66.0"
     }
   },
-  "manifest_generator_sha256": "2afa365e45f1923ed43f669b88af4fa691383629bdb2abfc8b64c24f13e3a07a",
-  "audit_notebook_sha256": "18cabfce52fc8fa85874e63c206c12cdf39ddd460df331188c9f8c9c07dea342",
+  "manifest_generator_sha256": "3113e41f33ae2968e8561728a70a4f49b0bdb6cab61900aa1b3259ac21060b49",
+  "audit_notebook_sha256": "7e5073754632e15ab95a52773fc9fa430ca3eaf95798bab264861dc552774485",
   "dependency_lock_sha256": "15e3a2754e678ffb29463d9203db527b19aea01ce8e4d09f092c954a42928cbb",
   "provenance_note": "A file hash identifies these exact bytes; it does not establish the data owner, collection method, authenticity, or permission to use the data."
 }

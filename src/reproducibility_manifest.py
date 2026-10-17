@@ -187,10 +187,15 @@ def build_manifest(root: Path, source: Path) -> dict:
         "project_code": code_records,
         "project_documentation": {
             "readme": file_record(root / "README.md", root),
+            "data_provenance": file_record(root / "DATA_PROVENANCE.md", root),
             "review_checklist": file_record(root / "PROJECT_REVIEW_CHECKLIST.md", root),
             "implementation_review": file_record(
                 root / "reports" / "implementation_review.md", root
             ),
+        },
+        "project_environment": {
+            "dependency_ranges": file_record(root / "requirements.txt", root),
+            "dependency_lock": file_record(root / "requirements-lock.txt", root),
         },
         "input_consistency": compare_project_inputs(root),
         "record_density": record_density(root),

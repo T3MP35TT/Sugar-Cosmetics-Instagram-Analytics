@@ -223,7 +223,7 @@ with left:
         hovertemplate="<b>%{x|%b %Y}</b><br>Records: %{y:,.0f}<extra></extra>",
     )
     posting_fig.update_layout(**PLOT_LAYOUT)
-    st.plotly_chart(posting_fig, use_container_width=True)
+    st.plotly_chart(posting_fig, width="stretch")
     if not monthly.empty:
         peak = monthly.loc[monthly["posts"].idxmax()]
         lowest = monthly.loc[monthly["posts"].idxmin()]
@@ -260,7 +260,7 @@ with right:
         title="Weighted engagement rate (zero baseline)",
         rangemode="tozero",
     )
-    st.plotly_chart(rate_fig, use_container_width=True)
+    st.plotly_chart(rate_fig, width="stretch")
     if not valid_rates.empty:
         peak = valid_rates.loc[valid_rates["engagement_rate"].idxmax()]
         lowest = valid_rates.loc[valid_rates["engagement_rate"].idxmin()]
@@ -323,7 +323,7 @@ with col1:
         )
         type_fig.update_layout(**PLOT_LAYOUT, showlegend=False, height=490)
         type_fig.update_yaxes(tickformat=".1%", rangemode="tozero")
-        st.plotly_chart(type_fig, use_container_width=True)
+        st.plotly_chart(type_fig, width="stretch")
     with metric_area:
         st.markdown("**Post type at a glance**")
         st.metric("Formats", f"{types['post_type'].nunique():,}")
@@ -380,7 +380,7 @@ with col2:
         )
         camp_fig.update_layout(**PLOT_LAYOUT, showlegend=False, height=490)
         camp_fig.update_yaxes(tickformat=".1%", rangemode="tozero")
-        st.plotly_chart(camp_fig, use_container_width=True)
+        st.plotly_chart(camp_fig, width="stretch")
     with metric_area:
         st.markdown("**Campaign at a glance**")
         st.metric("Campaigns", f"{camp['campaign_type'].nunique():,}")
@@ -413,7 +413,7 @@ with left_extra:
         mix_fig = px.bar(mix, x="Interaction", y="Total", color="Interaction", text=mix["Total"].map(lambda x: f"{x:,.0f}"), title="Interaction mix across selected records", color_discrete_sequence=CHART_COLORS)
         mix_fig.update_traces(textposition="outside", cliponaxis=False, hovertemplate="%{x}<br>Interactions: %{y:,.0f}<extra></extra>")
         mix_fig.update_layout(**PLOT_LAYOUT, showlegend=False)
-        st.plotly_chart(mix_fig, use_container_width=True)
+        st.plotly_chart(mix_fig, width="stretch")
         total_interactions = mix["Total"].sum()
         dominant = mix.loc[mix["Total"].idxmax()]
         takeaway(f"<b>{dominant['Interaction'].title()}</b> is the largest recorded interaction category ({dominant['Total']:,.0f}; {dominant['Total']/total_interactions:.1%} of the displayed interaction mix). Consider this a volume signal, not a measure of interaction quality.")
@@ -431,7 +431,7 @@ with right_extra:
         action_fig = px.line(action_long, x="month", y="Count", color="Metric", markers=True, title="Monthly profile visits and follows", color_discrete_sequence=CHART_COLORS)
         action_fig.update_traces(line=dict(width=3), hovertemplate="%{x|%b %Y}<br>%{fullData.name}: %{y:,.0f}<extra></extra>")
         action_fig.update_layout(**PLOT_LAYOUT)
-        st.plotly_chart(action_fig, use_container_width=True)
+        st.plotly_chart(action_fig, width="stretch")
         if "profile_visits" in action_columns and "follows" in action_columns:
             visits = pd.to_numeric(f["profile_visits"], errors="coerce").sum(min_count=1)
             follows_total = pd.to_numeric(f["follows"], errors="coerce").sum(min_count=1)

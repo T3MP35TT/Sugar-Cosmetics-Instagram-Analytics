@@ -100,7 +100,7 @@ if not monthly.empty:
         margin=dict(l=15, r=20, t=65, b=15),
         hovermode="x unified",
     )
-    st.plotly_chart(fig_monthly, use_container_width=True)
+    st.plotly_chart(fig_monthly, width="stretch")
     peak_month = monthly.loc[monthly["records"].idxmax()]
     low_month = monthly.loc[monthly["records"].idxmin()]
     takeaway = (
@@ -168,7 +168,7 @@ if not weekdays.empty:
             yaxis_tickformat=".1%",
             margin=dict(l=15, r=20, t=65, b=15),
         )
-        st.plotly_chart(fig_weekdays, use_container_width=True)
+        st.plotly_chart(fig_weekdays, width="stretch")
         takeaway = (
             f"<strong>{best_day['weekday']}</strong> has the highest weighted engagement rate "
             f"({best_day['weighted_engagement_rate']:.2%}) in the selected data, while "
@@ -192,7 +192,7 @@ if "weighted_engagement_rate" in display_weekdays.columns:
     display_weekdays["weighted_engagement_rate"] = display_weekdays[
         "weighted_engagement_rate"
     ].map(lambda value: f"{value:.2%}" if pd.notna(value) else "—")
-st.dataframe(display_weekdays, use_container_width=True, hide_index=True)
+st.dataframe(display_weekdays, width="stretch", hide_index=True)
 
 st.info(
     "The dataset contains post dates but no posting-time field. It can support weekday analysis, "

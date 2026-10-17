@@ -134,9 +134,9 @@ with right:
         )
 
 st.warning(
-    "Data limitation: the workbook alone does not establish dataset provenance. "
-    "Treat findings as results from the supplied dataset, not verified official "
-    "Sugar Cosmetics account performance.",
+    "The file likely comes from the public analytics project documented in DATA_PROVENANCE.md. "
+    "Its collection method and official Sugar Cosmetics account authenticity are unverified; "
+    "treat dashboard findings as descriptive results for that published dataset.",
     icon="ℹ️",
 )
 

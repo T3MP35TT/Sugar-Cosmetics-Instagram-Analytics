@@ -18,5 +18,6 @@
     "Product Launch": 9923,
     "Influencer Collab": 9903
   },
-  "note": "Data provenance not established by workbook."
+  "upstream_source": "https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics/tree/main/Data",
+  "provenance_status": "Likely upstream project source identified by filename, date span, and matching rounded aggregate metrics; official account authenticity and collection method remain unverified."
 }

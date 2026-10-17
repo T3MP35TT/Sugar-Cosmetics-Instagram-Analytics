@@ -4,7 +4,7 @@ A Streamlit dashboard and data audit for exploring content records, engagement, 
 
 ## Decision status
 
-This repository supports **descriptive analysis of the supplied file**. It does not establish that the 50,000 rows are official Sugar Cosmetics account records, that one row equals one post, or that the sample represents real posting activity. The workbook has 14 fields and no source documentation, stable post ID, caption, publication time, follower count, demographic attributes, spend, or sales attribution. Confirm provenance and row grain with the data owner before using findings as brand performance claims.
+This repository supports **descriptive analysis of a dataset published with the public [Neeraj08823/Sugar_cosmetics_Instagram_Analytics project](https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics/tree/main/Data)**. The local filename, date span, and recomputed rounded aggregate metrics match the upstream project description. That establishes a likely file source, not that the values were collected from Sugar Cosmetics' official account or that the sample represents real posting activity. The workbook has 14 fields and no collection method, account ID, stable post ID, caption, publication time, follower count, demographic attributes, spend, or sales attribution. See [DATA_PROVENANCE.md](DATA_PROVENANCE.md) before making brand performance claims.
 
 Summed reach is repeated post-level reach, not unique account reach. Group differences are descriptive associations and do not establish causality. Category counts are unusually balanced: post types occupy 24.8–25.2% of rows and campaign types 19.8–20.4%. This may indicate sampling or generated data; a balanced file is not proof of a representative sample.
 
@@ -85,7 +85,7 @@ Run the existing calculation checks with:
 pytest -q
 ```
 
-The tests cover core feature calculations, missing values, zero denominators, and summaries. A local Git history is not available in this workspace, so commit provenance cannot be assessed here.
+The tests cover core feature calculations, missing values, zero denominators, summaries, source-file matching, category balance, and reproducibility metadata. The local project has a committed `main` branch. No remote or pull request is configured; push only after reviewing data licensing and destination settings.
 
 The latest implementation check is recorded in `reports/implementation_review.md`.
 
@@ -93,7 +93,7 @@ The latest implementation check is recorded in `reports/implementation_review.md
 
 Before operational or external use:
 
-1. Obtain source owner, extraction date, account identifier, collection method, metric definitions, and permission to use the data.
+1. Confirm the upstream dataset license covers the workbook and obtain collection details, account identifier, and permission before redistribution or official performance claims.
 2. Confirm the row grain and obtain a stable post ID; reconcile a documented sample of source rows and computed metrics.
 3. Explain the category balance and sampling method. Assess representativeness before generalizing.
 4. Review all non-zero validation and outlier flags against source definitions; do not remove records without a recorded rule.
