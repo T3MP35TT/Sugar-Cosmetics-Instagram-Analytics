@@ -159,6 +159,15 @@ def build_manifest(root: Path, source: Path) -> dict:
         except importlib.metadata.PackageNotFoundError:
             versions[package] = None
 
+    code_paths = [root / "app.py"]
+    for directory in ("pages", "src", "tests", "utils"):
+        code_paths.extend((root / directory).rglob("*.py"))
+    code_records = {}
+    for path in sorted(code_paths):
+        record = file_record(path, root)
+        if record:
+            code_records[record["path"].replace("\\", "/")] = record
+
     return {
         "manifest_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -175,17 +184,7 @@ def build_manifest(root: Path, source: Path) -> dict:
                 root / "data" / "sugar_cosmetics_instagram_data.csv", root
             ),
         },
-        "project_code": {
-            "analytics": file_record(root / "src" / "analytics.py", root),
-            "shared_dashboard_setup": file_record(root / "utils" / "common.py", root),
-            "recommendations_page": file_record(
-                root / "pages" / "8_Strategic_Recommendations.py", root
-            ),
-            "analytics_tests": file_record(root / "tests" / "test_analytics.py", root),
-            "manifest_tests": file_record(
-                root / "tests" / "test_reproducibility_manifest.py", root
-            ),
-        },
+        "project_code": code_records,
         "project_documentation": {
             "readme": file_record(root / "README.md", root),
             "review_checklist": file_record(root / "PROJECT_REVIEW_CHECKLIST.md", root),
