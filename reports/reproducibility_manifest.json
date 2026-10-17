@@ -1,0 +1,139 @@
+{
+  "manifest_version": 1,
+  "generated_at_utc": "2026-10-17T07:51:06.601568+00:00",
+  "project_revision": null,
+  "selected_source": {
+    "path": "data\\sugar_cosmetics_instagram_data.xlsx",
+    "size_bytes": 4054331,
+    "sha256": "506f1eb169e1c271f5e6b745ba3542941c307d87a417b8f489626d7ac6f6575d"
+  },
+  "project_data_files": {
+    "dashboard_default_csv": {
+      "path": "data\\sugar_cosmetics_instagram_data.csv",
+      "size_bytes": 5471953,
+      "sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91"
+    },
+    "audit_preferred_excel": {
+      "path": "data\\sugar_cosmetics_instagram_data.xlsx",
+      "size_bytes": 4054331,
+      "sha256": "506f1eb169e1c271f5e6b745ba3542941c307d87a417b8f489626d7ac6f6575d"
+    },
+    "audit_csv_fallback": {
+      "path": "data\\sugar_cosmetics_instagram_data.csv",
+      "size_bytes": 5471953,
+      "sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91"
+    }
+  },
+  "project_code": {
+    "analytics": {
+      "path": "src\\analytics.py",
+      "size_bytes": 10411,
+      "sha256": "4a2d61a75f073f068ff24f1cd162d99d44ced595fa157dfe1707197862402064"
+    },
+    "shared_dashboard_setup": {
+      "path": "utils\\common.py",
+      "size_bytes": 15886,
+      "sha256": "5e681e9c7eba08fa57e43dfb852f09fde7f4587d7a0977bce094bf2ec6d8073f"
+    },
+    "recommendations_page": {
+      "path": "pages\\8_Strategic_Recommendations.py",
+      "size_bytes": 4999,
+      "sha256": "dcb203ea4e714e2ec08640c5627abc068afb42385f14ccc516bba4d1f5a0a9c5"
+    },
+    "analytics_tests": {
+      "path": "tests\\test_analytics.py",
+      "size_bytes": 9600,
+      "sha256": "2501c3f0ab3ac88b12de094a356a43bd3c669c22873cbef4e515557220199aed"
+    },
+    "manifest_tests": {
+      "path": "tests\\test_reproducibility_manifest.py",
+      "size_bytes": 3574,
+      "sha256": "2168554c7c83f05f4682c20576e6ab59c5b2339ecaa53bc332fdc9a9d62f4e04"
+    }
+  },
+  "project_documentation": {
+    "readme": {
+      "path": "README.md",
+      "size_bytes": 6255,
+      "sha256": "490f0870ed972830f4ce78a9693838b9a3228b105289fa822b23ae5ff70139e4"
+    },
+    "review_checklist": {
+      "path": "PROJECT_REVIEW_CHECKLIST.md",
+      "size_bytes": 3378,
+      "sha256": "8108878d77056f49d8ff7ffcf7c7837c886434bf8802241b38eb279143854fdf"
+    },
+    "implementation_review": {
+      "path": "reports\\implementation_review.md",
+      "size_bytes": 1848,
+      "sha256": "f66d2fca05d6e572e642d1548af270eb70c423655eb666e7d78413a94ac6ef43"
+    }
+  },
+  "input_consistency": {
+    "status": "match",
+    "rows": 50000,
+    "columns": 14,
+    "mismatched_cells": 0,
+    "comparison": "cell-by-cell after normalized headers, dates, numbers, and category whitespace"
+  },
+  "record_density": {
+    "records": 50000,
+    "valid_dates": 50000,
+    "unique_dates": 366,
+    "calendar_days_in_span": 366,
+    "records_per_calendar_day_in_span": 136.612,
+    "interpretation": "Record density only; row grain is undocumented, so this is not a posting-frequency estimate."
+  },
+  "category_balance": {
+    "records": 50000,
+    "categories": {
+      "post_type": {
+        "counts": {
+          "Reel": 12599,
+          "Story": 12517,
+          "Video": 12485,
+          "Image": 12399
+        },
+        "shares": {
+          "Reel": 0.25198,
+          "Story": 0.25034,
+          "Video": 0.2497,
+          "Image": 0.24798
+        },
+        "largest_to_smallest_count_ratio": 1.01613
+      },
+      "campaign_type": {
+        "counts": {
+          "Tutorial": 10186,
+          "Giveaway": 9998,
+          "Festive Offer": 9990,
+          "Product Launch": 9923,
+          "Influencer Collab": 9903
+        },
+        "shares": {
+          "Tutorial": 0.20372,
+          "Giveaway": 0.19996,
+          "Festive Offer": 0.1998,
+          "Product Launch": 0.19846,
+          "Influencer Collab": 0.19806
+        },
+        "largest_to_smallest_count_ratio": 1.028577
+      }
+    },
+    "interpretation": "Near-even category counts are a sampling diagnostic, not evidence of representativeness."
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.5.4",
+      "openpyxl": "3.1.5",
+      "pandas": "2.3.3",
+      "plotly": "6.9.0",
+      "streamlit": "1.66.0"
+    }
+  },
+  "manifest_generator_sha256": "9a71f4fbba740e897d356ec23a91da23969aacc21e9097f157d18cac828c6037",
+  "audit_notebook_sha256": "18cabfce52fc8fa85874e63c206c12cdf39ddd460df331188c9f8c9c07dea342",
+  "dependency_lock_sha256": "15e3a2754e678ffb29463d9203db527b19aea01ce8e4d09f092c954a42928cbb",
+  "provenance_note": "A file hash identifies these exact bytes; it does not establish the data owner, collection method, authenticity, or permission to use the data."
+}
