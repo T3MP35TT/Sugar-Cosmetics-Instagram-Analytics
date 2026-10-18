@@ -1,24 +1,24 @@
 check,count,severity,detail
-Missing cells,0,Review,Missingness is assessed at cell level; investigate any non-zero result.
-Exact duplicate rows,0,Review,"Without a post ID, exact duplicates are not the same as confirmed duplicate posts."
-Invalid/missing post dates,0,High,Rows with invalid dates cannot be used in time-based analyses.
-Missing/non-numeric values in impressions,0,Review,Check original source values before imputation or removal.
-Negative values in impressions,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in reach,0,Review,Check original source values before imputation or removal.
-Negative values in reach,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in likes,0,Review,Check original source values before imputation or removal.
-Negative values in likes,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in comments,0,Review,Check original source values before imputation or removal.
-Negative values in comments,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in shares,0,Review,Check original source values before imputation or removal.
-Negative values in shares,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in saves,0,Review,Check original source values before imputation or removal.
-Negative values in saves,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in profile_visits,0,Review,Check original source values before imputation or removal.
-Negative values in profile_visits,0,High,Negative count metrics are usually invalid and require source review.
-Missing/non-numeric values in follows,0,Review,Check original source values before imputation or removal.
-Negative values in follows,0,High,Negative count metrics are usually invalid and require source review.
-Impressions lower than reach,0,Review,Reach and impressions definitions can vary; verify these records rather than silently changing them.
-Engagement actions exceed reach,0,Review,Repeated actions or metric definitions may explain some cases; inspect rather than assume impossible.
+Missing cells,0,Review,Inspect affected fields; no imputation is applied here.
+Exact duplicate rows,0,Review,"Without a post ID, exact duplicates do not establish duplicate posts."
+Invalid or missing dates,0,High,Rows without valid dates are unavailable for temporal summaries.
+Missing or non-numeric: impressions,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: impressions,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: reach,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: reach,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: likes,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: likes,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: comments,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: comments,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: shares,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: shares,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: saves,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: saves,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: profile_visits,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: profile_visits,0,High,Review source values; do not silently clamp counts.
+Missing or non-numeric: follows,0,Review,Compare with source definitions before excluding or imputing.
+Negative values: follows,0,High,Review source values; do not silently clamp counts.
+Impressions below reach,0,Review,Definitions can vary; inspect against source documentation.
+Engagement actions above reach,0,Review,Repeated actions or metric definitions may explain these records.
 Zero reach,0,Review,Engagement rate is undefined when reach is zero.
-Zero profile visits,0,Info,Follow-per-visit proxy is undefined when profile visits are zero.
+Zero profile visits,0,Info,Follow-per-visit ratio is undefined when visits are zero.

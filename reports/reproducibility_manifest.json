@@ -1,7 +1,7 @@
 {
   "manifest_version": 1,
-  "generated_at_utc": "2026-10-17T08:45:49.443682+00:00",
-  "project_revision": "89812c0f9f9828cb17baca23afacd218fadc983b",
+  "generated_at_utc": "2026-10-17T15:44:52.676136+00:00",
+  "project_revision": "404dc8d9791c51fe67da709bf5826cfc125b417f",
   "selected_source": {
     "path": "data\\sugar_cosmetics_instagram_data.xlsx",
     "size_bytes": 4054331,
@@ -22,6 +22,11 @@
       "path": "data\\sugar_cosmetics_instagram_data.csv",
       "size_bytes": 5471953,
       "sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91"
+    },
+    "business_impact_attribution_template": {
+      "path": "data\\business_impact_attribution_template.csv",
+      "size_bytes": 235,
+      "sha256": "07aa45a50920dc1877250e4a8dd2888c75ca0b27a315ffb747d12c89b28854ad"
     }
   },
   "project_code": {
@@ -32,63 +37,113 @@
     },
     "pages/1_Executive_Overview.py": {
       "path": "pages\\1_Executive_Overview.py",
-      "size_bytes": 23096,
-      "sha256": "a38f84828db8b3f456eb742a8aa2a83745496fbd53838fcd05e11580b6bc02a0"
+      "size_bytes": 26055,
+      "sha256": "2953c3de39f7bd19340d65c6637657ff8eddc165ea242ea6d41b6f90f06befe4"
     },
     "pages/2_Content_Performance.py": {
       "path": "pages\\2_Content_Performance.py",
-      "size_bytes": 20749,
-      "sha256": "238e43585e4e6be9253e959024473d56900d59f7fa62ec68407a48dbc6dc7e50"
+      "size_bytes": 18257,
+      "sha256": "e909bf9d7a75c9199e946706120e99985bcd42e2b5e81427a57c7e83c1932e7c"
     },
     "pages/3_Hashtag_Intelligence.py": {
       "path": "pages\\3_Hashtag_Intelligence.py",
-      "size_bytes": 11548,
-      "sha256": "4d0d8d63dfce43badce8331dd6fc6c710642910f4f4adc3fc02bee8549105624"
+      "size_bytes": 12591,
+      "sha256": "7dbdac348b5b72ab0f3e269716616a3401e0d325a24f04a50ee01ab140ad2228"
     },
     "pages/4_Audience_&_Conversion_Funnel.py": {
       "path": "pages\\4_Audience_&_Conversion_Funnel.py",
-      "size_bytes": 19931,
-      "sha256": "4cc9f897eb08a1a21ea8bf669be23c316587f1f70a7e7ca0950c367f87810fa5"
+      "size_bytes": 21150,
+      "sha256": "ef61b3e29a9c31f08f8e92c7107f7107f1e11f4eea8418a8a7e706939cb436de"
     },
     "pages/5_Posting_Strategy.py": {
       "path": "pages\\5_Posting_Strategy.py",
-      "size_bytes": 7512,
-      "sha256": "05060cc28e752767d507809257c88376248b572256738410931c4923cce01687"
+      "size_bytes": 17969,
+      "sha256": "05569169602c2fbe2ceab9cc51ab8f506c26e507c2ac742a34e728e1b5138097"
     },
     "pages/7_Deep_Dive_and_Data_Quality.py": {
       "path": "pages\\7_Deep_Dive_and_Data_Quality.py",
-      "size_bytes": 29274,
-      "sha256": "5b6b9b15588ced6d3e216c35ccb098909db23d5973d1381997b21393c50e3cd5"
+      "size_bytes": 32190,
+      "sha256": "0ad19e5364100a04fd8c14d4a1b00eddc148fd41c914e8729d76c1c8498dc2e9"
     },
     "pages/8_Strategic_Recommendations.py": {
       "path": "pages\\8_Strategic_Recommendations.py",
-      "size_bytes": 5683,
-      "sha256": "708b7f8d3c70a582ae64dd86e02170dd886bb874abdb2108c7a3cdc5a46244de"
+      "size_bytes": 37942,
+      "sha256": "21ae290f7ca5eca51b5dd4c08c10e11bda143231ac7b3b5a9cf4a9f56d6b7b4d"
     },
     "pages/9_Predictive_Model_Validation.py": {
       "path": "pages\\9_Predictive_Model_Validation.py",
-      "size_bytes": 8292,
-      "sha256": "3e5ca30c5bf07b5a937d921aaa57da186c79ea732d4227dd968a345888ea76bb"
+      "size_bytes": 23178,
+      "sha256": "b8cc65dbe00ca8609b422d44f04eba1e36d4dc33119fb4f8bb9dd655a6ce912e"
     },
     "src/analytics.py": {
       "path": "src\\analytics.py",
       "size_bytes": 12357,
       "sha256": "981bcda9193a22bb91b2d649b20ba8d300b19bb14f3d8da0eaad8690d26eb57b"
     },
+    "src/build_eda_notebook.py": {
+      "path": "src\\build_eda_notebook.py",
+      "size_bytes": 26580,
+      "sha256": "aaa00e8e796555709dff21eec4b3d69bf59fc0ecb846240bf7936e0e97ec6f9b"
+    },
+    "src/build_executive_report.py": {
+      "path": "src\\build_executive_report.py",
+      "size_bytes": 50763,
+      "sha256": "2e6fb982f28cf133d70c90af8543c300f9f1b3670ba45f382a801a3ec6d8d5ad"
+    },
+    "src/business_impact.py": {
+      "path": "src\\business_impact.py",
+      "size_bytes": 13264,
+      "sha256": "0bdae3c6597e2d31c81aa592f818a62dff4e1727d863acbfbc903972af7be8bb"
+    },
+    "src/conditional_engagement_model.py": {
+      "path": "src\\conditional_engagement_model.py",
+      "size_bytes": 9564,
+      "sha256": "27b5fbc1b14e3479b6585cc9ebd6244697762e37a0f7b825508e485fe84bdb8c"
+    },
+    "src/decision_portfolio.py": {
+      "path": "src\\decision_portfolio.py",
+      "size_bytes": 8475,
+      "sha256": "f2211d6be4db00e5951e6e69e290aad4bb2a6af61bf4cd6e751c0b67f28fc7aa"
+    },
+    "src/experiment_design.py": {
+      "path": "src\\experiment_design.py",
+      "size_bytes": 4303,
+      "sha256": "7dfe5dbdeb339d77913e651d5bd3b072ff3ce19a82f9b1484939471595a14fdf"
+    },
+    "src/inference.py": {
+      "path": "src\\inference.py",
+      "size_bytes": 7389,
+      "sha256": "6629c7105f2d07b82f32d3029dd1106f55a940d114d09a8ca7ca65930fd7a3b7"
+    },
     "src/modeling.py": {
       "path": "src\\modeling.py",
-      "size_bytes": 22876,
-      "sha256": "4187058d01478da1ac7f8a43987f9f37b133c2d268d29f79e5304b7a149a3a4a"
+      "size_bytes": 32090,
+      "sha256": "b937319e05fc7e7ff05c0e62f07012b40d90648e3a785f97b7c9bcbb140a5c20"
     },
     "src/reproducibility_manifest.py": {
       "path": "src\\reproducibility_manifest.py",
-      "size_bytes": 9905,
-      "sha256": "aa6c7545394035fc102ac54c18d4c7a4a5aa43eb1271051a1a111f532b803815"
+      "size_bytes": 10498,
+      "sha256": "fef5912c3874af98a5e6231941b7880d86427e212191bc283438888c7b072654"
+    },
+    "src/run_conditional_engagement_volume.py": {
+      "path": "src\\run_conditional_engagement_volume.py",
+      "size_bytes": 1170,
+      "sha256": "1c0613e339f40efbea4935e630ae14e01f11461a2a56901a45686b49bcf1dc13"
+    },
+    "src/run_decision_portfolio.py": {
+      "path": "src\\run_decision_portfolio.py",
+      "size_bytes": 1345,
+      "sha256": "eb88e14a0f31fa2758674779a6e030d7812ab57e176dca6d50005eacde31b557"
+    },
+    "src/run_descriptive_inference.py": {
+      "path": "src\\run_descriptive_inference.py",
+      "size_bytes": 5041,
+      "sha256": "366ebfc67a1249aae0bcadba88fe41b92071986e97c7d71e768de23af17668b8"
     },
     "src/run_model_evaluation.py": {
       "path": "src\\run_model_evaluation.py",
-      "size_bytes": 1561,
-      "sha256": "efae7b54864e11b259a8d27af7843a901122856b4aceb46484613c3306761294"
+      "size_bytes": 1698,
+      "sha256": "069602275706981a443a10d267e63f0b8e3edc94f7fd2c6a2bd28e4b6b3cb48d"
     },
     "tests/test_analytics.py": {
       "path": "tests\\test_analytics.py",
@@ -100,10 +155,25 @@
       "size_bytes": 508,
       "sha256": "3bbef601eedd60df2b4edd2d948a1259128e94378340b9ca197fc3571f1381ac"
     },
+    "tests/test_business_impact.py": {
+      "path": "tests\\test_business_impact.py",
+      "size_bytes": 4966,
+      "sha256": "1d04b6f2e0acb1db1163bda11b7d7de14ce6166a98fb4423c3814f8ed56f782e"
+    },
+    "tests/test_experiment_design.py": {
+      "path": "tests\\test_experiment_design.py",
+      "size_bytes": 3568,
+      "sha256": "4a5a06a848ce33ff5013fb965ecd8035f3c230129d04a44b91521ecb770783bd"
+    },
+    "tests/test_inference.py": {
+      "path": "tests\\test_inference.py",
+      "size_bytes": 3855,
+      "sha256": "4dd02b91c57a3bbfe9b4bf770af5a17bef691f6982adbe097685b0a9eaf80d79"
+    },
     "tests/test_modeling.py": {
       "path": "tests\\test_modeling.py",
-      "size_bytes": 3056,
-      "sha256": "2ba23d65ec629e9cde0863c02808f35ffd9035490c8f8f96d5f4d7b2edd205a9"
+      "size_bytes": 4924,
+      "sha256": "0c005c000e04a9bf5f8f09fdb2e3bd0cc93da2e41d3a544a5793ecd32fab1d13"
     },
     "tests/test_reproducibility_manifest.py": {
       "path": "tests\\test_reproducibility_manifest.py",
@@ -112,13 +182,13 @@
     },
     "utils/__init__.py": {
       "path": "utils\\__init__.py",
-      "size_bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "size_bytes": 62,
+      "sha256": "1713ad1ab19fec852c791ff98a02fe1e333db73439ba97c2bbfa265d670a7fc4"
     },
     "utils/common.py": {
       "path": "utils\\common.py",
-      "size_bytes": 16472,
-      "sha256": "82b1c67aeadd5ae0f8080b33320b8ca848bec9588a711e026a29abecaf9b3d56"
+      "size_bytes": 23930,
+      "sha256": "9808ed245deb8f153e4bd792235da80b31f5f94432c2772b7409c07795ac384b"
     },
     "utils/theme.py": {
       "path": "utils\\theme.py",
@@ -129,28 +199,33 @@
   "project_documentation": {
     "readme": {
       "path": "README.md",
-      "size_bytes": 8287,
-      "sha256": "c7683e1ee8db8b6ae8038f13fb2012b491bd361e702ed12be10b254a2267bb7f"
+      "size_bytes": 11226,
+      "sha256": "9b212b2ca10a32f14cec1aa5498313f3f994ec6e17a36eb5d6c5a96397e36b94"
     },
     "data_provenance": {
       "path": "DATA_PROVENANCE.md",
       "size_bytes": 2457,
       "sha256": "dab84f8224634ac3f9096cad6e2f04b19084ac61bf81a96e4ec44d399098da39"
     },
+    "business_impact_data_contract": {
+      "path": "BUSINESS_IMPACT_DATA_CONTRACT.md",
+      "size_bytes": 4654,
+      "sha256": "2a91874b232d8229f6ba3241b643d9b597f21ccf1e4bc025bbdfdc1c027ede8e"
+    },
     "review_checklist": {
       "path": "PROJECT_REVIEW_CHECKLIST.md",
-      "size_bytes": 5103,
-      "sha256": "1a4995d2132cb71b1e7509dd21058d08536735cfd4d4e8d5b06a16237b182b7c"
+      "size_bytes": 9683,
+      "sha256": "353495807bae47288ef2c90f31e05e67f62f4315c3a7ea1864de9993a4fe69f5"
     },
     "implementation_review": {
       "path": "reports\\implementation_review.md",
-      "size_bytes": 4445,
-      "sha256": "b5d38baa67cb20ee7c30bdf7cd440e3759671464788d2fe2b2f457b4dc2e77df"
+      "size_bytes": 11763,
+      "sha256": "48ddd3c719348f88107b4a696e8d996b75856b482c220b52bec6de3bc3f8f126"
     },
     "model_monitoring_plan": {
       "path": "MODEL_MONITORING_PLAN.md",
-      "size_bytes": 3477,
-      "sha256": "7767af51519ab423704d7069979ee82115f0a0905f198da0c844952155d57b23"
+      "size_bytes": 3642,
+      "sha256": "fa8ddb4635f2144a8ae4e21df2dd49d588e1a35add7d84780eb3de6be4a6d33f"
     }
   },
   "project_environment": {
@@ -168,13 +243,23 @@
   "project_analysis_artifacts": {
     "model_evaluation": {
       "path": "reports\\model_evaluation.json",
-      "size_bytes": 15064,
-      "sha256": "a7f48241b730581db058fcaa31de4ba10279a70650a37040d70e885a8bac9129"
+      "size_bytes": 39760,
+      "sha256": "d9a963d8db2564e9bc9e9fc24829fd95cf9b6645ec9f09c6ff12620dd3ade375"
+    },
+    "category_rate_inference": {
+      "path": "reports\\category_rate_inference.json",
+      "size_bytes": 19383,
+      "sha256": "70e6bfae4a7290d37d7091354907c836742c42a7f03e810aa4f226ae88bf7036"
     },
     "model_holdout_predictions": {
       "path": "reports\\model_holdout_predictions.csv",
-      "size_bytes": 1306402,
-      "sha256": "76d32daa99283bd22e296ec719fc926335ffeeaacfb99d67338ed2eaedc3e156"
+      "size_bytes": 1506102,
+      "sha256": "e126bc93a7aef9be8af1a37079a130e0a502d03f0f3c727ac7e0520821f85f85"
+    },
+    "executive_report_docx": {
+      "path": "reports\\Sugar_Cosmetics_Instagram_Executive_Report.docx",
+      "size_bytes": 404737,
+      "sha256": "2d67b3e5f83ac229e7518c8709463945a7175f057b4b01274121dd69e0dae010"
     }
   },
   "input_consistency": {
@@ -243,8 +328,8 @@
       "streamlit": "1.66.0"
     }
   },
-  "manifest_generator_sha256": "aa6c7545394035fc102ac54c18d4c7a4a5aa43eb1271051a1a111f532b803815",
-  "audit_notebook_sha256": "7e5073754632e15ab95a52773fc9fa430ca3eaf95798bab264861dc552774485",
+  "manifest_generator_sha256": "fef5912c3874af98a5e6231941b7880d86427e212191bc283438888c7b072654",
+  "audit_notebook_sha256": "6e29499ff1cd4e97e41390b1f66f1aef6c37700e566a008b10eceec3be435bb9",
   "dependency_lock_sha256": "7d778a300f50660de0c2d957f0d8620d068d0a8d81378fc2f89aa4c1a9af25b8",
   "provenance_note": "A file hash identifies these exact bytes; it does not establish the data owner, collection method, authenticity, or permission to use the data."
 }

@@ -1,0 +1,188 @@
+{
+  "generated_at_utc": "2026-10-17T13:28:22.024329+00:00",
+  "input": {
+    "path": "D:\\sugar_cosmetics_instagram_analytics\\data\\sugar_cosmetics_instagram_data.csv",
+    "sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91",
+    "rows": 50000
+  },
+  "target": "likes + comments + shares + saves (engagement volume)",
+  "analysis_status": "Exploratory; target and inputs were selected after reviewing this dataset, so reported holdout performance is descriptive and should not be treated as confirmatory model-selection evidence.",
+  "intended_use": "Estimate engagement count conditional on observed reach and impressions for analysis of existing posts; not a pre-publication forecast.",
+  "features": [
+    "reach",
+    "impressions",
+    "hashtag_count",
+    "post_type",
+    "campaign_type"
+  ],
+  "excluded_features": [
+    "likes",
+    "comments",
+    "shares",
+    "saves",
+    "profile_visits",
+    "follows",
+    "audience_emotion",
+    "engagement_source"
+  ],
+  "split": {
+    "strategy": "Chronological holdout on unique dates; four expanding date-grouped folds with a 7-day gap for development-only validation.",
+    "development_records": 40020,
+    "holdout_records": 9980,
+    "cutoff_date": "2025-02-05",
+    "holdout_start": "2025-02-05",
+    "holdout_end": "2025-04-19",
+    "cv_folds": [
+      {
+        "model": "Median baseline",
+        "fold_mae": [
+          2097.7861499364676,
+          2102.8942488409975,
+          2102.5456042563974,
+          2126.789196641183
+        ],
+        "mean_mae": 2107.5037999187616,
+        "std_mae": 13.06638069352495
+      },
+      {
+        "model": "Ridge regression",
+        "fold_mae": [
+          1232.949806044679,
+          1233.7153208377763,
+          1221.7538296684636,
+          1208.2700014210907
+        ],
+        "mean_mae": 1224.1722394930023,
+        "std_mae": 11.92820128794597
+      }
+    ]
+  },
+  "holdout": {
+    "median_baseline": {
+      "mae": 2119.569038076152,
+      "rmse": 2768.903668123305,
+      "r2": -0.05857443184528077,
+      "mean_prediction": 3045.0,
+      "prediction_std": 0.0
+    },
+    "ridge": {
+      "mae": 1240.3436309019376,
+      "rmse": 1654.4447506848921,
+      "r2": 0.6220709774686531,
+      "mean_prediction": 3687.170293010144,
+      "prediction_std": 2111.1731800853054
+    },
+    "mae_difference_ridge_minus_baseline": -879.2254071742145,
+    "relative_mae_reduction": 0.41481329052261123,
+    "daily_bootstrap_mae_difference_interval": {
+      "lower_95": -915.7718697720148,
+      "upper_95": -842.7950491425275,
+      "repetitions": 2000,
+      "interpretation": "Paired daily bootstrap interval for Ridge-minus-median-baseline MAE; conditional on calendar dates as resampling blocks."
+    }
+  },
+  "monthly": [
+    {
+      "month": "2025-02",
+      "records": 3381,
+      "actual_mean": 3670.199053534457,
+      "prediction_mean": 3687.6345554825293,
+      "mae": 1247.6325611603806
+    },
+    {
+      "month": "2025-03",
+      "records": 4139,
+      "actual_mean": 3714.9871949746316,
+      "prediction_mean": 3685.916773121989,
+      "mae": 1236.86543196044
+    },
+    {
+      "month": "2025-04",
+      "records": 2460,
+      "actual_mean": 3700.8536585365855,
+      "prediction_mean": 3688.641287887353,
+      "mae": 1236.177936680419
+    }
+  ],
+  "subgroup_validation": {
+    "post_type": [
+      {
+        "post_type": "Image",
+        "records": 2489,
+        "actual_mean": 3717.8666130976294,
+        "prediction_mean": 3660.350276248909,
+        "mae": 1244.406193757298,
+        "mean_error": 57.51633684872039
+      },
+      {
+        "post_type": "Reel",
+        "records": 2461,
+        "actual_mean": 3659.5635920357577,
+        "prediction_mean": 3682.730601391274,
+        "mae": 1232.6956980479872,
+        "mean_error": -23.167009355515887
+      },
+      {
+        "post_type": "Story",
+        "records": 2519,
+        "actual_mean": 3694.9098848749504,
+        "prediction_mean": 3727.8282018875184,
+        "mae": 1221.7322257074834,
+        "mean_error": -32.91831701256833
+      },
+      {
+        "post_type": "Video",
+        "records": 2511,
+        "actual_mean": 3712.441656710474,
+        "prediction_mean": 3677.3191700832795,
+        "mae": 1262.4830070434793,
+        "mean_error": 35.12248662719435
+      }
+    ],
+    "campaign_type": [
+      {
+        "campaign_type": "Festive Offer",
+        "records": 1931,
+        "actual_mean": 3616.1092698083894,
+        "prediction_mean": 3548.7518779042634,
+        "mae": 1184.9108599326087,
+        "mean_error": 67.35739190412585
+      },
+      {
+        "campaign_type": "Giveaway",
+        "records": 2048,
+        "actual_mean": 3699.13330078125,
+        "prediction_mean": 3683.13567139582,
+        "mae": 1239.888205238603,
+        "mean_error": 15.997629385430164
+      },
+      {
+        "campaign_type": "Influencer Collab",
+        "records": 1976,
+        "actual_mean": 3811.591093117409,
+        "prediction_mean": 3837.5636024906958,
+        "mae": 1298.4441903584602,
+        "mean_error": -25.97250937328693
+      },
+      {
+        "campaign_type": "Product Launch",
+        "records": 1947,
+        "actual_mean": 3741.0,
+        "prediction_mean": 3729.836030426392,
+        "mae": 1258.3712987057218,
+        "mean_error": 11.163969573607663
+      },
+      {
+        "campaign_type": "Tutorial",
+        "records": 2078,
+        "actual_mean": 3616.656400384986,
+        "prediction_mean": 3636.7860265773156,
+        "mae": 1220.1640437028173,
+        "mean_error": -20.129626192329784
+      }
+    ]
+  },
+  "prediction_file": "conditional_engagement_volume_predictions.csv",
+  "model": "Ridge(alpha=1.0), selected as a regularized linear conditional estimator; no test-set tuning.",
+  "limitations": "Predictions condition on realized reach and impressions, which are observed exposure measures. They describe conditional association in this dataset and do not establish causal lift or pre-publication performance."
+}

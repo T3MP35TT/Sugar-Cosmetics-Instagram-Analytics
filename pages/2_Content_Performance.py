@@ -81,9 +81,6 @@ def interactive_table(df, key, *, numeric_formats=None, default_sort=None, heigh
 
 st.caption("Review content volume, reach, and engagement outcomes using the filters below.")
 
-# Keep one stable sidebar slot so the page summary is redrawn with each filter change.
-sidebar_summary = st.sidebar.empty()
-
 with st.container(border=True):
     # Content performance KPIs
     st.markdown("## Content performance")
@@ -221,47 +218,7 @@ with st.container(border=True):
     avg_engagement_rate = pd.to_numeric(f["engagement_rate"], errors="coerce").mean()
     avg_engagements = pd.to_numeric(f["total_engagements"], errors="coerce").mean()
 
-    # Dynamic page-specific summary appears below the native sidebar navigation.
-    if not f.empty:
-        sidebar_formats = f.assign(
-            _engagements=pd.to_numeric(f["total_engagements"], errors="coerce")
-        ).groupby("post_type", dropna=False)["_engagements"].mean()
-        top_format = str(sidebar_formats.idxmax()) if not sidebar_formats.empty else "—"
-        if top_format == "nan":
-            top_format = "Unknown"
-        sidebar_dates = pd.to_datetime(f["post_date"], errors="coerce").dropna()
-        sidebar_period = (
-            f"{sidebar_dates.min():%d %b %Y} – {sidebar_dates.max():%d %b %Y}"
-            if not sidebar_dates.empty else "Date range unavailable"
-        )
-    else:
-        top_format = "—"
-        sidebar_period = "No matching records"
-
-    sidebar_rate = f"{avg_engagement_rate:.2%}" if pd.notna(avg_engagement_rate) else "—"
-    sidebar_engagements = f"{total_engagements:,.0f}"
-    sidebar_reach = f"{total_reach:,.0f}"
-    with sidebar_summary.container():
-        st.markdown(
-            f"""
-            <div class="sugar-sidebar-info">
-                <div class="sugar-sidebar-eyebrow">SUGAR COSMETICS · CURRENT PAGE</div>
-            <div class="sugar-sidebar-title">Content Performance</div>
-            <div class="sugar-sidebar-description">
-                A live summary of the content currently included by your filters.
-            </div>
-            <div class="sugar-sidebar-divider"></div>
-            <div class="sugar-sidebar-stat"><span>Analysis period</span><strong>{html.escape(sidebar_period)}</strong></div>
-            <div class="sugar-sidebar-stat"><span>Records analysed</span><strong>{total_posts:,}</strong></div>
-            <div class="sugar-sidebar-stat"><span>Total engagements</span><strong>{sidebar_engagements}</strong></div>
-            <div class="sugar-sidebar-stat"><span>Total post reach</span><strong>{sidebar_reach}</strong></div>
-            <div class="sugar-sidebar-stat"><span>Average engagement rate</span><strong>{sidebar_rate}</strong></div>
-            <div class="sugar-sidebar-stat"><span>Top format by avg. engagements</span><strong>{html.escape(top_format)}</strong></div>
-            <div class="sugar-sidebar-foot">Updates automatically when the content filters change.</div>
-        </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    render_sidebar_summary("Content Performance", f)
 
     with kpi_placeholder.container():
         k1, k2, k3, k4, k5 = st.columns(5)

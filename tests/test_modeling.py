@@ -14,7 +14,10 @@ from modeling import (  # noqa: E402
     chronological_holdout_indices,
     date_grouped_splits,
     regression_metrics,
+    select_one_standard_error_candidate,
 )
+from sklearn.dummy import DummyRegressor  # noqa: E402
+from sklearn.linear_model import Ridge  # noqa: E402
 
 
 def make_model_data(days=60):
@@ -48,6 +51,48 @@ def test_model_features_exclude_outcomes_and_derived_post_outcome_labels():
     assert len(features) == len(target) == len(metadata)
     assert np.allclose(target, 100 / 800)
     assert metadata["post_date"].is_monotonic_increasing
+    assert features.loc[0, "format_campaign"] == "Reel :: Launch"
+    assert features.loc[0, "hashtag_signature"] == "#beauty|#makeup"
+    assert features.loc[1, "hashtag_signature"] == "#beauty"
+
+
+def test_hashtag_signature_is_order_and_case_invariant():
+    raw = make_model_data(days=2)
+    raw.loc[0, "hashtags"] = "#Makeup #Beauty #beauty"
+    raw.loc[1, "hashtags"] = "#BEAUTY #makeup"
+    features, _, _ = build_model_frame(raw)
+    assert features.loc[0, "hashtag_signature"] == features.loc[1, "hashtag_signature"]
+    assert features.loc[0, "hashtag_count"] == 2
+
+
+def test_one_standard_error_rule_selects_baseline_when_eligible():
+    results = {
+        "mean_test_mae": [-0.100, -0.090, -0.095],
+        "std_test_mae": [0.010, 0.020, 0.010],
+        "params": [
+            {"regressor": DummyRegressor(strategy="median")},
+            {"regressor": Ridge(), "regressor__alpha": 1.0},
+            {"regressor": Ridge(), "regressor__alpha": 100.0},
+        ],
+    }
+    selected = select_one_standard_error_candidate(results, n_splits=4)
+    assert selected["best_index"] == 1
+    assert selected["selected_index"] == 0
+    assert selected["standard_error"] == 0.01
+
+
+def test_one_standard_error_rule_prefers_most_regularized_ridge_if_baseline_is_out():
+    results = {
+        "mean_test_mae": [-0.120, -0.100, -0.101],
+        "std_test_mae": [0.002, 0.002, 0.002],
+        "params": [
+            {"regressor": DummyRegressor(strategy="median")},
+            {"regressor": Ridge(), "regressor__alpha": 1.0},
+            {"regressor": Ridge(), "regressor__alpha": 100.0},
+        ],
+    }
+    selected = select_one_standard_error_candidate(results, n_splits=4)
+    assert selected["selected_index"] == 2
 
 
 def test_date_grouped_cross_validation_has_no_shared_days_and_respects_time_order():

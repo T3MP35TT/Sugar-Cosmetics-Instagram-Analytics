@@ -15,19 +15,43 @@ import pandas as pd
 import sklearn
 from sklearn.compose import ColumnTransformer
 from sklearn.dummy import DummyRegressor
-from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.ensemble import (
+    AdaBoostRegressor,
+    ExtraTreesRegressor,
+    GradientBoostingRegressor,
+    HistGradientBoostingRegressor,
+    RandomForestRegressor,
+)
 from sklearn.impute import SimpleImputer
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import (
+    BayesianRidge,
+    ElasticNet,
+    HuberRegressor,
+    Lasso,
+    LinearRegression,
+    PoissonRegressor,
+    Ridge,
+    TweedieRegressor,
+)
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit, cross_validate
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.svm import LinearSVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neural_network import MLPRegressor
+from sklearn.neighbors import KNeighborsRegressor
 
 from analytics import load_data
 
 
 SEED = 20261017
-CATEGORICAL_FEATURES = ["post_type", "campaign_type"]
+CATEGORICAL_FEATURES = [
+    "post_type",
+    "campaign_type",
+    "format_campaign",
+    "hashtag_signature",
+]
 NUMERIC_FEATURES = [
     "hashtag_count",
     "days_since_start",
@@ -76,7 +100,16 @@ def build_model_frame(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, pd.Da
     day_of_year = frame["post_date"].dt.dayofyear.to_numpy(dtype=float)
     weekday = frame["post_date"].dt.dayofweek.to_numpy(dtype=float)
     hashtags = frame["hashtags"].fillna("").astype(str)
-    frame["hashtag_count"] = hashtags.map(lambda value: len({tag.lower() for tag in re.findall(r"#\w+", value)}))
+    normalized_tags = hashtags.map(
+        lambda value: sorted({tag.lower() for tag in re.findall(r"#\w+", value)})
+    )
+    frame["hashtag_count"] = normalized_tags.map(len)
+    frame["hashtag_signature"] = normalized_tags.map(
+        lambda tags: "|".join(tags) if tags else "__no_hashtags__"
+    )
+    frame["format_campaign"] = (
+        frame["post_type"].astype(str) + " :: " + frame["campaign_type"].astype(str)
+    )
     frame["days_since_start"] = (frame["post_date"] - origin).dt.days.astype(float)
     frame["month_sin"] = np.sin(2 * np.pi * day_of_year / 365.25)
     frame["month_cos"] = np.cos(2 * np.pi * day_of_year / 365.25)
@@ -148,6 +181,88 @@ def _preprocessor() -> ColumnTransformer:
 
 def _model_pipeline(regressor) -> Pipeline:
     return Pipeline([("preprocess", _preprocessor()), ("regressor", regressor)])
+
+
+def select_one_standard_error_candidate(cv_results, *, n_splits: int) -> dict:
+    """Select the simplest candidate within one CV standard error of the best MAE."""
+    if not isinstance(n_splits, int) or n_splits < 2:
+        raise ValueError("n_splits must be an integer of at least two")
+    means = -np.asarray(cv_results["mean_test_mae"], dtype=float)
+    standard_deviations = np.asarray(cv_results["std_test_mae"], dtype=float)
+    best_index = int(np.nanargmin(means))
+    standard_error = float(standard_deviations[best_index] / np.sqrt(n_splits))
+    limit = float(means[best_index] + standard_error)
+    eligible = [
+        int(index)
+        for index, score in enumerate(means)
+        if score <= limit + np.finfo(float).eps * max(1.0, abs(limit)) * 8
+    ]
+    params = cv_results["params"]
+
+    baseline_indices = [
+        index for index in eligible
+        if isinstance(params[index]["regressor"], DummyRegressor)
+    ]
+    preferred_model_order = [Ridge, BayesianRidge, HuberRegressor, ElasticNet, Lasso,
+                             LinearSVR, PoissonRegressor, TweedieRegressor,
+                             DecisionTreeRegressor, HistGradientBoostingRegressor,
+                             GradientBoostingRegressor, AdaBoostRegressor,
+                             RandomForestRegressor, ExtraTreesRegressor, MLPRegressor,
+                             KNeighborsRegressor]
+    ridge_indices = [
+        index for index in eligible
+        if isinstance(params[index]["regressor"], Ridge)
+    ]
+    elastic_net_indices = [
+        index for index in eligible
+        if isinstance(params[index]["regressor"], ElasticNet)
+    ]
+    if baseline_indices:
+        selected_index = baseline_indices[0]
+        policy = (
+            "One-standard-error rule across the median baseline and ML candidates: "
+            "select the median baseline when it is within one CV standard error of the best candidate."
+        )
+    elif ridge_indices:
+        selected_index = max(
+            ridge_indices,
+            key=lambda index: float(params[index].get("regressor__alpha", 0.0)),
+        )
+        policy = (
+            "One-standard-error rule: the median baseline did not qualify; select the most regularized "
+            "Ridge candidate within one CV standard error of the best candidate."
+        )
+    elif elastic_net_indices:
+        selected_index = max(
+            elastic_net_indices,
+            key=lambda index: float(params[index].get("regressor__alpha", 0.0)),
+        )
+        policy = (
+            "One-standard-error rule: the baseline and Ridge candidates did not qualify; select the most "
+            "regularized ElasticNet candidate within one CV standard error of the best candidate."
+        )
+    else:
+        preferred_indices = [
+            index for model_type in preferred_model_order
+            for index in eligible
+            if isinstance(params[index]["regressor"], model_type)
+        ]
+        if preferred_indices:
+            selected_index = preferred_indices[0]
+            policy = (
+                "One-standard-error rule: the baseline and preferred regularized linear candidates did not qualify; "
+                f"select the simplest available eligible family ({type(params[selected_index]['regressor']).__name__})."
+            )
+        else:
+            selected_index = best_index
+            policy = "No simpler candidate qualified; select the minimum temporal-CV MAE candidate."
+    return {
+        "best_index": best_index,
+        "selected_index": selected_index,
+        "standard_error": standard_error,
+        "limit": limit,
+        "policy": policy,
+    }
 
 
 def _daily_block_bootstrap_delta(actual, model_pred, baseline_pred, dates, *, repetitions=1000, seed=SEED):
@@ -225,12 +340,40 @@ def run_model_evaluation(
 
     candidate_pipeline = _model_pipeline(Ridge())
     parameter_grid = [
+        {"regressor": [DummyRegressor(strategy="median")]},
+        {"regressor": [LinearRegression()]},
         {"regressor": [Ridge()], "regressor__alpha": [0.1, 1.0, 10.0, 100.0]},
+        {"regressor": [BayesianRidge()]},
+        {"regressor": [HuberRegressor(max_iter=500)], "regressor__alpha": [0.0001, 0.01]},
+        {"regressor": [Lasso(max_iter=5000, selection="cyclic")], "regressor__alpha": [0.00001, 0.0001, 0.001]},
+        {
+            "regressor": [ElasticNet(max_iter=5000, random_state=seed)],
+            "regressor__alpha": [0.001, 0.01, 0.1],
+            "regressor__l1_ratio": [0.25, 0.75],
+        },
+        {"regressor": [LinearSVR(random_state=seed, max_iter=5000, dual="auto")], "regressor__C": [0.1, 1.0, 10.0]},
+        {"regressor": [PoissonRegressor(max_iter=500)], "regressor__alpha": [0.1, 1.0, 10.0]},
+        {"regressor": [TweedieRegressor(power=1.5, link="log", max_iter=500)], "regressor__alpha": [0.1, 1.0]},
+        {"regressor": [DecisionTreeRegressor(random_state=seed)], "regressor__max_depth": [3, 8, None], "regressor__min_samples_leaf": [20]},
         {
             "regressor": [HistGradientBoostingRegressor(random_state=seed, early_stopping=False)],
             "regressor__max_iter": [100, 200],
             "regressor__max_leaf_nodes": [7, 15],
             "regressor__learning_rate": [0.05, 0.1],
+        },
+        {"regressor": [GradientBoostingRegressor(random_state=seed)], "regressor__n_estimators": [100], "regressor__learning_rate": [0.05, 0.1], "regressor__max_depth": [2, 3]},
+        {"regressor": [AdaBoostRegressor(random_state=seed)], "regressor__n_estimators": [50, 100], "regressor__learning_rate": [0.05, 0.5]},
+        {
+            "regressor": [RandomForestRegressor(random_state=seed, n_estimators=100, n_jobs=1)],
+            "regressor__max_features": [0.7, 1.0],
+            "regressor__min_samples_leaf": [10, 40],
+        },
+        {"regressor": [MLPRegressor(hidden_layer_sizes=(32,), alpha=0.01, early_stopping=True, max_iter=300, random_state=seed)]},
+        {"regressor": [KNeighborsRegressor(n_jobs=1)], "regressor__n_neighbors": [25, 75], "regressor__weights": ["uniform", "distance"]},
+        {
+            "regressor": [ExtraTreesRegressor(random_state=seed, n_estimators=100, n_jobs=1)],
+            "regressor__max_features": [0.7, 1.0],
+            "regressor__min_samples_leaf": [10, 40],
         },
     ]
     # Fix the naïve baseline first so all candidate models are judged against
@@ -259,30 +402,20 @@ def run_model_evaluation(
     )
     search.fit(x_dev, y_dev)
     cv_results = search.cv_results_
-    best_cv_index = int(search.best_index_)
+    one_se_selection = select_one_standard_error_candidate(
+        cv_results, n_splits=len(cv)
+    )
+    best_cv_index = one_se_selection["best_index"]
     best_cv_mae = float(-cv_results["mean_test_mae"][best_cv_index])
-    one_se_limit = best_cv_mae + float(cv_results["std_test_mae"][best_cv_index])
-    one_se_indices = [
-        index
-        for index, score in enumerate(-cv_results["mean_test_mae"])
-        if float(score) <= one_se_limit
-    ]
-    ridge_indices = [
-        index
-        for index in one_se_indices
-        if isinstance(cv_results["params"][index]["regressor"], Ridge)
-    ]
-    if ridge_indices:
-        # Within one standard error of the best model, prefer the strongly
-        # regularized linear estimator over a more complex tree ensemble.
-        selected_index = max(
-            ridge_indices,
-            key=lambda index: float(cv_results["params"][index]["regressor__alpha"]),
-        )
-        selection_policy = "One-standard-error rule: prefer the most regularized Ridge candidate within one CV standard error of the best candidate."
-    else:
-        selected_index = best_cv_index
-        selection_policy = "No Ridge candidate fell within one CV standard error; selected the minimum temporal-CV MAE candidate."
+    one_se_limit = one_se_selection["limit"]
+    selected_index = one_se_selection["selected_index"]
+    selection_policy = one_se_selection["policy"]
+    ml_indices = [index for index, params in enumerate(cv_results["params"])
+                  if not isinstance(params["regressor"], DummyRegressor)]
+    # GridSearchCV stores negative MAE scores: maximize the score to find the
+    # lowest actual MAE among ML candidates.
+    best_ml_index = max(ml_indices, key=lambda index: cv_results["mean_test_mae"][index])
+    best_ml_params = cv_results["params"][best_ml_index]
     selected_params = cv_results["params"][selected_index]
     selected_estimator = _model_pipeline(selected_params["regressor"])
     selected_model_parameters = {
@@ -295,7 +428,18 @@ def run_model_evaluation(
             f"regressor__{key}": value for key, value in selected_model_parameters.items()
         })
     selected_estimator.fit(x_dev, y_dev)
-    model_prediction = selected_estimator.predict(x_test)
+    selected_prediction = selected_estimator.predict(x_test)
+    best_ml_estimator = _model_pipeline(best_ml_params["regressor"])
+    best_ml_parameters = {
+        key.replace("regressor__", ""): value
+        for key, value in best_ml_params.items() if key != "regressor"
+    }
+    if best_ml_parameters:
+        best_ml_estimator.set_params(**{
+            f"regressor__{key}": value for key, value in best_ml_parameters.items()
+        })
+    best_ml_estimator.fit(x_dev, y_dev)
+    model_prediction = best_ml_estimator.predict(x_test)
     baseline_prediction = baseline.predict(x_test)
     actual = y_test.to_numpy(dtype=float)
 
@@ -311,7 +455,11 @@ def run_model_evaluation(
             "cv_rmse": float(-results["mean_test_rmse"][index]),
             "cv_r2": float(results["mean_test_r2"][index]),
             "train_mae": float(-results["mean_train_mae"][index]),
+            "validation_minus_train_mae": float(
+                -results["mean_test_mae"][index] + results["mean_train_mae"][index]
+            ),
             "selected_by_one_se_rule": index == selected_index,
+            "best_ml_candidate": index == best_ml_index,
         })
     candidate_rows.sort(key=lambda row: row["cv_mae"])
 
@@ -320,13 +468,14 @@ def run_model_evaluation(
         "start_date": str(meta_test["post_date"].min().date()),
         "end_date": str(meta_test["post_date"].max().date()),
         "median_baseline": regression_metrics(actual, baseline_prediction),
-        "selected_model": regression_metrics(actual, model_prediction),
+        "selected_model": regression_metrics(actual, selected_prediction),
+        "best_ml_candidate": regression_metrics(actual, model_prediction),
     }
     holdout["mae_difference_model_minus_baseline"] = (
-        holdout["selected_model"]["mae"] - holdout["median_baseline"]["mae"]
+        holdout["best_ml_candidate"]["mae"] - holdout["median_baseline"]["mae"]
     )
     holdout["relative_mae_improvement_over_baseline"] = (
-        (holdout["median_baseline"]["mae"] - holdout["selected_model"]["mae"])
+        (holdout["median_baseline"]["mae"] - holdout["best_ml_candidate"]["mae"])
         / holdout["median_baseline"]["mae"]
     )
     holdout["date_block_bootstrap_mae_difference_interval"] = _daily_block_bootstrap_delta(
@@ -340,6 +489,7 @@ def run_model_evaluation(
 
     predictions = meta_test.copy()
     predictions["predicted_engagement_rate"] = model_prediction
+    predictions["selected_approach_prediction"] = selected_prediction
     predictions["median_baseline_prediction"] = baseline_prediction
     predictions["residual"] = actual - model_prediction
     predictions["absolute_error"] = np.abs(predictions["residual"])
@@ -358,15 +508,24 @@ def run_model_evaluation(
         prediction_mean=("predicted_engagement_rate", "mean"),
     ).reset_index().to_dict(orient="records")
 
-    selected_candidate = next(row for row in candidate_rows if row["selected_by_one_se_rule"])
+    best_ml_candidate = next(row for row in candidate_rows if row["best_ml_candidate"])
     baseline_cv_mae = float(-baseline_cv["test_score"].mean())
-    model_improves_cv_baseline = selected_candidate["cv_mae"] < baseline_cv_mae
+    model_improves_cv_baseline = best_ml_candidate["cv_mae"] < baseline_cv_mae
     model_improves_holdout_baseline = (
-        holdout["selected_model"]["mae"] < holdout["median_baseline"]["mae"]
+        holdout["best_ml_candidate"]["mae"] < holdout["median_baseline"]["mae"]
     )
-    model_justified = model_improves_cv_baseline and model_improves_holdout_baseline
+    holdout_improvement_supported = (
+        holdout["date_block_bootstrap_mae_difference_interval"]["upper_95"] is not None
+        and holdout["date_block_bootstrap_mae_difference_interval"]["upper_95"] < 0
+    )
+    model_justified = (
+        model_improves_cv_baseline
+        and model_improves_holdout_baseline
+        and holdout_improvement_supported
+        and not isinstance(selected_params["regressor"], DummyRegressor)
+    )
     report = {
-        "report_version": 1,
+        "report_version": 3,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "input": {"path": str(input_path), "sha256": sha256_file(input_path), "rows": int(len(raw))},
         "runtime": {
@@ -382,8 +541,18 @@ def run_model_evaluation(
         "problem": {
             "type": "regression",
             "target": "total engagements / reach, for rows with positive reach",
-            "intended_use": "Offline test of whether pre-publication format, campaign, hashtag-count, and calendar features predict recorded engagement rate in later dates.",
+            "intended_use": "Offline test of whether pre-publication format, campaign interaction, canonical hashtag-set, hashtag-count, and calendar features predict recorded engagement rate in later dates.",
             "features": FEATURES,
+            "feature_engineering": {
+                "interaction_features": [
+                    "format_campaign combines the pre-publication format and campaign labels to allow their joint effect.",
+                    "hashtag_signature canonicalizes the set of supplied hashtags to model combinations without order or case differences.",
+                ],
+                "calendar_features": "Days since the first observed date plus cyclical day-of-year and weekday terms.",
+                "categorical_handling": "Impute within each training fold; one-hot encode with unseen categories ignored.",
+                "numeric_handling": "Median-impute and standardize within each training fold.",
+                "feature_availability": "All retained predictors are metadata available before publication; outcome metrics and potentially post-outcome annotations remain excluded.",
+            },
             "excluded_fields": ["impressions", "reach", "likes", "comments", "shares", "saves", "profile_visits", "follows", "audience_emotion", "engagement_source"],
             "leakage_controls": "All outcome metrics and potentially post-outcome labels are excluded from model inputs. A date-based holdout and expanding-window date-grouped CV keep every calendar date within one split; preprocessing is fitted inside each fold.",
         },
@@ -402,24 +571,39 @@ def run_model_evaluation(
             "temporal_cv_train_mae_mean": float(-baseline_cv["train_score"].mean()),
         },
         "tuning": {
-            "method": "GridSearchCV over Ridge and HistGradientBoostingRegressor candidates, minimizing mean absolute error over temporal folds",
+            "method": "GridSearchCV over available, suitable scikit-learn regression families; minimize MAE over four expanding temporal folds. Kernel SVR is excluded because its quadratic training cost is impractical at this dataset size.",
+            "model_families_tested": sorted({
+                type(row["regressor"]).__name__
+                for row in cv_results["params"]
+            }),
             "candidate_count": len(candidate_rows),
             "seed": seed,
-            "best_cv_mae": best_cv_mae,
+            "best_cv_mae": float(-cv_results["mean_test_mae"][best_cv_index]),
+            "best_cv_standard_error": one_se_selection["standard_error"],
+            "one_standard_error_method": "Standard deviation of temporal-fold MAE divided by square root of the fold count; approximate because expanding temporal folds are dependent.",
             "one_standard_error_limit_mae": one_se_limit,
             "selection_policy": selection_policy,
-            "best_cv_parameters": {key.replace("regressor__", ""): value for key, value in cv_results["params"][best_cv_index].items() if key != "regressor"},
+            "best_cv_parameters": {
+                key.replace("regressor__", ""): value
+                for key, value in cv_results["params"][best_cv_index].items()
+                if key != "regressor"
+            },
             "best_cv_estimator": type(cv_results["params"][best_cv_index]["regressor"]).__name__,
             "selected_parameters": selected_model_parameters,
             "best_estimator": type(selected_estimator.named_steps["regressor"]).__name__,
+            "best_ml_candidate_parameters": best_ml_parameters,
+            "best_ml_candidate_estimator": type(best_ml_params["regressor"]).__name__,
+            "best_ml_candidate_cv_mae": float(-cv_results["mean_test_mae"][best_ml_index]),
+            "one_se_selected_approach": type(selected_estimator.named_steps["regressor"]).__name__,
         },
         "cross_validation_candidates": candidate_rows,
         "model_vs_baseline": {
-            "selected_ml_candidate_cv_mae": selected_candidate["cv_mae"],
+            "best_ml_candidate_cv_mae": best_ml_candidate["cv_mae"],
             "median_baseline_cv_mae": baseline_cv_mae,
-            "cv_mae_difference_model_minus_baseline": selected_candidate["cv_mae"] - baseline_cv_mae,
+            "cv_mae_difference_model_minus_baseline": best_ml_candidate["cv_mae"] - baseline_cv_mae,
             "ml_candidate_improves_cv_baseline": model_improves_cv_baseline,
             "ml_candidate_improves_future_holdout_baseline": model_improves_holdout_baseline,
+            "future_holdout_gain_supported_by_date_block_interval": holdout_improvement_supported,
             "complexity_justified": model_justified,
             "recommended_approach": (
                 type(selected_estimator.named_steps["regressor"]).__name__
@@ -428,16 +612,15 @@ def run_model_evaluation(
             ),
         },
         "overfit_diagnostic": {
-            "best_candidate_train_mae": selected_candidate["train_mae"],
-            "best_candidate_validation_mae": selected_candidate["cv_mae"],
-            "validation_minus_train_mae": selected_candidate["cv_mae"] - selected_candidate["train_mae"],
+            "best_ml_candidate_train_mae": best_ml_candidate["train_mae"],
+            "best_ml_candidate_validation_mae": best_ml_candidate["cv_mae"],
+            "validation_minus_train_mae": best_ml_candidate["cv_mae"] - best_ml_candidate["train_mae"],
             "interpretation": "A large positive gap indicates weaker performance on later folds than on their training periods; use alongside the untouched future holdout.",
         },
         "fit_diagnosis": (
-            "No useful predictive signal is demonstrated: holdout R² is non-positive and MAE is no better than the median baseline. The small training-to-validation gap does not indicate severe overfit; the current feature set is insufficient or weak for this target. Do not add model complexity without new prediction-time features and a fresh future evaluation."
-            if holdout["selected_model"]["r2"] <= 0
-            and holdout["selected_model"]["mae"] >= holdout["median_baseline"]["mae"]
-            else "Review temporal train/validation/holdout errors before deployment; compare the candidate against the median baseline and examine subgroup error before using it."
+            "No useful predictive gain is established: the best ML candidate's point MAE is nearly identical to the median baseline and the date-block uncertainty interval includes no difference. The one-standard-error rule selects the baseline; do not use the ML candidate without a practically meaningful gain on a new future period."
+            if not model_justified
+            else "The ML candidate improves temporal validation and has an uncertainty-supported holdout gain; confirm practical value and reproduce on a new future period before deployment."
         ),
         "holdout_evaluation": holdout,
         "subgroup_error_analysis": subgroup,

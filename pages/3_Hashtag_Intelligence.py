@@ -59,6 +59,11 @@ st.caption("Explore hashtag usage, observed engagement, and performance rankings
 ht = build_hashtag_summary(f)
 
 if ht.empty:
+    render_sidebar_summary(
+        "Hashtag Intelligence",
+        f,
+        detail_metrics=[("Hashtags matching filters", "0"), ("Top tag", "—")],
+    )
     with st.container(border=True):
         card_title("Hashtag overview")
         st.info("No hashtags were found in the currently selected records.")
@@ -104,6 +109,25 @@ else:
         )
 
     filtered = ht.loc[(ht["records"] >= min_usage) & ht["hashtag"].isin(selected)].copy()
+    sidebar_metric_col = {
+        "Weighted engagement rate": "weighted_engagement_rate",
+        "Usage count": "records",
+        "Total engagements": "engagements",
+        "Total saves": "saves",
+    }[rank_metric]
+    sidebar_top_tag = (
+        filtered.sort_values(sidebar_metric_col, ascending=False).iloc[0]
+        if not filtered.empty else None
+    )
+    render_sidebar_summary(
+        "Hashtag Intelligence",
+        f,
+        detail_metrics=[
+            ("Tags matching filters", f"{len(filtered):,}"),
+            (f"Top hashtag · {rank_metric.lower()}", str(sidebar_top_tag["hashtag"]) if sidebar_top_tag is not None else "—"),
+            ("Top tag weighted rate", f"{sidebar_top_tag['weighted_engagement_rate']:.2%}" if sidebar_top_tag is not None and pd.notna(sidebar_top_tag["weighted_engagement_rate"]) else "—"),
+        ],
+    )
 
     if filtered.empty:
         with st.container(border=True):

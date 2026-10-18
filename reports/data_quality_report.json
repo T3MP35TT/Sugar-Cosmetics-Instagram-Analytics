@@ -1,7 +1,9 @@
 {
   "dataset_summary": {
-    "source_file": "data/sugar_cosmetics_instagram_data.xlsx",
+    "source_file": "data/sugar_cosmetics_instagram_data.csv",
+    "source_sha256": "b64c154cfb7594fcc74119722350d849957ca44cd0a4f7f28ee930b1a16c8f91",
     "rows": 50000,
+    "source_columns": 14,
     "columns_after_feature_engineering": 21,
     "date_min": "2024-04-19 00:00:00",
     "date_max": "2025-04-19 00:00:00",
@@ -21,145 +23,143 @@
       "Product Launch": 9923,
       "Influencer Collab": 9903
     },
-    "provenance": "Likely source is the public Neeraj08823/Sugar_cosmetics_Instagram_Analytics project; official account authenticity and collection method are not established",
-    "cleaning_policy": "Non-destructive standardization; no rows automatically dropped",
-    "notes": [
-      "No caption or post ID field is present in the supplied schema.",
-      "No publication time, follower count, demographic attributes, spend or revenue fields are present.",
-      "Summed post-level reach is not unique account reach.",
-      "Engagement differences are descriptive and do not establish causality.",
-      "IQR outliers are flagged for review, not automatically removed.",
-      "The local filename, date span, and rounded aggregate metrics match the upstream project description; remote bytes and collection history were not verified."
-    ],
+    "provenance": "Source identity and collection method are unverified.",
     "upstream_source": "https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics/tree/main/Data",
-    "source_match_basis": "Local filename, date span, and rounded aggregate metrics match the upstream project description; remote bytes and collection history not verified."
+    "cleaning_policy": "Standardize names and types; no rows dropped or imputed.",
+    "notes": [
+      "No stable post ID or exact publication time is present.",
+      "Summed post-level reach is not unique account reach.",
+      "Aggregate visit/follow rates are proxies, not attributed conversion.",
+      "Category and hashtag comparisons are descriptive, not causal.",
+      "Outliers are flagged for review and retained."
+    ]
   },
   "quality_checks": [
     {
       "check": "Missing cells",
       "count": 0,
       "severity": "Review",
-      "detail": "Missingness is assessed at cell level; investigate any non-zero result."
+      "detail": "Inspect affected fields; no imputation is applied here."
     },
     {
       "check": "Exact duplicate rows",
       "count": 0,
       "severity": "Review",
-      "detail": "Without a post ID, exact duplicates are not the same as confirmed duplicate posts."
+      "detail": "Without a post ID, exact duplicates do not establish duplicate posts."
     },
     {
-      "check": "Invalid/missing post dates",
+      "check": "Invalid or missing dates",
       "count": 0,
       "severity": "High",
-      "detail": "Rows with invalid dates cannot be used in time-based analyses."
+      "detail": "Rows without valid dates are unavailable for temporal summaries."
     },
     {
-      "check": "Missing/non-numeric values in impressions",
+      "check": "Missing or non-numeric: impressions",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in impressions",
+      "check": "Negative values: impressions",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in reach",
+      "check": "Missing or non-numeric: reach",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in reach",
+      "check": "Negative values: reach",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in likes",
+      "check": "Missing or non-numeric: likes",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in likes",
+      "check": "Negative values: likes",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in comments",
+      "check": "Missing or non-numeric: comments",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in comments",
+      "check": "Negative values: comments",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in shares",
+      "check": "Missing or non-numeric: shares",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in shares",
+      "check": "Negative values: shares",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in saves",
+      "check": "Missing or non-numeric: saves",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in saves",
+      "check": "Negative values: saves",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in profile_visits",
+      "check": "Missing or non-numeric: profile_visits",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in profile_visits",
+      "check": "Negative values: profile_visits",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Missing/non-numeric values in follows",
+      "check": "Missing or non-numeric: follows",
       "count": 0,
       "severity": "Review",
-      "detail": "Check original source values before imputation or removal."
+      "detail": "Compare with source definitions before excluding or imputing."
     },
     {
-      "check": "Negative values in follows",
+      "check": "Negative values: follows",
       "count": 0,
       "severity": "High",
-      "detail": "Negative count metrics are usually invalid and require source review."
+      "detail": "Review source values; do not silently clamp counts."
     },
     {
-      "check": "Impressions lower than reach",
+      "check": "Impressions below reach",
       "count": 0,
       "severity": "Review",
-      "detail": "Reach and impressions definitions can vary; verify these records rather than silently changing them."
+      "detail": "Definitions can vary; inspect against source documentation."
     },
     {
-      "check": "Engagement actions exceed reach",
+      "check": "Engagement actions above reach",
       "count": 0,
       "severity": "Review",
-      "detail": "Repeated actions or metric definitions may explain some cases; inspect rather than assume impossible."
+      "detail": "Repeated actions or metric definitions may explain these records."
     },
     {
       "check": "Zero reach",
@@ -171,7 +171,7 @@
       "check": "Zero profile visits",
       "count": 0,
       "severity": "Info",
-      "detail": "Follow-per-visit proxy is undefined when profile visits are zero."
+      "detail": "Follow-per-visit ratio is undefined when visits are zero."
     }
   ],
   "outlier_summary": [
@@ -179,7 +179,6 @@
       "metric": "impressions",
       "q1": 13243.0,
       "q3": 37758.25,
-      "iqr": 24515.25,
       "lower_iqr_fence": -23529.875,
       "upper_iqr_fence": 74531.125,
       "flagged_count": 0,
@@ -189,7 +188,6 @@
       "metric": "reach",
       "q1": 10157.75,
       "q3": 28763.25,
-      "iqr": 18605.5,
       "lower_iqr_fence": -17750.5,
       "upper_iqr_fence": 56671.5,
       "flagged_count": 0,
@@ -199,7 +197,6 @@
       "metric": "likes",
       "q1": 1256.0,
       "q3": 4255.0,
-      "iqr": 2999.0,
       "lower_iqr_fence": -3242.5,
       "upper_iqr_fence": 8753.5,
       "flagged_count": 674,
@@ -209,7 +206,6 @@
       "metric": "comments",
       "q1": 135.0,
       "q3": 516.0,
-      "iqr": 381.0,
       "lower_iqr_fence": -436.5,
       "upper_iqr_fence": 1087.5,
       "flagged_count": 1836,
@@ -219,7 +215,6 @@
       "metric": "shares",
       "q1": 50.0,
       "q3": 228.0,
-      "iqr": 178.0,
       "lower_iqr_fence": -217.0,
       "upper_iqr_fence": 495.0,
       "flagged_count": 2180,
@@ -229,7 +224,6 @@
       "metric": "saves",
       "q1": 62.0,
       "q3": 246.0,
-      "iqr": 184.0,
       "lower_iqr_fence": -214.0,
       "upper_iqr_fence": 522.0,
       "flagged_count": 2101,
@@ -239,7 +233,6 @@
       "metric": "profile_visits",
       "q1": 252.0,
       "q3": 851.0,
-      "iqr": 599.0,
       "lower_iqr_fence": -646.5,
       "upper_iqr_fence": 1749.5,
       "flagged_count": 635,
@@ -249,7 +242,6 @@
       "metric": "follows",
       "q1": 63.0,
       "q3": 245.0,
-      "iqr": 182.0,
       "lower_iqr_fence": -210.0,
       "upper_iqr_fence": 518.0,
       "flagged_count": 2152,
@@ -259,7 +251,6 @@
       "metric": "total_engagements",
       "q1": 1552.0,
       "q3": 5271.0,
-      "iqr": 3719.0,
       "lower_iqr_fence": -4026.5,
       "upper_iqr_fence": 10849.5,
       "flagged_count": 689,
@@ -269,7 +260,6 @@
       "metric": "engagement_rate",
       "q1": 0.12319927438104315,
       "q3": 0.24641727481971792,
-      "iqr": 0.12321800043867477,
       "lower_iqr_fence": -0.06162772627696901,
       "upper_iqr_fence": 0.4312442754777301,
       "flagged_count": 0,

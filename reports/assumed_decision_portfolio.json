@@ -1,0 +1,112 @@
+{
+  "status": "illustrative planning only; assumptions are not observed data or stakeholder approvals",
+  "currency": "INR",
+  "familywise_alpha": 0.05,
+  "testwise_alpha_bonferroni": 0.016666666666666666,
+  "power": 0.8,
+  "assumptions_notice": "Conversion rates, minimum lifts, opportunity counts, net revenue, margin, and campaign costs are hypothetical. Three decision tests use a Bonferroni per-test alpha to control family-wise two-sided error at 5%. The calculation assumes independent binary outcomes, equal assignment, no clustering, and no attrition. Replace with reconciled source-system data and approved finance inputs before launch.",
+  "decisions": [
+    {
+      "sequence": 1,
+      "sponsor": "Marketing",
+      "decision": "Creative format: Image or Reel",
+      "hypothesis": "A Reel-led creative generates a commercially useful increase in attributed purchase conversion versus an Image-led creative.",
+      "comparison": "Randomly split eligible audience into Image (control) and Reel (treatment); hold offer, audience, spend, placement, and measurement window constant.",
+      "randomization_unit": "Mutually exclusive platform audience members assigned before exposure.",
+      "primary_outcome": "Attributed purchase conversions / pre-treatment eligible audience members (intention to treat).",
+      "guardrails": "Net contribution per assigned member, paid cost per purchase, reach delivery, negative feedback, and brand-safety review.",
+      "baseline_conversion_rate": 0.02,
+      "minimum_detectable_lift": 0.003,
+      "monthly_opportunities": 50000,
+      "net_revenue_per_conversion": 1500.0,
+      "contribution_margin": 0.35,
+      "incremental_campaign_cost": 20000.0,
+      "success_action": "If lift is at least 0.30 percentage points, its Bonferroni-adjusted two-sided 98.33% interval excludes zero, net contribution is positive with its preregistered uncertainty interval excluding zero, and guardrails pass, shift at most 10% of the next comparable test budget to Reels, then replicate.",
+      "inconclusive_action": "Keep the current allocation; do not call a winner. Re-estimate power only after checking delivery, contamination, and outcome maturity.",
+      "harm_action": "Stop the treatment and return to the control if the pre-agreed harm boundary is crossed or net contribution is negative at the fixed analysis.",
+      "testwise_alpha": 0.016666666666666666,
+      "sample_size": {
+        "per_arm": 48943,
+        "total": 97886
+      },
+      "estimated_months_at_assumed_volume": 2,
+      "impact_scenario": {
+        "scenario_conversion_rate": 0.023,
+        "incremental_conversions": 150.0,
+        "incremental_net_revenue": 225000.0,
+        "incremental_contribution": 78750.0,
+        "incremental_campaign_cost": 20000.0,
+        "net_contribution_after_cost": 58750.0,
+        "break_even_absolute_lift": 0.0007619047619047619
+      }
+    },
+    {
+      "sequence": 2,
+      "sponsor": "Marketing",
+      "decision": "Campaign message: Tutorial or Product Launch",
+      "hypothesis": "A Tutorial message increases attributed purchase conversion versus a Product Launch message when format, offer, and audience are held constant.",
+      "comparison": "Randomize eligible audience to Tutorial (control) or Product Launch (treatment) messaging using the same creative format and offer.",
+      "randomization_unit": "Mutually exclusive platform audience members assigned before exposure.",
+      "primary_outcome": "Attributed purchase conversions / pre-treatment eligible audience members (intention to treat).",
+      "guardrails": "Net contribution per assigned member, paid cost per purchase, reach delivery, negative feedback, and brand-safety review.",
+      "baseline_conversion_rate": 0.025,
+      "minimum_detectable_lift": 0.002,
+      "monthly_opportunities": 50000,
+      "net_revenue_per_conversion": 1200.0,
+      "contribution_margin": 0.35,
+      "incremental_campaign_cost": 10000.0,
+      "success_action": "If lift is at least 0.20 percentage points, its Bonferroni-adjusted two-sided 98.33% interval excludes zero, net contribution is positive with its preregistered uncertainty interval excluding zero, and guardrails pass, use the Product Launch message in a limited rollout and replicate.",
+      "inconclusive_action": "Keep the current message mix; refine the hypothesis or collect a properly powered new test rather than selecting the higher observed rate.",
+      "harm_action": "Stop the treatment and return to the control if the pre-agreed harm boundary is crossed or net contribution is negative at the fixed analysis.",
+      "testwise_alpha": 0.016666666666666666,
+      "sample_size": {
+        "per_arm": 132559,
+        "total": 265118
+      },
+      "estimated_months_at_assumed_volume": 6,
+      "impact_scenario": {
+        "scenario_conversion_rate": 0.027000000000000003,
+        "incremental_conversions": 100.0,
+        "incremental_net_revenue": 120000.0,
+        "incremental_contribution": 42000.0,
+        "incremental_campaign_cost": 10000.0,
+        "net_contribution_after_cost": 32000.0,
+        "break_even_absolute_lift": 0.0004761904761904762
+      }
+    },
+    {
+      "sequence": 3,
+      "sponsor": "Finance + Marketing",
+      "decision": "Paid allocation: current mix or tested-format reallocation",
+      "hypothesis": "A capped 10% reallocation toward the winning tested format increases net contribution per assigned audience member at the same total spend.",
+      "comparison": "Randomize mutually exclusive audience cells to the current paid mix (control) or proposed mix (treatment); keep total spend, eligibility, and campaign window equal.",
+      "randomization_unit": "Mutually exclusive audience cells assigned before paid exposure; recalculate power for any cluster-level assignment.",
+      "primary_outcome": "Attributed purchase conversions / pre-treatment assigned audience members; net contribution after paid media cost per assigned member is the Finance scale-up gate (the sample-size calculation does not power this continuous outcome).",
+      "guardrails": "Attributed purchase conversion rate, cost per purchase, spend cap, reach delivery, negative feedback, and brand safety.",
+      "baseline_conversion_rate": 0.02,
+      "minimum_detectable_lift": 0.004,
+      "monthly_opportunities": 20000,
+      "net_revenue_per_conversion": 1500.0,
+      "contribution_margin": 0.3,
+      "incremental_campaign_cost": 30000.0,
+      "success_action": "If the conversion lift reaches 0.40 percentage points with its Bonferroni-adjusted two-sided 98.33% interval excluding zero, net contribution is positive with its preregistered uncertainty interval excluding zero, conversion and spend guardrails pass, and Finance reconciles the costs, roll out the 10% reallocation for one cycle and review again.",
+      "inconclusive_action": "Retain the current mix and spend cap; do not reallocate based on engagement or attributed ROAS alone.",
+      "harm_action": "Revert to the control mix immediately if the approved spend cap or harm guardrail is breached.",
+      "testwise_alpha": 0.016666666666666666,
+      "sample_size": {
+        "per_arm": 28156,
+        "total": 56312
+      },
+      "estimated_months_at_assumed_volume": 3,
+      "impact_scenario": {
+        "scenario_conversion_rate": 0.024,
+        "incremental_conversions": 80.0,
+        "incremental_net_revenue": 120000.0,
+        "incremental_contribution": 36000.0,
+        "incremental_campaign_cost": 30000.0,
+        "net_contribution_after_cost": 6000.0,
+        "break_even_absolute_lift": 0.0033333333333333335
+      }
+    }
+  ]
+}

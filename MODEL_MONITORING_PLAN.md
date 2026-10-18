@@ -2,7 +2,7 @@
 
 ## Current release decision
 
-The engagement-rate model is an offline evaluation only. On the 9,980-record temporal holdout, its MAE (0.062265) was slightly worse than the median baseline (0.062235), and the date-block bootstrap interval for the difference included zero. **Do not deploy or use this model for content, budget, or business decisions.** This plan becomes active only if a later model passes the deployment gates below.
+The engagement-rate model is an offline evaluation only. The strongest ML candidate is ElasticNet (alpha 0.01, L1 ratio 0.25). On the 9,980-record temporal holdout, its MAE (0.06223515) is effectively tied with the median baseline (0.06223522); the date-block 95% interval for the MAE difference is [-0.00000734, 0.00000724] and includes zero. The one-standard-error rule selects the median baseline. **Do not deploy or use the ML candidate for content, budget, or business decisions.** This plan becomes active only if a later model passes the deployment gates below.
 
 ## Pre-deployment gates
 

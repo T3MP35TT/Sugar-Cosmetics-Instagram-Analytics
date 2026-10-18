@@ -37,10 +37,13 @@ def main() -> None:
         bootstrap_repetitions=args.bootstrap_repetitions,
     )
     result = report["holdout_evaluation"]
-    print(f"Model: {report['tuning']['best_estimator']}")
+    print(f"One-SE selected approach: {report['tuning']['one_se_selected_approach']}")
     print(f"Holdout median-baseline MAE: {result['median_baseline']['mae']:.6f}")
-    print(f"Holdout model MAE: {result['selected_model']['mae']:.6f}")
-    print(f"Complex model justified: {report['complex_model_justified']}")
+    print(
+        f"Best ML candidate ({report['tuning']['best_ml_candidate_estimator']}) holdout MAE: "
+        f"{result['best_ml_candidate']['mae']:.6f}"
+    )
+    print(f"Recommended approach: {report['model_vs_baseline']['recommended_approach']}")
     print(f"Wrote reports to: {args.output_dir.resolve()}")
 
 

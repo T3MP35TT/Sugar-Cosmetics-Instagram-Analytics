@@ -183,11 +183,17 @@ def build_manifest(root: Path, source: Path) -> dict:
             "audit_csv_fallback": file_record(
                 root / "data" / "sugar_cosmetics_instagram_data.csv", root
             ),
+            "business_impact_attribution_template": file_record(
+                root / "data" / "business_impact_attribution_template.csv", root
+            ),
         },
         "project_code": code_records,
         "project_documentation": {
             "readme": file_record(root / "README.md", root),
             "data_provenance": file_record(root / "DATA_PROVENANCE.md", root),
+            "business_impact_data_contract": file_record(
+                root / "BUSINESS_IMPACT_DATA_CONTRACT.md", root
+            ),
             "review_checklist": file_record(root / "PROJECT_REVIEW_CHECKLIST.md", root),
             "implementation_review": file_record(
                 root / "reports" / "implementation_review.md", root
@@ -202,8 +208,14 @@ def build_manifest(root: Path, source: Path) -> dict:
         },
         "project_analysis_artifacts": {
             "model_evaluation": file_record(root / "reports" / "model_evaluation.json", root),
+            "category_rate_inference": file_record(
+                root / "reports" / "category_rate_inference.json", root
+            ),
             "model_holdout_predictions": file_record(
                 root / "reports" / "model_holdout_predictions.csv", root
+            ),
+            "executive_report_docx": file_record(
+                root / "reports" / "Sugar_Cosmetics_Instagram_Executive_Report.docx", root
             ),
         },
         "input_consistency": compare_project_inputs(root),

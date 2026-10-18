@@ -17,6 +17,7 @@ if str(ROOT / "src") not in sys.path:
 
 from analytics import (
     add_features,
+    category_performance,
     hashtag_table,
     load_data,
     summarize_data,
@@ -228,6 +229,7 @@ def initialize(page_name):
 
     apply_theme()
     render_page_header(page_name)
+    sidebar_summary_slot = st.sidebar.empty()
 
     csv_path = ROOT / "data" / "sugar_cosmetics_instagram_data.csv"
     excel_path = ROOT / "data" / "sugar_cosmetics_instagram_data.xlsx"
@@ -251,6 +253,122 @@ def initialize(page_name):
     # Pages should treat the shared dataframe as read-only and create a subset
     # only when applying filters. Avoid copying all 50k rows on every page load.
     filtered = df
+
+    sidebar_descriptions = {
+        "Home": "Dataset snapshot and the measures available across this dashboard.",
+        "Executive Overview": "Key performance measures for the current report selection.",
+        "Content Performance": "Live content summary for the records that pass the page filters.",
+        "Hashtag Intelligence": "Hashtag coverage and the currently ranked tag results.",
+        "Audience & Conversion": "Recorded audience actions and aggregate conversion proxies.",
+        "Posting Strategy": "Posting cadence and weekday patterns in the selected records.",
+        "Deep Dive & Data Quality": "Current explorer scope and source-data quality context.",
+        "Strategic Recommendations": "Selected-scope results to guide test planning.",
+        "Predictive Model Validation": "Validation results from the time-forward model evaluation.",
+    }
+
+    def render_sidebar_summary(active_page=None, data=None, detail_metrics=None, section=None):
+        """Render a live, page-specific summary beneath Streamlit navigation."""
+        active_page = active_page or page_name
+        scoped = df if data is None else data
+        metrics = [("Records in current scope", f"{len(scoped):,}")]
+        if not scoped.empty and "post_date" in scoped.columns:
+            dates = pd.to_datetime(scoped["post_date"], errors="coerce").dropna()
+            period = (
+                f"{dates.min():%d %b %Y} – {dates.max():%d %b %Y}"
+                if not dates.empty else "No valid dates"
+            )
+        else:
+            period = "No matching records" if scoped.empty else "Date unavailable"
+        metrics.append(("Date coverage", period))
+
+        if not scoped.empty:
+            snapshot = summarize_data(scoped)
+            weighted_rate = snapshot["weighted_engagement_rate"]
+            rate_label = f"{weighted_rate:.2%}" if pd.notna(weighted_rate) else "—"
+            engagements = snapshot["total_engagements"]
+            reach = snapshot["cumulative_post_reach"]
+
+            if active_page in ("Home", "Executive Overview"):
+                metrics.extend([
+                    ("Weighted engagement rate", rate_label),
+                    ("Total engagements", f"{engagements:,.0f}"),
+                ])
+                if active_page == "Executive Overview":
+                    grouped = category_performance(scoped, "post_type")
+                    if not grouped.empty:
+                        top = grouped.sort_values("weighted_engagement_rate", ascending=False).iloc[0]
+                        metrics.append(("Leading format by rate", str(top["post_type"])))
+            elif active_page == "Content Performance":
+                means = scoped.groupby("post_type")["total_engagements"].mean().dropna()
+                metrics.extend([
+                    ("Weighted engagement rate", rate_label),
+                    ("Total engagements", f"{engagements:,.0f}"),
+                    ("Top format by average engagements", str(means.idxmax()) if not means.empty else "—"),
+                ])
+            elif active_page == "Hashtag Intelligence":
+                hashtag_count = int(scoped["hashtags"].fillna("").astype(str).str.count(r"#\w+").sum()) if "hashtags" in scoped else 0
+                metrics.extend([
+                    ("Hashtag mentions in scope", f"{hashtag_count:,}"),
+                    ("Weighted engagement rate", rate_label),
+                ])
+            elif active_page == "Audience & Conversion":
+                visits = pd.to_numeric(scoped["profile_visits"], errors="coerce").sum()
+                follows = pd.to_numeric(scoped["follows"], errors="coerce").sum()
+                metrics.extend([
+                    ("Profile visits", f"{visits:,.0f}"),
+                    ("Visits / summed reach", f"{visits / reach:.2%}" if reach else "—"),
+                    ("Follows / visits", f"{follows / visits:.2%}" if visits else "—"),
+                ])
+            elif active_page == "Posting Strategy":
+                month_counts = scoped.assign(_month=scoped["post_date"].dt.to_period("M")).groupby("_month").size()
+                weekday = weekday_table(scoped).dropna(subset=["weighted_engagement_rate"])
+                best_day = weekday.sort_values("weighted_engagement_rate", ascending=False).head(1)
+                metrics.extend([
+                    ("Observed months", f"{len(month_counts):,}"),
+                    ("Most active month", str(month_counts.idxmax()) if not month_counts.empty else "—"),
+                    ("Top weekday by weighted rate", str(best_day.iloc[0]["weekday"]) if not best_day.empty else "—"),
+                ])
+            elif active_page == "Deep Dive & Data Quality":
+                metrics.extend([
+                    ("Weighted engagement rate", rate_label),
+                    ("Rows with missing fields", f"{int(scoped.isna().any(axis=1).sum()):,}"),
+                    ("Dataset quality flags", f"{sum(int(flag.get('count', 0) > 0) for flag in quality.get('flags', [])):,}"),
+                ])
+            elif active_page == "Strategic Recommendations":
+                grouped = category_performance(scoped, "post_type")
+                top = grouped.sort_values("weighted_engagement_rate", ascending=False).head(1)
+                metrics.extend([
+                    ("Weighted engagement rate", rate_label),
+                    ("Total engagements", f"{engagements:,.0f}"),
+                    ("Leading format to consider for a test", str(top.iloc[0]["post_type"]) if not top.empty else "—"),
+                ])
+            else:
+                metrics.extend([
+                    ("Weighted engagement rate", rate_label),
+                    ("Total engagements in source data", f"{engagements:,.0f}"),
+                ])
+
+        if detail_metrics:
+            metrics = metrics[:2] + list(detail_metrics)[:4]
+        else:
+            metrics = metrics[:6]
+        stats_html = "".join(
+            f'<div class="sugar-sidebar-stat"><span>{html.escape(str(label))}</span>'
+            f'<strong>{html.escape(str(value))}</strong></div>'
+            for label, value in metrics
+        )
+        section_html = (
+            f'<div class="sugar-sidebar-eyebrow">{html.escape(str(section))}</div>'
+            if section else '<div class="sugar-sidebar-eyebrow">SUGAR COSMETICS · LIVE PAGE SUMMARY</div>'
+        )
+        sidebar_summary_slot.markdown(
+            f'<div class="sugar-sidebar-info">{section_html}'
+            f'<div class="sugar-sidebar-title">{html.escape(str(active_page))}</div>'
+            f'<div class="sugar-sidebar-description">{html.escape(sidebar_descriptions.get(active_page, "Summary of the current dashboard view."))}</div>'
+            f'<div class="sugar-sidebar-divider"></div>{stats_html}'
+            '<div class="sugar-sidebar-foot">Updates with the page selection. Reach is summed across records, not unique.</div></div>',
+            unsafe_allow_html=True,
+        )
 
     def kpis(data):
         total_engagements = data["total_engagements"].sum()
@@ -300,26 +418,30 @@ def initialize(page_name):
                 _month=data["post_date"].dt.to_period("M")
             ).groupby("_month").size()
             weekdays = weekday_table(data)
+            best_day_row = (
+                weekdays.dropna(subset=["weighted_engagement_rate"])
+                .sort_values("weighted_engagement_rate", ascending=False)
+                .head(1)
+            )
             best_day = (
-                weekdays.sort_values(
-                    "weighted_engagement_rate", ascending=False
-                ).iloc[0]["weekday"]
-                if not weekdays.empty
+                f"{best_day_row.iloc[0]['weekday']} · "
+                f"{best_day_row.iloc[0]['weighted_engagement_rate']:.2%}"
+                if not best_day_row.empty
                 else "—"
             )
             values = [
                 (
-                    "Average records / month",
+                    "Average records / observed month",
                     f"{monthly.mean():,.0f}" if not monthly.empty else "—",
                 ),
                 (
                     "Most active month",
                     str(monthly.idxmax()) if not monthly.empty else "—",
                 ),
-                ("Best weekday by weighted rate", str(best_day)),
+                ("Best weekday by weighted rate", best_day),
                 (
-                    "Active weekdays",
-                    f"{data['post_date'].dt.day_name().nunique():,}",
+                    "Dates represented",
+                    f"{data['post_date'].nunique():,}",
                 ),
                 (
                     "Weighted engagement rate",
@@ -439,6 +561,8 @@ def initialize(page_name):
 
         st.plotly_chart(figure, width="stretch")
 
+    render_sidebar_summary()
+
     return {
         "pd": pd,
         "st": st,
@@ -467,5 +591,6 @@ def initialize(page_name):
         "page": page_name,
         "kpis": kpis,
         "page_kpis": page_kpis,
+        "render_sidebar_summary": render_sidebar_summary,
         "bar": bar,
     }
