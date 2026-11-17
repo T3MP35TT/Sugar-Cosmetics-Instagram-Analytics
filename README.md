@@ -1,132 +1,237 @@
 <div align="center">
   <img src="images/sugar_logo.png" alt="SUGAR Cosmetics" width="190" />
-  <h1>Sugar Cosmetics Instagram Analytics</h1>
-  <p><strong>From social-content observations to measurable marketing experiments</strong></p>
+  <h1>💄 Sugar Cosmetics Instagram Analytics</h1>
+  <p><strong>Social Content Intelligence · Engagement Analytics · Experiment Design · Marketing Decision Support</strong></p>
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white" alt="Python" />
     <img src="https://img.shields.io/badge/Streamlit-Interactive%20Analytics-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit" />
     <img src="https://img.shields.io/badge/Pandas-Data%20Preparation-150458?logo=pandas&logoColor=white" alt="Pandas" />
-    <img src="https://img.shields.io/badge/Plotly-Visualization-3F4F75?logo=plotly&logoColor=white" alt="Plotly" />
+    <img src="https://img.shields.io/badge/Plotly-Interactive%20Charts-3F4F75?logo=plotly&logoColor=white" alt="Plotly" />
     <img src="https://img.shields.io/badge/scikit--learn-Model%20Evaluation-F7931E?logo=scikitlearn&logoColor=white" alt="scikit-learn" />
-    <img src="https://img.shields.io/badge/Tests-pytest-0A9EDC?logo=pytest&logoColor=white" alt="pytest" />
+    <img src="https://img.shields.io/badge/Testing-pytest-0A9EDC?logo=pytest&logoColor=white" alt="pytest" />
+    <img src="https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white" alt="GitHub Actions" />
   </p>
 </div>
 
 ---
 
-> **Data-scope and attribution notice**  
-> This project analyzes a supplied 50,000-record Instagram analytics dataset associated with a public Sugar Cosmetics analytics repository. The available materials do **not** verify that the records came from Sugar Cosmetics' official Instagram account, that they represent its actual posting history, or that the sample is representative. Findings in this repository are therefore described as results for the **supplied dataset**, not verified Sugar Cosmetics business performance. No causal or financial impact is claimed.
+> ⚠️ **Data scope and attribution notice**  
+> This project analyzes a supplied 50,000-record Instagram analytics dataset associated with a public Sugar Cosmetics analytics repository. The available materials do not independently verify that the records originated from Sugar Cosmetics' official Instagram account, represent its actual publishing history, or form a representative sample. All findings below describe the **supplied dataset**, not verified Sugar Cosmetics business performance. The project does not claim causal impact, attributable sales, or realized ROI.
 
-## Contents
+## 📌 Project Overview
 
-- [Executive overview](#executive-overview)
-- [Business context and analytical questions](#business-context-and-analytical-questions)
-- [Dataset and provenance](#dataset-and-provenance)
-- [Executive performance snapshot](#executive-performance-snapshot)
-- [Key analytical findings](#key-analytical-findings)
-- [Application and dashboard](#application-and-dashboard)
-- [Analytical methodology](#analytical-methodology)
-- [Predictive model evaluation](#predictive-model-evaluation)
-- [Experiment and business-impact framework](#experiment-and-business-impact-framework)
-- [Data quality, reproducibility and governance](#data-quality-reproducibility-and-governance)
-- [Technology stack and architecture](#technology-stack-and-architecture)
-- [Repository structure](#repository-structure)
-- [Getting started](#getting-started)
-- [Reproducing the analysis](#reproducing-the-analysis)
-- [Testing and continuous integration](#testing-and-continuous-integration)
-- [Known limitations and evidence gaps](#known-limitations-and-evidence-gaps)
-- [Recommended next steps](#recommended-next-steps)
-- [Documentation and deliverables](#documentation-and-deliverables)
-- [Data attribution and licensing](#data-attribution-and-licensing)
+**Sugar Cosmetics Instagram Analytics** is an end-to-end social-media analytics and marketing decision-support project. It transforms a supplied Instagram dataset into a structured workflow covering data validation, exploratory analysis, engagement measurement, statistical inference, temporal model evaluation, experiment planning, and business-impact measurement design.
 
-## Executive overview
+The project is designed around practical questions that a social-media, brand, or performance-marketing team may need to investigate:
 
-**Sugar Cosmetics Instagram Analytics** is an end-to-end analytics case study designed to demonstrate how a social-content dataset can be transformed into an auditable analytical workflow and a practical marketing decision-support application.
+- 💄 Which content formats show different engagement patterns in the available records?
+- 📣 Do campaign categories show measurable differences after accounting for uncertainty?
+- #️⃣ Which hashtags and hashtag combinations are most commonly observed, and how do their engagement patterns compare?
+- 👥 How do recorded reach, profile visits, and follows relate to one another?
+- 📅 How are records distributed across the available dates and weekdays?
+- 📊 Are apparent category differences large and stable enough to justify a test?
+- 🧠 Can information available before publication improve future engagement-rate estimates over a simple baseline?
+- 🧪 What controlled experiment would be required before changing creative strategy or media allocation?
+- 💰 What additional source-system data is required to measure attributed conversions, contribution, ROAS, and ROI?
 
-The project combines data validation, exploratory analysis, engagement measurement, category-level uncertainty estimation, temporal model evaluation, experiment design, business-impact data validation, and an interactive Streamlit application. It is built to separate what the supplied data shows from what a marketing or finance team would still need to measure before making an investment decision.
+The project follows an evidence-first approach: describe the available data, quantify uncertainty, evaluate models against simple baselines, and define the operational data needed before making commercial claims.
 
-The work is organized around four connected questions:
+## 🎯 Business & Analytical Objectives
 
-1. **What is recorded?** — How are reach, impressions, interactions, content formats, campaign labels, hashtags and audience-action fields distributed in the supplied records?
-2. **Where are the observed differences?** — Do engagement rates differ across content formats or campaign categories, and how uncertain are those comparisons?
-3. **Can the available pre-publication fields forecast engagement?** — Does a more complex model improve on a simple baseline when evaluated on later dates?
-4. **What evidence would support a business decision?** — How should Marketing and Finance design controlled tests and capture attributed conversion, revenue, cost and contribution data?
+The project demonstrates practical analytical workflows across the social-content measurement lifecycle:
 
-The project intentionally does not turn engagement into sales or ROI without attribution evidence. It provides the measurement contract and workflow needed to calculate those outcomes when a validated business export becomes available.
+- Validate the structure, date coverage, types, and consistency of the supplied dataset.
+- Standardize the data without silently dropping records or imputing values.
+- Define engagement metrics consistently across the notebook, Python modules, and dashboard.
+- Compare content formats and campaign categories using weighted engagement rates.
+- Explore hashtag coverage, audience-action fields, and publishing-calendar patterns.
+- Quantify uncertainty around category-level engagement differences.
+- Evaluate pre-publication prediction using a chronological holdout and temporal cross-validation.
+- Separate pre-publication forecasting from exploratory prediction conditional on observed exposure.
+- Translate descriptive signals into pre-specified, testable experiment candidates.
+- Establish a business-impact data contract for conversion, revenue, costs, contribution, and ROI.
+- Deliver an interactive Streamlit application and an executive-facing report.
+- Maintain reproducibility through saved outputs, source/code hashes, automated tests, and CI checks.
 
-## Business context and analytical questions
+## 📊 Dataset & Key Metrics
 
-Social engagement is an intermediate signal. For a consumer brand, content decisions ultimately need to be evaluated against qualified audience actions, attributable conversions, contribution and cost—not likes or reach alone.
+The current analytical dataset contains the following records and fields:
 
-This analysis explores the available social-content measures while identifying the evidence required to connect them to commercial outcomes.
+| Dataset attribute | Value |
+|---|---:|
+| Records | **50,000** |
+| Source columns | **14** |
+| Date coverage | **19 April 2024 – 19 April 2025** |
+| Distinct calendar dates | **366** |
+| Content formats | 4 |
+| Campaign categories | 5 |
+| Missing cells after standardization | **0** |
+| Exact duplicate rows | **0** |
+| Invalid or missing dates | **0** |
 
-| Business area | Analytical question | Decision-support output |
-|---|---|---|
-| Content strategy | How do recorded engagement levels vary by content format? | Weighted engagement comparisons and uncertainty intervals |
-| Campaign strategy | Are campaign labels associated with different engagement rates? | Campaign-level comparisons against all other campaign records |
-| Discovery | How are hashtags used, and what engagement patterns are associated with them? | Hashtag normalization, coverage and performance views |
-| Audience actions | How do reach, profile visits and follows relate in the supplied records? | Funnel-style descriptive ratios, explicitly labelled as proxies |
-| Publishing operations | How are records distributed across dates and weekdays? | Calendar and cadence views; not verified publication frequency |
-| Measurement strategy | What would be required to establish commercial impact? | Attribution data contract, experiment design and Finance measures |
-| Forecasting | Do pre-publication metadata features add future predictive value? | Chronological holdout evaluation against a median baseline |
+### 📁 Main Dataset Files
 
-## Dataset and provenance
-
-### Dataset profile
-
-| Attribute | Description |
+| File | Purpose |
 |---|---|
-| Dataset records | 50,000 |
-| Fields | 14 |
-| Date coverage | 19 April 2024 – 19 April 2025 |
-| Calendar span | 366 days |
-| Main formats | Image, Reel, Story, Video |
-| Campaign labels | Giveaway, Festive Offer, Influencer Collab, Product Launch, Tutorial |
-| Primary input | `data/sugar_cosmetics_instagram_data.csv` |
-| Workbook source | `data/sugar_cosmetics_instagram_data.xlsx` |
-| Cleaned derivative | `data/sugar_cosmetics_instagram_cleaned.csv` |
+| `data/sugar_cosmetics_instagram_data.csv` | Default CSV used by the dashboard and analytical runners |
+| `data/sugar_cosmetics_instagram_data.xlsx` | Workbook source used in the provenance and consistency review |
+| `data/sugar_cosmetics_instagram_cleaned.csv` | Cleaned derivative generated for review and downstream use |
+| `data/business_impact_attribution_template.csv` | Blank schema template for a validated business-outcome export |
 
-The available fields are `post_date`, `post_type`, `campaign_type`, `hashtags`, `audience_emotion`, `engagement_source`, `impressions`, `reach`, `likes`, `comments`, `shares`, `saves`, `profile_visits`, and `follows`.
+### 🧾 Available Fields
 
-### Source assessment
+The 14 source fields are:
 
-The local workbook has the same filename as a workbook in the public [`Neeraj08823/Sugar_cosmetics_Instagram_Analytics` project](https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics/tree/main/Data). The local files contain 50,000 rows over the same date span, and their calculated aggregates align with rounded figures in that upstream project's README. This supports likely source attribution, but the remote workbook bytes were not independently fetched and hash-compared.
+`post_date`, `post_type`, `campaign_type`, `hashtags`, `audience_emotion`, `engagement_source`, `impressions`, `reach`, `likes`, `comments`, `shares`, `saves`, `profile_visits`, and `follows`.
 
-The source account identity, collection method, capture permissions, row grain, and sampling procedure remain unverified. There is no stable post identifier or exact publication timestamp. The near-even counts across content and campaign categories are treated as a sampling diagnostic, not evidence of representativeness. See [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) for the full assessment.
+### 🎞️ Content-Format Distribution
 
-### Important interpretation rules
+| Format | Records |
+|---|---:|
+| Reel | 12,599 |
+| Story | 12,517 |
+| Video | 12,485 |
+| Image | 12,399 |
 
-- **Record count is not confirmed post count.** The row grain is undocumented and there is no stable `post_id`.
-- **Summed reach is cumulative post-level reach.** It is not unique account reach or deduplicated audience size.
-- **Profile visits and follows are recorded audience-action fields.** Their ratios are proxies, not attributable conversion rates.
-- **Hashtag groups can overlap.** A record containing multiple hashtags may contribute to more than one hashtag group; hashtag totals should not be summed as if categories were mutually exclusive.
-- **A ratio with a zero denominator is missing**, not zero.
-- **Descriptive association is not causation.** Category differences cannot establish that a content choice caused an outcome.
+### 📣 Campaign-Category Distribution
 
-## Executive performance snapshot
+| Campaign category | Records |
+|---|---:|
+| Tutorial | 10,186 |
+| Giveaway | 9,998 |
+| Festive Offer | 9,990 |
+| Product Launch | 9,923 |
+| Influencer Collab | 9,903 |
 
-The following are calculations from the supplied 50,000-record CSV. They are not independently verified brand KPIs.
+> **Interpretation note:** The near-even distribution across categories is treated as a sampling diagnostic. It does not establish that the records represent the real-world distribution of Sugar Cosmetics' published content.
 
-| Measure | Dataset result | Interpretation |
+### 📈 Dataset-Level Engagement Snapshot
+
+The following figures are calculated from the supplied 50,000-record file. They are not independently verified company KPIs.
+
+| Metric | Dataset result | Definition / interpretation |
 |---|---:|---|
-| Summed reach | 987,423,288 | Sum of record-level reach; not unique people/accounts |
+| Summed reach | 987,423,288 | Sum of record-level reach; not unique audience reach |
 | Impressions | 1,276,045,750 | Sum of supplied record-level impressions |
 | Total engagements | 183,164,417 | Likes + comments + shares + saves |
-| Weighted engagement rate | **18.55%** | Total eligible engagements ÷ total eligible reach |
+| **Weighted engagement rate** | **18.55%** | Eligible total engagements ÷ eligible summed reach |
 | Profile visits | 29,634,798 | Sum of recorded profile visits |
 | Follows | 8,866,710 | Sum of recorded follows |
 | Profile-visit rate proxy | 3.00% | Profile visits ÷ summed reach |
 | Follow-per-visit proxy | 29.92% | Follows ÷ profile visits |
 
-### Engagement mix
+The weighted engagement rate is calculated from aggregate eligible engagements and reach. It is not the arithmetic mean of record-level engagement rates.
 
-Total engagements are defined as likes, comments, shares and saves. The weighted engagement rate is calculated as the sum of eligible engagements divided by the sum of eligible reach. It is not the simple average of record-level engagement rates.
+> ⚠️ Reach, profile visits, and follows are record-level aggregate fields. They must not be interpreted as deduplicated people, attributable conversions, purchases, or retained customers without additional source-system evidence.
 
-## Key analytical findings
+## 🧠 Analytical Framework
 
-### 1. Content-format comparison
+The project uses multiple analytical perspectives rather than relying on a single engagement leaderboard.
 
-The full-file descriptive analysis compares each format's weighted engagement rate with the weighted rate for all other formats. Simultaneous 95% moving date-block bootstrap intervals use seven-day blocks, with three- and fourteen-day sensitivity checks.
+### 💄 1. Content Performance Analytics
+
+Content analysis compares the four recorded formats:
+
+- Image
+- Reel
+- Story
+- Video
+
+Key measures and comparisons include:
+
+- Total likes, comments, shares, and saves
+- Total engagements
+- Reach and impressions
+- Weighted engagement rate
+- Format-level comparisons against all other formats
+- Engagement mix and distribution
+- Format and campaign intersections
+
+The purpose is to identify descriptive patterns and candidate hypotheses—not to claim that a format caused higher engagement.
+
+### 📣 2. Campaign Analytics
+
+Campaign analysis compares the five recorded campaign labels:
+
+- Giveaway
+- Festive Offer
+- Influencer Collab
+- Product Launch
+- Tutorial
+
+The dashboard supports category-level comparisons, but the statistical analysis does not establish a reliable campaign winner. All campaign-versus-rest simultaneous confidence intervals include zero in the seven-day analysis.
+
+### #️⃣ 3. Hashtag Intelligence
+
+Hashtag analysis standardizes and parses hashtag strings to support:
+
+- Hashtag frequency and coverage
+- Common hashtag groups and combinations
+- Hashtag-level engagement summaries
+- Comparison of records containing selected hashtag groups
+- Exploration of format and campaign context
+
+Hashtag groups can overlap. A record with multiple hashtags may be included in more than one hashtag group, so hashtag group totals must not be added together as if they were mutually exclusive categories.
+
+### 👥 4. Audience & Conversion-Funnel Proxies
+
+The supplied data contains reach, profile visits, and follows. The project uses these fields to explore:
+
+- Profile visits relative to summed reach
+- Follows relative to profile visits
+- Audience-action patterns by content and campaign categories
+- Changes in recorded audience-action metrics across the available date range
+
+These are **descriptive proxies**, not verified conversion rates. The data does not contain unique-user identifiers, attributed orders, customer acquisition cost, or an approved conversion attribution window.
+
+### 📅 5. Posting Strategy & Calendar Analytics
+
+The date field supports analysis of:
+
+- Record distribution by date
+- Weekday patterns
+- Month and calendar trends
+- Engagement patterns across the observed calendar
+- Selected-scope comparisons through interactive filters
+
+Because exact publication timestamps and stable post identifiers are unavailable, the project avoids treating record density as a verified publishing schedule or posting frequency for the brand.
+
+### 🔎 6. Deep Dive & Data Quality
+
+The deep-dive area supports record-level exploration and review of:
+
+- Selected records and filters
+- Data types and schema
+- Missing-value checks
+- Duplicate-row checks
+- Invalid dates and count-field validation
+- Impressions-versus-reach checks
+- Engagement-actions-versus-reach checks
+- Outlier screening and review flags
+- Metric definitions and methodology notes
+
+Outliers are retained for review rather than automatically deleted. A statistical flag is not proof that a record is erroneous.
+
+### 📊 7. Statistical Inference
+
+The inference workflow compares each category's weighted engagement rate with the weighted rate for all other categories in the same dimension.
+
+The implementation uses:
+
+- Weighted engagement-rate contrasts, expressed in percentage points
+- Circular moving calendar-date block resampling
+- Seven-day blocks for the primary interval analysis
+- 5,000 bootstrap repetitions by default
+- Simultaneous 95% intervals using a shared max-deviation critical value within each dimension
+- Three-day and fourteen-day block-length sensitivity checks
+
+The intervals are conditional on the supplied dates and resampling assumptions. They do not correct for unmeasured confounding, unknown sampling, or unclear row grain, and they do not establish causal effects.
+
+## 🔬 Advanced Engagement Analysis
+
+### 📌 Content-Format Comparison
+
+The full-file comparison reports the following weighted engagement rates and differences versus all other formats:
 
 | Format | Weighted engagement rate | Difference vs. all other formats | 7-day simultaneous 95% interval |
 |---|---:|---:|---:|
@@ -135,90 +240,77 @@ The full-file descriptive analysis compares each format's weighted engagement ra
 | Video | 18.56% | +0.015 percentage points | -0.118 to +0.148 pp |
 | Image | 18.42% | -0.179 percentage points | -0.312 to -0.046 pp |
 
-The Image-versus-other-formats contrast remains below zero across the three-, seven- and fourteen-day block-length sensitivity analyses. This is an **observed, sample-specific association**. It may be used to formulate a pre-registered experiment hypothesis, but not as a standalone reason to reduce Image content or reallocate budget. Confounding, unknown sampling, and unverified row grain remain.
+The Image-versus-other-formats contrast remains below zero across the three-, seven-, and fourteen-day block-length sensitivity analyses. This is a sample-specific association and may inform a pre-registered experiment hypothesis. It is not, by itself, a reason to reduce Image content or reallocate marketing spend.
 
-### 2. Campaign comparison
+### 📣 Campaign Comparison
 
-Every campaign-versus-all-other-campaigns simultaneous 95% interval includes zero in the seven-day analysis. The observed campaign-rate differences are therefore not sufficiently separated from uncertainty to establish a reliable ranking from this dataset alone.
+Every campaign-versus-all-other-campaigns simultaneous 95% interval includes zero in the seven-day analysis. The observed campaign differences are not sufficiently separated from uncertainty to establish a reliable ranking from this dataset alone.
 
-The dashboard presents the comparisons for exploration, but the project does not recommend choosing a campaign winner on the basis of the highest observed rate.
+The project therefore avoids naming a campaign winner based only on the highest observed rate.
 
-### 3. Audience-action proxies
+### 👥 Audience-Action Interpretation
 
-The dataset contains reach, profile visits and follows, allowing descriptive ratios to be calculated. Those ratios do not identify unique people, conversion attribution, purchase intent, sales, or retention. A business decision about acquisition efficiency requires deduplicated opportunities and conversions from a source system with a documented attribution window.
+Profile visits and follows are useful descriptive fields, but the available dataset does not demonstrate:
 
-### 4. Practical conclusion
+- Unique people reached across posts
+- Unique profile visitors
+- Attributed followers or customers
+- Verified purchases or orders
+- Customer retention or repeat purchase
+- Incremental lift caused by a specific creative or campaign
 
-The most decision-useful output is not a claim that one format or campaign is a proven winner. It is a measurement plan: retain descriptive findings as hypotheses, define a controlled comparison, capture pre-treatment eligible units, reconcile attributed outcomes and costs, and apply a pre-agreed scale/hold/stop rule.
+These outcomes require source-system integration and a documented attribution design.
 
-## Application and dashboard
+## 🧠 Predictive Analytics & Model Validation
 
-The Streamlit application has a home page and eight analytical sections. It provides shared filters and interactive charts for exploration of the supplied dataset.
+The project separates two modelling questions because they have different information availability and business uses.
 
-| Section | Purpose | Example questions |
-|---|---|---|
-| **Executive Overview** | Selected-scope KPIs, trends and key signals | What does the selected dataset slice show? |
-| **Content Performance** | Format-level reach, interactions and engagement | How do Image, Reel, Story and Video records compare? |
-| **Hashtag Intelligence** | Hashtag parsing, coverage and observed engagement patterns | Which hashtag groups appear most often in the selected data? |
-| **Audience & Conversion Funnel** | Reach, profile visits and follow proxies | How do recorded audience-action measures relate? |
-| **Posting Strategy** | Calendar cadence, date and weekday comparisons | How are records distributed over the available date range? |
-| **Deep Dive & Data Quality** | Record-level inspection, filters, validation and downloads | Which source records or quality checks need review? |
-| **Strategic Recommendations** | Uncertainty-aware comparisons, experiment planning and scenario analysis | What would a controlled test need to measure? |
-| **Predictive Model Validation** | Temporal model comparison, holdout error and limitations | Do pre-publication signals improve on a simple baseline? |
+### 🎯 A. Pre-Publication Engagement-Rate Evaluation
 
-The app also includes a separate landing page (`Home.py`) that summarizes the dataset and application workflow.
+**Business question:** Can information plausibly available before a post is published help estimate its engagement rate on later dates?
 
-## Analytical methodology
+- **Target:** Total engagements divided by positive reach.
+- **Candidate features:** Content type, campaign type, format-campaign interaction, canonical hashtag set, hashtag count, and calendar features.
+- **Excluded features:** Reach, impressions, likes, comments, shares, saves, profile visits, follows, and potentially post-outcome annotations.
+- **Temporal split:** Chronological 80/20 split by unique dates.
+- **Development set:** 40,020 records.
+- **Future holdout:** 9,980 records, 5 February–19 April 2025.
+- **Model search:** 58 configurations across suitable scikit-learn regression families, evaluated using expanding-window temporal folds with a seven-day gap.
 
-### Data validation and preparation
+| Holdout result | MAE |
+|---|---:|
+| Median baseline | 0.06223522 |
+| Best machine-learning candidate | 0.06223516 |
 
-The validation workflow standardizes field names and types, checks required fields and value ranges, evaluates date validity and duplicate rows, and reports unusual values for review. It preserves source records rather than silently dropping or imputing them. The dashboard reads the original project CSV by default and falls back to the workbook if the CSV is absent; the notebook also writes a cleaned derivative for audit and review.
+The difference is negligible. The date-block bootstrap interval includes zero, and the one-standard-error selection rule retains the median baseline.
 
-### Descriptive analytics
+> **Model governance decision:** The available evidence does not justify deploying a more complex pre-publication engagement-rate model. A new independent future period and a material, stable improvement over the baseline would be required before reconsidering deployment.
 
-The shared analytical layer calculates interaction totals, record-level and weighted engagement rates, reach and audience-action summaries, format and campaign comparisons, weekday patterns, and hashtag-level summaries. Filters are applied to the selected scope, and definitions are centralized in `src/analytics.py` to keep application pages consistent.
+### 📊 B. Exploratory Engagement-Volume Model Conditional on Exposure
 
-### Uncertainty estimation
+A separate Ridge regression estimates engagement volume (likes + comments + shares + saves) using observed reach and impressions together with content and campaign metadata.
 
-`src/inference.py` estimates weighted engagement-rate differences between each category and all remaining categories. It uses circular moving calendar-date blocks, a shared max-deviation critical value for simultaneous intervals within each dimension, 5,000 bootstrap replicates by default, and block-length sensitivity checks. The intervals are conditional on the supplied dates and resampling assumptions; they do not adjust for confounding or establish causal effects.
+| Future-holdout metric | Ridge model | Median baseline |
+|---|---:|---:|
+| MAE | ~1,240 engagements | ~2,120 engagements |
+| R² | 0.622 | -0.059 |
 
-### Feature engineering
+The Ridge model reduces holdout MAE by approximately 41.5% relative to the median baseline in this supplied file. However, this analysis is explicitly **exploratory**: it conditions on realized exposure, and the target/features were selected after reviewing the dataset. It is not a pre-publication forecast, causal estimate, or confirmatory proof of generalizable model performance.
 
-The project derives engagement totals and rate measures, normalized hashtag representations, date/calendar features, content/campaign combinations, and category-level summaries. It preserves the distinction between metadata available before publication and metrics observed after exposure so the predictive evaluation can apply a feature-availability contract.
+### 🛡️ Model Governance Position
 
-## Predictive model evaluation
+- No predictive model is deployed in production.
+- The median baseline remains the selected approach for the pre-publication engagement-rate task.
+- Exposure-conditional engagement-volume estimates are retained as exploratory analysis only.
+- `MODEL_MONITORING_PLAN.md` defines future release, review, monitoring, and retraining gates; it is a governance plan, not an active production monitoring service.
 
-Two different modelling questions are deliberately separated.
+## 🧪 Experiment Design & Marketing Decision Support
 
-### A. Pre-publication engagement-rate evaluation
+The Strategic Recommendations section converts descriptive findings into testable hypotheses. It includes sample-size planning, assumptions, guardrails, scenario calculations, and scale/hold/stop decision rules.
 
-**Question:** Can fields plausibly known before publication predict a record's engagement rate on later dates?
+### 🧪 Illustrative Test Portfolio
 
-- **Target:** total engagements divided by positive reach.
-- **Candidate features:** content type, campaign type, format-campaign interaction, canonical hashtag set, hashtag count, and calendar features.
-- **Excluded inputs:** reach, impressions, likes, comments, shares, saves, profile visits, follows, and potentially post-outcome annotations.
-- **Validation:** chronological 80/20 split by unique dates; 40,020 development records and 9,980 future-holdout records (5 February–19 April 2025); four expanding-window temporal folds with a seven-day gap.
-- **Search:** 58 configurations across 18 scikit-learn model families; preprocessing is fitted inside each validation fold.
-
-The strongest machine-learning candidate's future-holdout MAE is approximately **0.06223516**, versus **0.06223522** for the median baseline. The difference is negligible, the date-block 95% interval includes zero, and the one-standard-error selection rule chooses the median baseline. **The evidence does not justify deploying a more complex pre-publication engagement-rate model.**
-
-### B. Exploratory engagement-volume model conditional on exposure
-
-A separate Ridge regression estimates total likes, comments, shares and saves using already observed reach and impressions, plus content/campaign metadata. On the 9,980-record later-date holdout, it records MAE of approximately **1,240 engagements** and R² of **0.622**, compared with a median-baseline MAE of approximately **2,120**.
-
-This is a different task: it conditions on realized exposure and was selected after reviewing the dataset. It is **exploratory and descriptive**, not a pre-publication forecast, causal estimate, or confirmatory proof of generalizable predictive performance.
-
-### Model governance position
-
-No predictive model is deployed. `MODEL_MONITORING_PLAN.md` defines future release gates, batch checks, review cadence, incident response, retraining criteria and ownership requirements. Those controls are a plan, not an active production monitoring service.
-
-## Experiment and business-impact framework
-
-The Strategic Recommendations page translates descriptive signals into testable hypotheses. It includes sample-size planning, assumed scenario calculations, guardrails, and explicit actions for successful, inconclusive or harmful outcomes.
-
-### Illustrative test portfolio
-
-The current decision portfolio contains three possible Marketing/Finance tests. The values below are **assumptions used for planning**, not observed baseline conversion rates, approved stakeholder targets, campaign results or measured ROI.
+The following tests are planning examples. Their baseline rates, minimum detectable effects, volume assumptions, and durations are **not observed campaign outcomes or approved stakeholder targets**.
 
 | Proposed test | Assumed baseline conversion | Assumed minimum detectable lift | Planned eligible units per arm | Approx. duration at assumed volume |
 |---|---:|---:|---:|---:|
@@ -226,94 +318,232 @@ The current decision portfolio contains three possible Marketing/Finance tests. 
 | Tutorial vs. Product Launch message | 2.5% | +0.20 pp | 132,559 | 6 months |
 | Current paid mix vs. capped tested-format reallocation | 2.0% | +0.40 pp | 28,156 | 3 months |
 
-The planner uses 80% power and a Bonferroni-adjusted two-sided per-test alpha of approximately 1.67% to control family-wise error at 5% across three tests. The binary conversion calculation assumes independent outcomes, equal assignment, no clustering and no attrition. It does not power the continuous net-contribution outcome; that requires a separate design.
+The planner uses 80% power and a Bonferroni-adjusted two-sided per-test alpha of approximately 1.67% to control family-wise error at 5% across three tests. The binary conversion calculation assumes independent outcomes, equal assignment, no clustering, and no attrition. It does not power the continuous net-contribution outcome; that requires a separate design.
 
-### Attributed business-impact workflow
+### 💰 Business-Impact Measurement
 
-The project includes:
+The project includes a business-impact workflow designed to validate an export containing the financial and attribution fields required for decision-making.
 
-- [`BUSINESS_IMPACT_DATA_CONTRACT.md`](BUSINESS_IMPACT_DATA_CONTRACT.md) — required row grain, denominator, attribution window/method, financial definitions and optional experiment fields.
-- [`data/business_impact_attribution_template.csv`](data/business_impact_attribution_template.csv) — blank schema template for a validated source-system export.
-- `src/business_impact.py` — validates uploaded data and calculates conversion rate, customer acquisition cost, net ROAS, contribution and ROI.
-- Randomized-arm analysis — estimates treatment-minus-control conversion and net-contribution differences with unit-level bootstrap intervals when valid experiment identifiers and preregistered fields are supplied.
+Potential outputs include:
 
-**No attributed business-outcome file is currently present.** The workflow is implemented, but the project has no observed attributed revenue, variable cost, paid-media cost, incremental conversion or ROI result. Do not populate the template with assumed or fabricated performance data.
+- Conversion rate
+- Customer acquisition cost
+- Net return on ad spend (ROAS)
+- Net contribution
+- Return on investment (ROI)
+- Treatment-versus-control conversion difference
+- Treatment-versus-control net-contribution difference
+- Unit-level bootstrap uncertainty intervals when experiment identifiers and preregistered fields are supplied
 
-## Data quality, reproducibility and governance
+**No attributed business-outcome file is currently present.** There is no observed attributed revenue, variable cost, paid-media cost, incremental conversion, or ROI result in the supplied project data. The template must be populated only from a validated source-system export; assumptions must not be presented as actual outcomes.
 
-### Recorded validation results
+## 🌐 Streamlit Analytics Platform
 
-The current data-quality report records:
+The project provides a multi-page Streamlit application with a home page and eight analytical sections. The application uses shared utilities for loading, metric calculation, filtering, and theme presentation.
 
-- 50,000 source records and 14 columns.
+| Application section | Analytical purpose |
+|---|---|
+| 💼 **Executive Overview** | Selected-scope KPIs, trends, performance signals, and management readout |
+| 🎨 **Content Performance** | Compare Image, Reel, Story, and Video records using reach, interactions, and engagement metrics |
+| #️⃣ **Hashtag Intelligence** | Explore hashtag frequency, coverage, and observed engagement patterns |
+| 👥 **Audience & Conversion Funnel** | Examine reach, profile visits, and follows as aggregate audience-action proxies |
+| 📅 **Posting Strategy** | Explore date distribution, calendar patterns, weekday comparisons, and cadence signals |
+| 🔎 **Deep Dive & Data Quality** | Filter records, inspect data, review data quality, and explore methodology |
+| 🧪 **Strategic Recommendations** | Review category uncertainty, proposed experiments, scenario assumptions, and business-impact inputs |
+| 🧠 **Predictive Model Validation** | Inspect temporal evaluation, baseline comparisons, model errors, and conditional engagement-volume analysis |
+
+The separate `Home.py` page introduces the project, displays a dataset snapshot, describes the analytical workflow, and provides navigation context.
+
+## 🎨 Context-Aware Dashboard Experience
+
+The application uses a shared visual theme and reusable utilities to keep page behavior consistent.
+
+### 🧭 Shared Application Components
+
+- Dataset loading and fallback handling
+- Common metric and analytical functions
+- Shared filters and scope-aware summaries
+- Reusable page and visual components
+- Consistent theme and layout settings
+- Data-quality and interpretation notices
+
+### 🧩 User Workflow
+
+```text
+📥 Select the analytical scope
+              ↓
+📊 Review the selected-scope summary
+              ↓
+🔎 Compare content, campaign, hashtag and audience patterns
+              ↓
+🛡️ Inspect data quality and uncertainty
+              ↓
+🧪 Evaluate experiment candidates
+              ↓
+💰 Validate business outcomes when attributed data is available
+```
+
+The dashboard is designed as an exploration and decision-support interface. It does not automate media allocation or deploy predictive decisions.
+
+## 🛡️ Data Quality, Reproducibility & Governance
+
+### ✅ Recorded Data-Quality Checks
+
+The current validation report records:
+
+- 50,000 records and 14 source columns.
 - Zero missing cells after standardization.
 - Zero exact duplicate rows.
 - Zero invalid or missing dates.
 - No negative values in the checked count fields.
 - No records with impressions below reach in the validation output.
 - No records with engagement actions above reach in the validation output.
+- No zero-reach rows in the validation output.
 
-These checks validate consistency against the project's data rules. They do not prove source authenticity, unique post grain, metric correctness, or representativeness. Because there is no stable post ID, zero exact duplicate rows does not prove that every record represents a unique post.
+These checks establish consistency against the project's validation rules. They do not prove source authenticity, correct metric definitions, a unique-post row grain, or sample representativeness. Since a stable post identifier is not available, zero exact duplicate rows does not prove every record represents a unique post.
 
-### Reproducibility controls
+### 🔁 Reproducibility Controls
 
 - Centralized metric and validation functions in `src/analytics.py`.
-- Saved model, inference, quality and planning outputs under `reports/`.
-- Fixed random seeds and explicit temporal split definitions for resampling/model workflows.
+- Saved inference, model, quality, and planning outputs in `reports/`.
+- Fixed random seeds and explicit temporal split definitions for resampling and model workflows.
 - SHA-256 hashes for source data and code in `reports/reproducibility_manifest.json`.
-- Cell-by-cell workbook/CSV consistency check recorded as 50,000 rows × 14 columns with zero mismatched cells after normalization.
-- Unit tests for analytics, data validation, inference, modelling, experiment design, business-impact calculations and reproducibility-manifest logic.
-- GitHub Actions workflow on pushes and pull requests to run tests and Python compilation checks.
+- Workbook/CSV consistency check recorded as 50,000 rows × 14 columns, with zero mismatched cells after normalization.
+- Unit tests for analytics, inference, modelling, experiment design, business-impact calculations, and reproducibility-manifest logic.
+- GitHub Actions workflow configured to run tests and Python compilation checks on pushes and pull requests.
 
-A file hash establishes byte-level identity for the checked file; it does not validate the truth or provenance of the original metrics.
+A file hash confirms byte-level identity for the checked file; it does not independently validate the truth or provenance of the original metrics.
 
-## Technology stack and architecture
+## 🌐 Data & Analytical Architecture
 
-| Layer | Tools | Responsibility |
-|---|---|---|
-| Application | Python, Streamlit | Interactive multi-page analytics interface |
-| Data processing | Pandas, NumPy, OpenPyXL | Loading, standardization, feature engineering and validation |
-| Visualization | Plotly, Matplotlib | Interactive dashboard charts and analytical plots |
-| Statistical analysis | NumPy, SciPy, custom bootstrap routines | Weighted comparisons and uncertainty intervals |
-| Predictive analysis | scikit-learn | Temporal model search, baselines, Ridge and regression evaluation |
-| Testing | pytest | Unit and application-page smoke tests |
-| Automation | GitHub Actions | Test and compile checks on push and pull request |
-| Reporting | Python report generator, PDF output | Standalone executive-report generation |
-
-### High-level workflow
+### 🔄 End-to-End Workflow
 
 ```text
-Supplied CSV / Excel workbook
-              │
-              ▼
-    Loading & schema validation
-              │
-              ▼
- Standardization & feature engineering
-              │
-       ┌──────┼───────────────┐
-       ▼      ▼               ▼
- Descriptive Statistical   Temporal model
- analytics    inference    evaluation
-       │      │               │
-       └──────┼───────────────┘
-              ▼
- Saved analysis artifacts / reproducibility manifest
-              │
-       ┌──────┴────────┐
-       ▼               ▼
- Streamlit app     Executive report
-       │
-       ▼
- Experiment planning and attributed-impact workflow
+          📄 Supplied CSV / Excel Workbook
+                         │
+                         ▼
+              🔍 Schema & Data Validation
+                         │
+                         ▼
+             🧹 Standardization / Features
+                         │
+              ┌──────────┼──────────────┐
+              ▼          ▼              ▼
+        📊 Descriptive  📐 Statistical  🧠 Temporal
+          Analytics     Inference      Evaluation
+              │          │              │
+              └──────────┼──────────────┘
+                         ▼
+              📁 Saved Analytical Outputs
+                         │
+                ┌────────┴────────┐
+                ▼                 ▼
+          ⚡ Streamlit App   📑 Executive Report
+                │
+                ▼
+       🧪 Experiment & Business-Impact
+             Measurement Design
 ```
 
-## Repository structure
+### 🧱 Architecture Layers
+
+| Layer | Components | Responsibility |
+|---|---|---|
+| Input | CSV, Excel workbook | Supplied dataset and source comparison |
+| Validation | `src/analytics.py`, notebook, quality reports | Schema checks, standardization, data-quality diagnostics |
+| Analytics | `src/analytics.py` | Shared descriptive metrics and feature preparation |
+| Inference | `src/inference.py` | Weighted category contrasts and date-block uncertainty intervals |
+| Modelling | `src/modeling.py`, `src/conditional_engagement_model.py` | Temporal pre-publication evaluation and exposure-conditional exploratory model |
+| Decision support | `src/experiment_design.py`, `src/decision_portfolio.py`, `src/business_impact.py` | Sample-size planning, scenarios, and business-outcome validation |
+| Application | `Home.py`, `pages/`, `utils/` | Interactive Streamlit experience |
+| Reporting | `src/build_executive_report.py`, `reports/` | Executive report and supporting analysis artifacts |
+| Quality controls | `tests/`, `.github/workflows/ci.yml` | Automated checks and reproducibility controls |
+
+## 🛠️ Technical Stack
+
+| Technology | Purpose |
+|---|---|
+| 🐍 Python | Data preparation, analytics, modelling, and application logic |
+| 🐼 pandas | Data loading, tabular transformation, and aggregation |
+| 🔢 NumPy | Numerical operations and statistical computation |
+| ⚡ Streamlit | Multi-page interactive dashboard |
+| 📊 Plotly | Interactive visualizations |
+| 📈 Matplotlib | Analytical plots and report visuals |
+| 🧠 scikit-learn | Regression models, baselines, preprocessing, and temporal evaluation |
+| 📗 OpenPyXL | Excel workbook ingestion |
+| 🧪 pytest | Unit tests and application smoke tests |
+| 🔁 GitHub Actions | Automated CI checks |
+| 📝 Jupyter | Notebook-based validation and exploratory analysis |
+
+## 📊 Data Analyst Skills Demonstrated
+
+### 🔍 Data Preparation & Quality
+
+- File ingestion from CSV and Excel
+- Schema inspection and type standardization
+- Missing-value and duplicate checks
+- Date validation and calendar feature creation
+- Range and consistency checks
+- Outlier screening without automatic deletion
+- Data provenance and interpretation documentation
+
+### 📈 Business & Descriptive Analytics
+
+- KPI definition and metric contracts
+- Engagement-rate calculation
+- Weighted aggregation
+- Content and campaign segmentation
+- Hashtag normalization and grouping
+- Audience-action proxy analysis
+- Calendar and weekday analysis
+- Comparative performance analysis
+
+### 📐 Statistical Analysis
+
+- Weighted category contrasts
+- Percentage-point interpretation
+- Moving date-block bootstrap
+- Simultaneous confidence intervals
+- Sensitivity analysis
+- Sampling and uncertainty caveats
+- Separation of association from causation
+
+### 🧠 Predictive Analytics
+
+- Feature-availability contracts
+- Leakage-aware modelling
+- Chronological train/holdout separation
+- Expanding-window temporal cross-validation
+- Baseline comparison
+- MAE, RMSE, and R² evaluation
+- Model complexity and deployment assessment
+
+### 🧪 Experiment & Business Measurement
+
+- Hypothesis development
+- Minimum detectable effect assumptions
+- Sample-size planning
+- Power and multiple-testing considerations
+- Guardrail and stopping-rule design
+- Attribution data requirements
+- Conversion, CAC, ROAS, contribution, and ROI validation framework
+
+### 🎨 Analytics Communication
+
+- Executive KPI summaries
+- Interactive dashboard design
+- Analytical storytelling
+- Decision-support framing
+- Limitations and governance communication
+- Reproducible reporting
+
+## 📁 Project Structure
 
 ```text
-Sugar Cosmetics Instagram Analytics/
+Sugar-Cosmetics-Instagram-Analytics/
 │
 ├── Home.py                                  # Streamlit home / application entry point
+│
 ├── pages/                                   # Eight analytical dashboard sections
 │   ├── 1_Executive_Overview.py
 │   ├── 2_Content_Performance.py
@@ -324,26 +554,52 @@ Sugar Cosmetics Instagram Analytics/
 │   ├── 8_Strategic_Recommendations.py
 │   └── 9_Predictive_Model_Validation.py
 │
+├── utils/                                   # Shared app utilities and theme
+│   ├── common.py
+│   └── theme.py
+│
 ├── src/                                     # Reusable analytical modules and runners
 │   ├── analytics.py
 │   ├── inference.py
 │   ├── modeling.py
 │   ├── conditional_engagement_model.py
-│   ├── decision_portfolio.py
 │   ├── experiment_design.py
+│   ├── decision_portfolio.py
 │   ├── business_impact.py
 │   ├── reproducibility_manifest.py
 │   ├── build_eda_notebook.py
 │   ├── build_executive_report.py
 │   └── run_*.py
 │
-├── utils/                                   # Shared app components and theme
-├── notebooks/                               # Data validation and EDA notebook
-├── data/                                    # Input data and attribution template
-├── reports/                                 # Saved outputs, diagnostics and predictions
-├── tests/                                   # Unit and dashboard smoke tests
-├── images/                                  # Project branding assets
-├── .github/workflows/ci.yml                 # Automated checks
+├── notebooks/
+│   └── 01_data_validation_and_eda.ipynb
+│
+├── data/                                    # Supplied data and attribution template
+│   ├── sugar_cosmetics_instagram_data.csv
+│   ├── sugar_cosmetics_instagram_data.xlsx
+│   ├── sugar_cosmetics_instagram_cleaned.csv
+│   └── business_impact_attribution_template.csv
+│
+├── reports/                                 # Saved metrics, diagnostics and reports
+│   ├── category_rate_inference.json
+│   ├── conditional_engagement_volume.json
+│   ├── data_quality_report.json
+│   ├── model_evaluation.json
+│   ├── reproducibility_manifest.json
+│   ├── Sugar_Cosmetics_Instagram_Executive_Report.pdf
+│   └── ...
+│
+├── tests/                                   # Automated unit and application tests
+│   ├── test_analytics.py
+│   ├── test_app_pages.py
+│   ├── test_business_impact.py
+│   ├── test_experiment_design.py
+│   ├── test_inference.py
+│   ├── test_modeling.py
+│   └── test_reproducibility_manifest.py
+│
+├── images/                                  # Project brand assets
+├── .github/workflows/ci.yml                 # GitHub Actions checks
 │
 ├── BUSINESS_IMPACT_DATA_CONTRACT.md
 ├── DATA_PROVENANCE.md
@@ -354,26 +610,26 @@ Sugar Cosmetics Instagram Analytics/
 └── README.md
 ```
 
-## Getting started
+## 🚀 Getting Started
 
-### Prerequisites
+### ✅ Prerequisites
 
-- Python 3.12 or a compatible Python version supported by the dependencies.
-- Git (for cloning the repository).
-- Windows PowerShell, macOS Terminal or Linux shell.
+- Python 3.12 (the GitHub Actions workflow uses Python 3.12).
+- Git, if cloning the repository.
+- Windows PowerShell, macOS Terminal, or Linux shell.
 
-The CI workflow currently runs on Python 3.12. The exact environment lock was captured on Windows with Python 3.14.7; use the dependency-range file for a compatible fresh setup, or the lock file when recreating the captured environment.
+The project includes `requirements.txt` for compatible dependency ranges and `requirements-lock.txt` for the captured Windows/Python 3.14.7 environment. For a fresh supported setup, use the dependency-range file with Python 3.12.
 
-### 1. Clone the repository
+### 1. 📥 Clone the Repository
 
 ```bash
 git clone <YOUR_REPOSITORY_URL>
 cd "Sugar Cosmetics Instagram Analytics"
 ```
 
-Replace `<YOUR_REPOSITORY_URL>` with the URL of your GitHub repository.
+Replace `<YOUR_REPOSITORY_URL>` with the GitHub repository URL.
 
-### 2. Create and activate a virtual environment
+### 2. 🐍 Create a Virtual Environment
 
 **Windows PowerShell**
 
@@ -389,40 +645,42 @@ python3.12 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
-
-For a standard compatible installation:
+### 3. 📦 Install Dependencies
 
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-For the exact captured Windows/Python 3.14.7 environment:
+For the captured Windows/Python 3.14.7 environment, the lock file is also available:
 
 ```bash
 python -m pip install -r requirements-lock.txt
 ```
 
-### 4. Launch the Streamlit application
+### 4. ⚡ Launch the Streamlit Dashboard
 
-Run the command from the project root:
+Run this command from the project root:
 
 ```bash
 streamlit run Home.py
 ```
 
-Streamlit prints a local URL in the terminal. Open that URL in a browser to access the home page and the eight analytical sections.
+Streamlit will print a local URL in the terminal. Open it in your browser to access the home page and the eight analytical sections.
 
-> The project entry point is `Home.py`; do not use `streamlit run app.py` for this repository.
+> The actual application entry point in this project is `Home.py`.
 
-## Reproducing the analysis
+## 🔁 Reproducing the Analysis
 
-Run commands from the repository root with the virtual environment activated.
+Run commands from the project root with the virtual environment activated.
 
-### Data validation and exploratory analysis
+### 📓 Data Validation & Exploratory Analysis
 
-Open `notebooks/01_data_validation_and_eda.ipynb` and execute cells in order. The notebook reads the app CSV, with workbook fallback, standardizes and validates fields, reports data quality and outlier flags, and writes the cleaned derivative and quality outputs.
+Open and execute:
+
+```text
+notebooks/01_data_validation_and_eda.ipynb
+```
 
 To rebuild the notebook structure:
 
@@ -430,62 +688,62 @@ To rebuild the notebook structure:
 python src/build_eda_notebook.py
 ```
 
-Outlier flags are retained for review; the workflow does not automatically remove those records.
+The validation workflow standardizes and checks the supplied data, records quality findings, and writes the cleaned derivative and supporting outputs. Outlier flags are retained for review; records are not automatically removed.
 
-### Regenerate category uncertainty analysis
+### 📐 Regenerate Category Inference
 
 ```bash
 python src/run_descriptive_inference.py
 ```
 
-This writes `reports/category_rate_inference.json` using weighted category contrasts, simultaneous 95% moving date-block intervals, and block-length sensitivity outputs.
+This updates `reports/category_rate_inference.json` with weighted category contrasts, simultaneous date-block intervals, and block-length sensitivity results.
 
-### Regenerate pre-publication model evaluation
+### 🧠 Regenerate Pre-Publication Model Evaluation
 
 ```bash
 python src/run_model_evaluation.py
 ```
 
-This writes:
+This updates:
 
 - `reports/model_evaluation.json`
 - `reports/model_holdout_predictions.csv`
 
-The workflow uses pre-publication metadata only and maintains chronological separation between development and future holdout dates.
+The evaluation uses pre-publication metadata, chronological separation, and expanding-window temporal validation.
 
-### Regenerate exposure-conditional engagement-volume analysis
+### 📊 Regenerate Exposure-Conditional Engagement-Volume Analysis
 
 ```bash
 python src/run_conditional_engagement_volume.py
 ```
 
-This writes the conditional model metrics and row-level predictions under `reports/`. Interpret these as exploratory estimates conditional on observed reach and impressions.
+This updates the conditional-model metrics and predictions under `reports/`. Interpret the result as exploratory analysis conditional on observed reach and impressions.
 
-### Regenerate the assumed decision portfolio
+### 🧪 Regenerate the Assumed Decision Portfolio
 
 ```bash
 python src/run_decision_portfolio.py
 ```
 
-This updates `reports/assumed_decision_portfolio.json`. Its assumptions must be replaced with stakeholder-approved values before a real experiment is launched.
+This updates `reports/assumed_decision_portfolio.json`. Replace planning assumptions with stakeholder-approved inputs before conducting a real experiment.
 
-### Generate the reproducibility manifest
+### 🔁 Generate the Reproducibility Manifest
 
 ```bash
 python src/reproducibility_manifest.py
 ```
 
-This records hashes, runtime and package versions, input consistency, record density and category balance. It can also accept custom source and output paths; run `python src/reproducibility_manifest.py --help` for options.
+This records file hashes, runtime and package versions, input consistency, record density, and category balance. Use `python src/reproducibility_manifest.py --help` to inspect available options.
 
-### Build the executive report
+### 📑 Build the Executive Report
 
 ```bash
 python src/build_executive_report.py
 ```
 
-The generator creates `reports/Sugar_Cosmetics_Instagram_Executive_Report.docx` from current data and analysis artifacts. A PDF report is included in the repository under `reports/`.
+The project includes an executive report PDF under `reports/` and the source generator in `src/`.
 
-## Testing and continuous integration
+## 🧪 Testing & Continuous Integration
 
 Run the automated test suite:
 
@@ -499,55 +757,172 @@ Run Python compilation checks:
 python -m compileall -q Home.py pages src utils tests
 ```
 
-The GitHub Actions workflow in `.github/workflows/ci.yml` runs dependency installation, pytest and compilation checks on pushes and pull requests. The tests cover core analytics, schema validation, weighted rates, hashtag handling, temporal split behavior, model feature leakage controls, inference reproducibility, experiment-size calculations, attribution validation and dashboard smoke checks.
+The GitHub Actions workflow in `.github/workflows/ci.yml` is configured to run on pushes and pull requests. It installs supported dependencies, runs pytest, and compiles the project Python files.
 
-## Known limitations and evidence gaps
+Test coverage includes:
 
-The following constraints should accompany any external presentation of these results:
+- Core metric calculations and analytical functions
+- Data standardization and validation
+- Hashtag handling and weighted-rate calculations
+- Temporal split and leakage-control behavior
+- Statistical inference and reproducibility
+- Experiment sample-size and planning logic
+- Business-impact input validation
+- Dashboard-page smoke checks
 
-1. **Source authenticity is unverified.** The supplied dataset is likely associated with a public analytics repository, but no source account ID, official export evidence or independent collection record is available.
-2. **Row grain is unknown.** There is no stable post ID or exact publication time. A record is not automatically a unique post.
-3. **Sampling is unverified.** Near-even category counts and record density may reflect a constructed or balanced sample; they do not prove representativeness.
-4. **Reach is not unique reach.** Summed record-level reach can contain repeated audience members across records.
-5. **Commercial attribution is absent.** The source contains no confirmed orders, attributed conversions, net revenue, contribution margin or paid-media spend. ROI and ROAS cannot be calculated from the supplied data.
-6. **No causal effect is identified.** Observed format, campaign and hashtag relationships may be confounded.
-7. **The pre-publication model has no demonstrated business value.** Its future-holdout performance is effectively tied with a median baseline, so the baseline is retained and no model is recommended for deployment.
-8. **The exposure-conditional model is exploratory.** It uses realized reach/impressions and was selected after examining the dataset; it is not a pre-publication model or causal estimate.
-9. **No production operations are configured.** There is no scheduled data feed, production prediction service, active drift alerting, named operational owner or retraining process.
-10. **Fairness cannot be assessed.** Demographic and other protected-group attributes are not available in the supplied dataset.
+## 🛡️ Data Attribution, Security & Responsible Use
 
-## Recommended next steps
+### Dataset Attribution
 
-A production-grade extension would require the following evidence and operating controls:
+The available provenance assessment identifies [`Neeraj08823/Sugar_cosmetics_Instagram_Analytics`](https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics) as the likely upstream project. Preserve this attribution when referencing the supplied dataset.
 
-1. **Validate the source.** Confirm account identity, collection permissions, extraction method, record grain, sampling frame, timezone and metric definitions with the data owner.
-2. **Introduce stable keys.** Obtain a platform post ID and a source extraction timestamp; retain immutable raw extracts and record-level lineage.
-3. **Connect business outcomes.** Reconcile attributed conversions, net revenue, refunds, variable costs and paid-media costs under a Finance-approved attribution policy.
-4. **Pre-register experiments.** Select one primary outcome, randomization unit, eligibility rules, attribution window, sample-size method, guardrails, stopping rule and analysis plan before treatment exposure.
-5. **Evaluate decisions on contribution.** Use net contribution per eligible randomized unit—not engagement rate alone—as the scale-up gate where feasible.
-6. **Set model deployment gates.** Require a stable prediction-time source, independently collected future data, material improvement over a baseline, subgroup review, model ownership and rollback approval before operational use.
-7. **Operationalize data quality.** Add source reconciliation, automated batch checks, monitoring ownership and an auditable refresh process.
+The upstream README mentions an MIT license for its project, but the ownership and license scope of the dataset have not been independently confirmed. Review the upstream repository's current license and obtain any necessary permission before redistributing the workbook or representing it as official brand data.
 
-## Documentation and deliverables
+### Security
 
-| Resource | Description |
-|---|---|
-| [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) | Dataset source assessment and interpretation limits |
-| [`BUSINESS_IMPACT_DATA_CONTRACT.md`](BUSINESS_IMPACT_DATA_CONTRACT.md) | Required attribution and experiment-export schema |
-| [`MODEL_MONITORING_PLAN.md`](MODEL_MONITORING_PLAN.md) | Future model release, monitoring and retraining gates |
-| [`PROJECT_REVIEW_CHECKLIST.md`](PROJECT_REVIEW_CHECKLIST.md) | Project review and evidence checklist |
-| [`notebooks/01_data_validation_and_eda.ipynb`](notebooks/01_data_validation_and_eda.ipynb) | Data validation and exploratory analysis |
-| [`reports/Sugar_Cosmetics_Instagram_Executive_Report.pdf`](reports/Sugar_Cosmetics_Instagram_Executive_Report.pdf) | Executive report |
-| [`reports/implementation_review.md`](reports/implementation_review.md) | Recorded implementation review and outstanding evidence gates |
-| [`reports/reproducibility_manifest.json`](reports/reproducibility_manifest.json) | Data/code hashes and reproducibility metadata |
-| [`data/business_impact_attribution_template.csv`](data/business_impact_attribution_template.csv) | Blank template for validated business-outcome data |
+The project does not require API keys for the supplied local analysis workflow. Keep local credentials, private exports, and unrelated personal data out of source control. Do not add unverified customer-level or financial data to the public repository.
 
-## Data attribution and licensing
+### Responsible Interpretation
 
-The available provenance assessment identifies the likely upstream project as [`Neeraj08823/Sugar_cosmetics_Instagram_Analytics`](https://github.com/Neeraj08823/Sugar_cosmetics_Instagram_Analytics). Please preserve that attribution when referencing the dataset.
+- Do not describe the dataset as an official Sugar Cosmetics export without independent verification.
+- Do not present record-level reach as unique people reached.
+- Do not describe profile visits or follows as attributed purchases.
+- Do not present assumed experiment scenarios as realized campaign impact.
+- Do not deploy the pre-publication engagement-rate model based on the current evaluation.
+- Do not interpret exploratory conditional model results as causal lift.
 
-The upstream README mentions an MIT license for its project, but the dataset's ownership and license scope have not been independently confirmed. Review the upstream repository's current license and obtain any necessary permission before redistributing the workbook or representing the dataset as official brand data. This repository does not claim ownership of the underlying dataset or affiliation with SUGAR Cosmetics / the brand owner.
+## 💡 Key Design Principles
+
+### 1. 📥 Data First
+
+Validate the supplied files, understand the field definitions, and establish the record grain before interpreting performance.
+
+### 2. 📏 Consistent Metrics
+
+Keep metric definitions centralized so the same denominator and eligibility rules are used across the notebook, application, inference, and reports.
+
+### 3. 🛡️ Evidence Before Claims
+
+Separate descriptive findings, statistical uncertainty, predictive evaluation, experiment assumptions, and verified business outcomes.
+
+### 4. 📊 Multiple Measures
+
+Use reach, impressions, interactions, engagement rates, and audience-action proxies together rather than relying on one headline metric.
+
+### 5. 🧠 Baseline Before Complexity
+
+Require a meaningful and stable out-of-sample gain over a simple baseline before recommending a more complex predictive model.
+
+### 6. 🧪 Test Before Reallocation
+
+Treat category patterns as hypotheses. Use controlled experiments and pre-agreed guardrails before changing strategy or spend.
+
+### 7. 💰 Finance-Ready Measurement
+
+Require attributed conversion, net revenue, variable cost, media cost, and contribution definitions before reporting ROAS or ROI.
+
+### 8. 🔁 Reproducibility
+
+Preserve source files, analysis artifacts, hashes, tests, and documented execution steps so that results can be reviewed and regenerated.
+
+## 📈 Why This Project Matters
+
+Sugar Cosmetics Instagram Analytics demonstrates a complete analytical workflow rather than a static social-media dashboard:
+
+```text
+📄 Supplied Data
+      ↓
+🛡️ Data Validation & Provenance Review
+      ↓
+🧹 Standardization & Feature Engineering
+      ↓
+📊 Descriptive Analytics
+      ↓
+📐 Statistical Inference
+      ↓
+🧠 Temporal Model Evaluation
+      ↓
+🧪 Experiment Design
+      ↓
+💰 Business-Impact Measurement Framework
+      ↓
+⚡ Interactive Streamlit Application
+      ↓
+📑 Executive Reporting & Decision Support
+```
+
+The same analytical discipline can be adapted to other domains, including:
+
+- 💄 Brand and social-media analytics
+- 🛍️ E-commerce and product analytics
+- 📣 Digital marketing performance
+- 👥 Customer and audience analytics
+- 💰 Campaign and financial measurement
+- 📈 Growth and experimentation analytics
+
+## 🎓 What This Project Demonstrates
+
+The project demonstrates practical experience with:
+
+- 📥 Structured data ingestion
+- 🛡️ Data quality assessment and provenance review
+- 🧹 Data standardization and feature engineering
+- 📊 KPI design and descriptive analytics
+- #️⃣ Text normalization and hashtag analysis
+- 📅 Calendar and time-based analysis
+- 📐 Statistical inference and uncertainty estimation
+- 🧠 Predictive model evaluation and leakage controls
+- 🧪 Experiment design and sample-size planning
+- 💰 Business-impact and attribution requirements
+- ⚡ Streamlit application development
+- 📈 Interactive visualization and storytelling
+- 🧪 Unit testing and CI automation
+- 🔁 Reproducible analytical workflows
+- 📑 Executive communication and decision-support design
+
+The broader objective is to demonstrate the ability to move from data to a defensible business question, validate the evidence, communicate uncertainty, and identify the next measurement action.
+
+## ⭐ Project Highlights
+
+```text
+💄 50,000 Supplied Records
+          +
+📅 366 Calendar Dates
+          +
+📊 14 Source Fields
+          +
+🎨 4 Content Formats
+          +
+📣 5 Campaign Categories
+          +
+📐 Date-Block Statistical Inference
+          +
+🧠 Chronological Model Validation
+          +
+🧪 Experiment Sample-Size Planning
+          +
+💰 Business-Impact Data Contract
+          +
+⚡ 8 Streamlit Analytics Sections
+          +
+🛡️ Automated Tests & GitHub Actions
+          +
+📑 Executive Reporting
+```
 
 ---
 
-**Project positioning:** This is a portfolio-grade analytics and decision-support implementation. It demonstrates reproducible analysis, cautious statistical interpretation, temporal model validation, experiment planning and business-impact measurement design. It is not an official Sugar Cosmetics performance report or a production marketing attribution system.
+## 👤 Author
+
+**Kartikey Singh**  
+**Data Analyst | Python | SQL | Power BI | Data Visualization**
+
+- 💻 GitHub: [T3MP35TT](https://github.com/T3MP35TT)
+- 🔗 LinkedIn: [Kartikey Singh](https://www.linkedin.com/in/btwitskartiksinghdatanalyst/)
+- 💼 Portfolio: [Kartikey Singh](https://sites.google.com/view/kartikeysingh09/home)
+
+---
+
+⭐ If you find this project useful, consider giving the repository a star.
+
+**Project positioning:** This is a portfolio-grade analytics and decision-support implementation based on a supplied social-media dataset. It is not an official Sugar Cosmetics performance report, a verified marketing attribution system, or a production model deployment.
